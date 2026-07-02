@@ -1,46 +1,68 @@
 import os
-import time
+import json
 from google import genai
-from google.genai import errors
+from openai import OpenAI
 from pydantic import BaseModel
 
-# Geminiの設定
-client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-
-# 台本のデータ構造を定義
+# 台本のデータ構造
 class Script(BaseModel):
     title: str
     narration: str
     visual_prompt: str
 
-def generate_script(prompt: str, model: str = "gemini-2.0-flash", max_retries: int = 3):
-    """クォータ超過(429)時にリトライ・フォールバックする生成関数"""
-    fallback_models = [model, "gemini-1.5-flash"]  # ダメだったら別モデルも試す
+gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+groq_client = OpenAI(
+    api_key=os.environ["GROQ_API_KEY"],
+    base_url="https://api.groq.com/openai/v1"
+)
 
-    for candidate_model in fallback_models:
-        for attempt in range(max_retries):
-            try:
-                response = client.models.generate_content(
-                    model=candidate_model,
-                    contents=prompt,
-                    config={
-                        "response_mime_type": "application/json",
-                        "response_schema": Script,
-                    },
-                )
-                return response.text
-            except errors.ClientError as e:
-                if e.code == 429:
-                    wait = 45 * (attempt + 1)  # 徐々に待ち時間を延ばす
-                    print(f"[{candidate_model}] クォータ超過。{wait}秒待って再試行します... ({attempt+1}/{max_retries})")
-                    time.sleep(wait)
-                else:
-                    raise  # 429以外のエラーはそのまま投げる
-        print(f"[{candidate_model}] リトライ上限に達したため、次のモデルを試します。")
+PROMPT = "YouTube Shorts用の面白い雑学台本を書いて。JSON形式で出力して。"
 
-    raise RuntimeError("すべてのモデル・リトライで失敗しました。クォータ設定を確認してください。")
+def generate_with_gemini(prompt: str) -> Script | None:
+    try:
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json",
+                "response_schema": Script,
+            },
+        )
+        return Script.model_validate_json(response.text)
+    except Exception as e:
+        print(f"Gemini失敗: {e}")
+        return None
+
+def generate_with_groq(prompt: str) -> Script | None:
+    try:
+        response = groq_client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": "必ずJSON形式のみで出力してください。title, narration, visual_promptの3キーを含めること。"},
+                {"role": "user", "content": prompt}
+            ],
+            response_format={"type": "json_object"},
+        )
+        data = json.loads(response.choices[0].message.content)
+        return Script(**data)
+    except Exception as e:
+        print(f"Groq失敗: {e}")
+        return None
+
+def generate_script(prompt: str) -> Script:
+    # 1. まずGeminiを試す
+    result = generate_with_gemini(prompt)
+    if result:
+        return result
+
+    # 2. ダメならGroqにフォールバック
+    print("Groqにフォールバックします...")
+    result = generate_with_groq(prompt)
+    if result:
+        return result
+
+    raise RuntimeError("GeminiもGroqも失敗しました。")
 
 
-# 台本生成のリクエスト
-result = generate_script("YouTube Shorts用の面白い雑学台本を書いて。JSON形式で出力して。")
-print(result)
+script = generate_script(PROMPT)
+print(script.model_dump_json(indent=2))
