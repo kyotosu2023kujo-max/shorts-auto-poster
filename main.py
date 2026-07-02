@@ -11,7 +11,7 @@ class Script(BaseModel):
     narration: str
     visual_prompt: str
 
-# 台本生成のリクエスト
+#　 台本生成のリクエスト
 response = client.models.generate_content(
     model='gemini-2.0-flash',
     contents="YouTube Shorts用の面白い雑学台本を書いて。JSON形式で出力して。",
