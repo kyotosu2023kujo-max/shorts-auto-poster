@@ -36,6 +36,13 @@ jobs:
         run: |
           python build_video.py
 
+      - name: Googleドライブへ自動保存
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          pip install google-api-python-client google-auth
+          python upload_drive.py
 #      - name: YouTubeへ自動アップロード
 #        env:
 #          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
