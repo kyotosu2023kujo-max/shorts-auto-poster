@@ -45,7 +45,7 @@ def fetch_scene_image(query: str, output_path: str) -> str:
         f.write(requests.get(fallback_url).content)
     return output_path
 
-# シーン動画の組み立て
+# シーン動画の組み立て（テロップ視認性アップ版）
 def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
     audio_path = f"audio_{index}.mp3"
     image_path = f"image_{index}.jpg"
@@ -69,19 +69,33 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
     elif scene.motion_effect == "zoom_out":
         base_img = base_img.with_effects([vfx.Resize(lambda t: 1.15 - 0.04 * t)])
 
-    # 3. テロップ位置のマッピング
-    pos_map = {
-        "top": ("center", 350),
-        "center": ("center", 900),
-        "bottom": ("center", 1450)
+    # 3. テロップのY座標を設定
+    y_pos_map = {
+        "top": 350,
+        "center": 900,
+        "bottom": 1450
     }
-    pos = pos_map.get(scene.subtitle_position, ("center", 1450))
+    y_pos = y_pos_map.get(scene.subtitle_position, 1450)
 
-    # 4. 字幕テロップ
+    # 4. 影用の黒テロップ（少し下にずらして配置）
+    txt_shadow = (
+        TextClip(
+            text=scene.subtitle_text,
+            font_size=75,
+            color='black',
+            font=FONT_PATH,
+            size=(950, None),
+            method='caption'
+        )
+        .with_position(('center', y_pos + 6))
+        .with_duration(duration)
+    )
+
+    # 5. メインテロップ（縁取り付き）
     txt_clip = (
         TextClip(
             text=scene.subtitle_text,
-            font_size=60,
+            font_size=75,
             color=scene.subtitle_color,
             stroke_color='black',
             stroke_width=4,
@@ -89,11 +103,12 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
             size=(950, None),
             method='caption'
         )
-        .with_position(pos)
+        .with_position(('center', y_pos))
         .with_duration(duration)
     )
 
-    return CompositeVideoClip([base_img, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
+    # 背景画像の上に影とメインテロップの順番で重ねる
+    return CompositeVideoClip([base_img, txt_shadow, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
 
 # 全体動画の合成とレンダリング
 def build_full_video(script: DetailedScript, output_path: str = "output_shorts.mp4"):
@@ -108,11 +123,25 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
     # 全シーンを連結
     main_video = concatenate_videoclips(scene_clips, method="compose")
 
-    # 常時表示のヘッダータイトルバー
+    # タイトルヘッダー用の影
+    header_shadow = (
+        TextClip(
+            text=f"【{script.title}】",
+            font_size=55,
+            color='black',
+            font=FONT_PATH,
+            size=(1000, None),
+            method='caption'
+        )
+        .with_position(('center', 156))
+        .with_duration(main_video.duration)
+    )
+
+    # タイトルヘッダー本体
     title_header = (
         TextClip(
             text=f"【{script.title}】",
-            font_size=46,
+            font_size=55,
             color='#FFD700',
             stroke_color='black',
             stroke_width=4,
@@ -124,7 +153,7 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
         .with_duration(main_video.duration)
     )
 
-    final_video = CompositeVideoClip([main_video, title_header], size=(1080, 1920))
+    final_video = CompositeVideoClip([main_video, header_shadow, title_header], size=(1080, 1920))
 
     # BGMが存在する場合は合成
     if os.path.exists("bgm.mp3"):
