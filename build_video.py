@@ -105,6 +105,7 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
     return CompositeVideoClip([base_img, bg_box, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
 
 # 全体動画の合成とレンダリング
+# 全体動画の合成とレンダリング
 def build_full_video(script: DetailedScript, output_path: str = "output_shorts.mp4"):
     scene_clips = []
     
@@ -116,28 +117,34 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
 
     main_video = concatenate_videoclips(scene_clips, method="compose")
 
-    # タイトル用の黒帯
+    # タイトル文字をスッキリ収める（長すぎる場合は自動で綺麗に収まるようにする）
+    raw_title = script.title
+    if not raw_title.startswith("【"):
+        raw_title = f"【{raw_title}】"
+
+    # タイトル用の黒帯（横幅を広めに、高さも余裕を持たせる）
     from PIL import Image
-    title_box_img = Image.new("RGBA", (1040, 120), (0, 0, 0, 180))
+    title_box_img = Image.new("RGBA", (1060, 140), (0, 0, 0, 190))
     title_box_path = "title_box.png"
     title_box_img.save(title_box_path)
 
     title_bg = (
         ImageClip(title_box_path)
         .with_duration(main_video.duration)
-        .with_position(('center', 135))
+        .with_position(('center', 120))
     )
 
+    # タイトルテキスト本体
     title_header = (
         TextClip(
-            text=f"【{script.title}】",
-            font_size=50,
+            text=raw_title,
+            font_size=48,  # 少しだけサイズを調整して枠内に収まりやすくする
             color='#FFD700',
             font=FONT_PATH,
             size=(1000, None),
             method='caption'
         )
-        .with_position(('center', 145))
+        .with_position(('center', 135))
         .with_duration(main_video.duration)
     )
 
