@@ -133,8 +133,7 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
 
 if __name__ == "__main__":
     script = generate_script()
-    build_full_video(script, "output_shorts.mp4")
-    audio_path = generate_audio(script.narration)
+    build_full_video(script)
 
     print("3. 背景素材を取得中 (Pexels)...")
     # visual_prompt または 英語キーワードで検索
