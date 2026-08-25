@@ -45,26 +45,26 @@ def create_shorts_video(script: Script, audio_path: str, image_path: str, output
     audio_clip = AudioFileClip(audio_path)
     duration = audio_clip.duration
 
-    # 背景画像（画面いっぱいにリサイズ）
+    # 背景画像（1080x1920 にリサイズ）
     image_clip = (
         ImageClip(image_path)
         .with_duration(duration)
         .resized((1080, 1920))
     )
 
-    # タイトル（見やすい黒帯テロップ風）
+    # タイトルテロップ（日本語フォント + 縁取り）
     txt_clip = (
         TextClip(
             text=script.title,
-            font_size=56,
-            color='white',
-            bg_color='rgba(0, 0, 0, 0.6)',
+            font_size=52,
+            color='yellow',
             stroke_color='black',
-            stroke_width=2,
+            stroke_width=3,
+            font='/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc',
             size=(960, None),
             method='caption'
         )
-        .with_position(('center', 200))
+        .with_position(('center', 250))
         .with_duration(duration)
     )
 
