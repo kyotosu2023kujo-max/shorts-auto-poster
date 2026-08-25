@@ -35,8 +35,9 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-PROMPT = """YouTube Shorts向けの面白い雑学動画の台本と詳細な映像演出を作成してください。
+PROMPT = """YouTube Shorts向けの面白い雑学動画の台本と詳細な映像演出構成を作成してください。
 視聴者を飽きさせないよう、3〜5個のテンポの良いシーン（カット）に分割してください。
+タイトルは必ず全角15〜20文字以内で作成するようにしてください。
 各シーンの visual_search_query はPexelsで確実にヒットする具体的な英語名詞（2〜3単語）にしてください。"""
 
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | None:
