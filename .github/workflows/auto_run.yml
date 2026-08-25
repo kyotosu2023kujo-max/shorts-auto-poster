@@ -12,6 +12,11 @@ jobs:
       - name: リポジトリのコードを読み込み
         uses: actions/checkout@v4
 
+      - name: システムツールと日本語フォントのインストール
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk ffmpeg imagemagick
+
       - name: Pythonのセットアップ
         uses: actions/setup-python@v5
         with:
@@ -21,7 +26,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install openai moviepy pillow requests
+          pip install edge-tts requests moviepy pillow
 
       - name: AIスクリプトの実行
         env:
@@ -30,11 +35,7 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           python build_video.py
-　　　 - name: 日本語フォントとツールのインストール
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk ffmpeg imagemagick
-          
+
       - name: 生成した動画を保存（Artifacts）
         uses: actions/upload-artifact@v4
         with:
