@@ -21,14 +21,13 @@ PROMPT = "YouTube Shorts用の面白い雑学台本を書いて。"
 def generate_with_gemini(prompt: str) -> Script | None:
     try:
         response = gemini_client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="gemini-3.6-flash",  # ここを更新
             contents=prompt,
             config={
                 "response_mime_type": "application/json",
                 "response_schema": Script,
             },
         )
-        # response.parsed が直接 Script インスタンスになります
         if response.parsed:
             return response.parsed
         return Script.model_validate_json(response.text)
@@ -38,9 +37,8 @@ def generate_with_gemini(prompt: str) -> Script | None:
 
 def generate_with_groq(prompt: str) -> Script | None:
     try:
-        # beta.chat.completions.parse を使ってスキーマを厳密に保証
         response = groq_client.beta.chat.completions.parse(
-            model="llama-3.3-70b-versatile",  # 複雑な構造化出力には 70b もおすすめ
+            model="llama-3.3-70b-versatile",  # ここを更新
             messages=[
                 {"role": "system", "content": "YouTube Shorts向けの台本作成アシスタントです。"},
                 {"role": "user", "content": prompt}
@@ -51,7 +49,6 @@ def generate_with_groq(prompt: str) -> Script | None:
     except Exception as e:
         print(f"Groq失敗: {e}")
         return None
-
 def generate_script(prompt: str) -> Script:
     # 1. まずGeminiを試す
     result = generate_with_gemini(prompt)
