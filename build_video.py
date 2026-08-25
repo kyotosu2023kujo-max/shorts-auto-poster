@@ -1,12 +1,7 @@
 import os
 import requests
 from openai import OpenAI
-from moviepy.editor import (
-    AudioFileClip,
-    ImageClip,
-    TextClip,
-    CompositeVideoClip
-)
+from moviepy import AudioFileClip, ImageClip, TextClip, CompositeVideoClip
 from pydantic import BaseModel
 
 openai_client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
