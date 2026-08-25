@@ -78,7 +78,7 @@ def generate_with_groq(prompt: str) -> DetailedScript | None:
 def generate_script(prompt: str = PROMPT) -> DetailedScript:
     result = generate_with_gemini(prompt)
     if result:
-        return result  # ← if の内側なので、半角スペース8個に揃える
+        return result
 
     print("Groqにフォールバックします...")
     result = generate_with_groq(prompt)
@@ -89,11 +89,4 @@ def generate_script(prompt: str = PROMPT) -> DetailedScript:
 
 if __name__ == "__main__":
     script = generate_script()
-    print(script.model_dump_json(indent=2))
-        return result
-
-    raise RuntimeError("GeminiもGroqも失敗しました。")
-
-if __name__ == "__main__":
-    script = generate_script(PROMPT)
     print(script.model_dump_json(indent=2))
