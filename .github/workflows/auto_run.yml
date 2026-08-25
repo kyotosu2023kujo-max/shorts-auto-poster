@@ -23,6 +23,11 @@ jobs:
           pip install -r requirements.txt
           pip install openai
 
+　　　 - name: 生成した動画を保存（Artifacts）
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorts-video
+          path: output_shorts.mp4
       - name: AIスクリプトの実行
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
