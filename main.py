@@ -2,13 +2,13 @@ import os
 import json
 from google import genai
 from openai import OpenAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # 台本のデータ構造
 class Script(BaseModel):
-    title: str
-    narration: str
-    visual_prompt: str
+    title: str = Field(description="動画のタイトル")
+    narration: str = Field(description="ナレーション原稿")
+    visual_prompt: str = Field(description="背景映像の生成プロンプト")
 
 gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 groq_client = OpenAI(
@@ -16,7 +16,7 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-PROMPT = "YouTube Shorts用の面白い雑学台本を書いて。JSON形式で出力して。"
+PROMPT = "YouTube Shorts用の面白い雑学台本を書いて。"
 
 def generate_with_gemini(prompt: str) -> Script | None:
     try:
@@ -28,6 +28,9 @@ def generate_with_gemini(prompt: str) -> Script | None:
                 "response_schema": Script,
             },
         )
+        # response.parsed が直接 Script インスタンスになります
+        if response.parsed:
+            return response.parsed
         return Script.model_validate_json(response.text)
     except Exception as e:
         print(f"Gemini失敗: {e}")
@@ -35,16 +38,16 @@ def generate_with_gemini(prompt: str) -> Script | None:
 
 def generate_with_groq(prompt: str) -> Script | None:
     try:
-        response = groq_client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+        # beta.chat.completions.parse を使ってスキーマを厳密に保証
+        response = groq_client.beta.chat.completions.parse(
+            model="llama-3.3-70b-versatile",  # 複雑な構造化出力には 70b もおすすめ
             messages=[
-                {"role": "system", "content": "必ずJSON形式のみで出力してください。title, narration, visual_promptの3キーを含めること。"},
+                {"role": "system", "content": "YouTube Shorts向けの台本作成アシスタントです。"},
                 {"role": "user", "content": prompt}
             ],
-            response_format={"type": "json_object"},
+            response_format=Script,
         )
-        data = json.loads(response.choices[0].message.content)
-        return Script(**data)
+        return response.choices[0].message.parsed
     except Exception as e:
         print(f"Groq失敗: {e}")
         return None
@@ -55,7 +58,7 @@ def generate_script(prompt: str) -> Script:
     if result:
         return result
 
-    # 2. ダメならGroqにフォールバック
+    # 2. 失敗時はGroqにフォールバック
     print("Groqにフォールバックします...")
     result = generate_with_groq(prompt)
     if result:
@@ -63,6 +66,6 @@ def generate_script(prompt: str) -> Script:
 
     raise RuntimeError("GeminiもGroqも失敗しました。")
 
-
-script = generate_script(PROMPT)
-print(script.model_dump_json(indent=2))
+if __name__ == "__main__":
+    script = generate_script(PROMPT)
+    print(script.model_dump_json(indent=2))
