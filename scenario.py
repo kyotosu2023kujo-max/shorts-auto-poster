@@ -78,7 +78,7 @@ def generate_with_groq(prompt: str) -> DetailedScript | None:
 def generate_script(prompt: str = PROMPT) -> DetailedScript:
     result = generate_with_gemini(prompt)
     if result:
-        return result
+        return result  # ← if の内側なので、半角スペース8個に揃える
 
     print("Groqにフォールバックします...")
     result = generate_with_groq(prompt)
