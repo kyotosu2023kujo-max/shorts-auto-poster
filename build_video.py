@@ -164,6 +164,55 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
 
     final_video.close()
 
+# シナリオの品質（文字数やレイアウト破綻リスク）をチェックする関数
+def validate_script_quality(script) -> bool:
+    """
+    各シーンの字幕が長すぎて画面からあふれるリスクがないかチェックする。
+    問題外の長さであれば False（ボツ）を返す。
+    """
+    for i, scene in enumerate(script.scenes):
+        text_len = len(scene.subtitle_text)
+        # 1シーンあたりの文字数が多すぎる場合は、レイアウトが半分に切れる原因になるためボツにする
+        if text_len > 38:
+            print(f"❌ シーン {i+1} の文字数が多すぎます（{text_len}文字）。レイアウト崩れの恐れがあるためボツにします。")
+            return False
+    
+    # タイトルが長すぎる場合もチェック
+    if len(script.title) > 30:
+        print(f"❌ タイトルが長すぎます（{len(script.title)}文字）。ボツにします。")
+        return False
+
+    return True
+
 if __name__ == "__main__":
-    script = generate_script()
-    build_full_video(script, "output_shorts.mp4")
+    max_retries = 3  # 最大やり直し回数
+    success = False
+
+    for attempt in range(1, max_retries + 1):
+        print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
+        
+        try:
+            # 1. シナリオ生成
+            script = generate_script()
+            
+            # 2. クオリティチェック（ボツ判定）
+            if not validate_script_quality(script):
+                print("🔄 条件に満たなかったため、新しいシナリオで作り直します...")
+                continue  # 次のループ（再生成）へ
+            
+            print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
+            
+            # 3. 動画の組み立て・レンダリング
+            build_full_video(script, "output_shorts.mp4")
+            
+            success = True
+            print("🎉 完璧な品質の動画が完成しました！")
+            break
+            
+        except Exception as e:
+            print(f"⚠️ 構築中にエラーが発生しました: {e}")
+            print("🔄 エラーが発生したため再試行します...")
+
+    if not success:
+        print("❌ 最大試行回数に達しましたが、合格する動画を作れませんでした。")
+        exit(1)
