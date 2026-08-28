@@ -6,7 +6,50 @@ from google import genai
 from openai import OpenAI
 from pydantic import BaseModel, Field
 import random # 上部のimport文に追加
+# 既存の import文の下に追記
+from youtube_uploader import upload_to_youtube
 
+# ... (途中省略：動画生成関数の定義など) ...
+
+if __name__ == "__main__":
+    max_retries = 3
+    success = False
+
+    for attempt in range(1, max_retries + 1):
+        print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
+        
+        try:
+            # 1. シナリオ生成（ここでタイトルが決まる）
+            script = generate_script()
+            
+            if not validate_script_quality(script):
+                print("🔄 条件に満たなかったため、新しいシナリオで作り直します...")
+                continue
+            
+            print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
+            build_full_video(script, "output_shorts.mp4")
+            
+            success = True
+            print("🎉 完璧な品質の動画が完成しました！")
+            
+            # ==========================================
+            # 🚀 追加: 出来上がった動画をタイトルと共にアップロード
+            # ==========================================
+            try:
+                upload_to_youtube("output_shorts.mp4", script.title)
+            except Exception as e:
+                print(f"⚠️ 動画は完成しましたが、アップロードに失敗しました: {e}")
+            # ==========================================
+
+            break
+            
+        except Exception as e:
+            print(f"⚠️ 構築中にエラーが発生しました: {e}")
+            print("🔄 エラーが発生したため再試行します...")
+
+    if not success:
+        print("❌ 最大試行回数に達しましたが、合格する動画を作れませんでした。")
+        exit(1)
 # --- テーマをリスト化してランダムに選ぶ ---
 THEMES = [
     "深海生物の異常な生存戦略",
