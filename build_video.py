@@ -216,10 +216,16 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     image_path = f"image_{index}.jpg"
     icon_path = "youtubeicon.png"
     spec_output_folder = f"spectrum_frames_{index}"
-    
-    asyncio.run(generate_scene_audio(scene.narration, audio_path))
+ asyncio.run(generate_scene_audio(scene.narration, audio_path))
     fetch_scene_image(scene.visual_search_query, image_path)
     
+    # 👇 ここから追加：ファイルが正常に生成されているかチェック
+    if not os.path.exists(audio_path) or os.path.getsize(audio_path) == 0:
+        raise RuntimeError(f"音声ファイルの生成に失敗しました: {audio_path}")
+    if not os.path.exists(image_path) or os.path.getsize(image_path) < 100:
+        raise RuntimeError(f"画像ファイルの取得に失敗しました: {image_path}")
+    # 👆 ここまで追加
+
     audio_clip = AudioFileClip(audio_path)
     duration = audio_clip.duration
     fps = 30
