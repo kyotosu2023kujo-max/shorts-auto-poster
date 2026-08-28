@@ -1,55 +1,12 @@
 import os
 import json
 import time
+import random
 from typing import List, Literal
 from google import genai
 from openai import OpenAI
 from pydantic import BaseModel, Field
-import random # 上部のimport文に追加
-# 既存の import文の下に追記
-from youtube_uploader import upload_to_youtube
 
-# ... (途中省略：動画生成関数の定義など) ...
-
-if __name__ == "__main__":
-    max_retries = 3
-    success = False
-
-    for attempt in range(1, max_retries + 1):
-        print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
-        
-        try:
-            # 1. シナリオ生成（ここでタイトルが決まる）
-            script = generate_script()
-            
-            if not validate_script_quality(script):
-                print("🔄 条件に満たなかったため、新しいシナリオで作り直します...")
-                continue
-            
-            print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
-            build_full_video(script, "output_shorts.mp4")
-            
-            success = True
-            print("🎉 完璧な品質の動画が完成しました！")
-            
-            # ==========================================
-            # 🚀 追加: 出来上がった動画をタイトルと共にアップロード
-            # ==========================================
-            try:
-                upload_to_youtube("output_shorts.mp4", script.title)
-            except Exception as e:
-                print(f"⚠️ 動画は完成しましたが、アップロードに失敗しました: {e}")
-            # ==========================================
-
-            break
-            
-        except Exception as e:
-            print(f"⚠️ 構築中にエラーが発生しました: {e}")
-            print("🔄 エラーが発生したため再試行します...")
-
-    if not success:
-        print("❌ 最大試行回数に達しましたが、合格する動画を作れませんでした。")
-        exit(1)
 # --- テーマをリスト化してランダムに選ぶ ---
 THEMES = [
     "深海生物の異常な生存戦略",
@@ -68,18 +25,9 @@ class Scene(BaseModel):
     narration: str = Field(description="このシーンで読み上げるナレーション原稿")
     subtitle_text: str = Field(description="画面に大きく表示する強調テロップ（10〜15文字程度）")
     visual_search_query: str = Field(description="Pexels検索用の英語キーワード（例: 'cut watermelon summer', 'galaxy stars'）")
-    subtitle_position: Literal["top", "center", "bottom"] = Field(
-        default="bottom",
-        description="テロップの表示位置"
-    )
-    subtitle_color: Literal["yellow", "white", "cyan"] = Field(
-        default="yellow",
-        description="テロップの文字色"
-    )
-    motion_effect: Literal["zoom_in", "zoom_out", "static"] = Field(
-        default="zoom_in",
-        description="カメラワーク演出（ズームイン、ズームアウト、固定）"
-    )
+    subtitle_position: Literal["top", "center", "bottom"] = Field(default="bottom", description="テロップの表示位置")
+    subtitle_color: Literal["yellow", "white", "cyan"] = Field(default="yellow", description="テロップの文字色")
+    motion_effect: Literal["zoom_in", "zoom_out", "static"] = Field(default="zoom_in", description="カメラワーク演出（ズームイン、ズームアウト、固定）")
 
 # 全体台本
 class DetailedScript(BaseModel):
@@ -92,7 +40,8 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-PROMPT = """#依頼内容
+# f文字列に修正し、ランダムテーマが反映されるようにしました
+PROMPT = f"""#依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー・構成作家です。YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学動画の台本と詳細な映像演出構成を作成してください。
 
 # 条件
@@ -111,7 +60,7 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | 
     for attempt in range(max_retries):
         try:
             response = gemini_client.models.generate_content(
-                model="gemini-3.6-flash",
+                model="gemini-1.5-flash", # 存在しない3.6から安定版の1.5に修正
                 contents=prompt,
                 config={
                     "response_mime_type": "application/json",
@@ -147,12 +96,10 @@ def generate_script(prompt: str = PROMPT) -> DetailedScript:
     result = generate_with_gemini(prompt)
     if result:
         return result
-
     print("Groqにフォールバックします...")
     result = generate_with_groq(prompt)
     if result:
         return result
-
     raise RuntimeError("GeminiもGroqも失敗しました。")
 
 if __name__ == "__main__":
