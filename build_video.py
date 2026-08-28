@@ -214,7 +214,7 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
 def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoClip:
     audio_path = f"audio_{index}.mp3"
     image_path = f"image_{index}.jpg"
-    icon_path = "brain_icon.png"
+    icon_path = "youtubeicon.png"
     spec_output_folder = f"spectrum_frames_{index}"
     
     asyncio.run(generate_scene_audio(scene.narration, audio_path))
