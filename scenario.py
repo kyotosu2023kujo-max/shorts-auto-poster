@@ -40,7 +40,9 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-# f文字列に修正し、ランダムテーマが反映されるようにしました
+# scenario.py の PROMPT 定義部分を丸ごとこれに置き換えます
+# ※ f文字列の中で波括弧 {} を文字として扱うために {{ }} と二重にしています
+
 PROMPT = f"""#依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー・構成作家です。YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学動画の台本と詳細な映像演出構成を作成してください。
 
@@ -52,6 +54,22 @@ PROMPT = f"""#依頼内容
  - 具体的な【固有名詞（品種名、専門用語、人名など）】や【歴史的背景・科学的メカニズム】に必ず踏み込んでください。
 3. タイトル: 全角15〜20文字以内で作成してください。
 4. 映像演出: 各シーンの `visual_search_query` は、Pexelsで確実にヒットする具体的な英語名詞（2〜3単語）にしてください。
+
+# 出力形式
+必ず以下のJSONフォーマット（スキーマ）に厳密に従って出力してください。他のテキストは一切含めないでください。
+{{
+  "title": "動画のタイトル",
+  "scenes": [
+    {{
+      "narration": "ナレーションのテキスト",
+      "subtitle_text": "強調テロップ(10〜15文字)",
+      "visual_search_query": "検索キーワード",
+      "subtitle_position": "top または center または bottom",
+      "subtitle_color": "yellow または white または cyan",
+      "motion_effect": "zoom_in または zoom_out または static"
+    }}
+  ]
+}}
 
 # 今回のテーマ
 [{current_theme}]"""
