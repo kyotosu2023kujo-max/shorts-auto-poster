@@ -216,7 +216,7 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     image_path = f"image_{index}.jpg"
     icon_path = "youtubeicon.png"
     spec_output_folder = f"spectrum_frames_{index}"
-　　 asyncio.run(generate_scene_audio(scene.narration, audio_path))
+    asyncio.run(generate_scene_audio(scene.narration, audio_path))
     fetch_scene_image(scene.visual_search_query, image_path)
     
     # 👇 ここから追加：ファイルが正常に生成されているかチェック
