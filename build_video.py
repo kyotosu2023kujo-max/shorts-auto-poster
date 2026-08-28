@@ -152,7 +152,7 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
         font_size=65,
         max_width=950,
         output_path=txt_path,
-        color_str=scene.subtitle_color
+        text_color=scene.subtitle_color
     )
 
     txt_clip = (
@@ -198,7 +198,7 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
         font_size=48,
         max_width=1000,
         output_path=title_text_path,
-        color_str='#FFD700'
+        text_color='#FFD700'
     )
 
     title_header = (
