@@ -96,10 +96,9 @@ def fetch_wikimedia_image(query: str, output_path: str) -> bool:
                     img_data = requests.get(img_url, headers=headers).content
                     with open(output_path, "wb") as f:
                         f.write(img_data)
-                    print(f"博物・学術画像をWikimedia Commonsから取得: {query}")
                     return True
-    except Exception as e:
-        print(f"Wikimedia Commons取得エラー: {e}")
+    except Exception:
+        pass
         
     return False
 
@@ -110,7 +109,6 @@ def fetch_scene_image(query: str, output_path: str) -> str:
     else:
         headers = {"Authorization": PEXELS_API_KEY}
         url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
-        
         try:
             response = requests.get(url, headers=headers)
             data = response.json()
@@ -119,29 +117,22 @@ def fetch_scene_image(query: str, output_path: str) -> str:
                 img_data = requests.get(image_url).content
                 with open(output_path, "wb") as f:
                     f.write(img_data)
-                print(f"Pexelsから画像を取得: {query}")
                 success = True
-        except Exception as e:
-            print(f"Pexels画像取得エラー: {e}")
+        except Exception:
+            pass
 
-    if not success:
-        fallback_url = "https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg"
-        with open(output_path, "wb") as f:
-            f.write(requests.get(fallback_url).content)
+    if success:
+        try:
+            with Image.open(output_path) as img:
+                img = img.convert('RGB')
+                img.save(output_path, "JPEG")
+                return output_path
+        except Exception:
+            success = False
 
-    try:
-        with Image.open(output_path) as img:
-            img = img.convert('RGB')
-            img.save(output_path, "JPEG")
-    except Exception as e:
-        print(f"⚠️ 画像の変換に失敗したため、安全なフォールバック画像に置き換えます: {e}")
-        fallback_url = "https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg"
-        with open(output_path, "wb") as f:
-            f.write(requests.get(fallback_url).content)
-        with Image.open(output_path) as img:
-            img = img.convert('RGB')
-            img.save(output_path, "JPEG")
-
+    print(f"⚠️ 画像取得に失敗したため、安全な背景画像を自動生成します: {query}")
+    img = Image.new('RGB', (1080, 1920), color=(15, 23, 42))
+    img.save(output_path, "JPEG")
     return output_path
 
 def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int, icon_path: str, output_folder: str):
@@ -152,17 +143,26 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
     rms_normalized = (rms - np.min(rms)) / (np.max(rms) - np.min(rms) + 1e-8)
     rms_boosted = np.power(rms_normalized, 0.5)
     
+    # アイコンを読み込み、四角い白背景を消して綺麗な丸型（円形）にマスクする処理
     try:
-        icon_img = Image.open(icon_path).convert('RGBA')
-        icon_size = icon_img.size
+        icon_raw = Image.open(icon_path).convert('RGBA')
+        icon_size = (130, 130)
+        icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
+        
+        mask = Image.new('L', icon_size, 0)
+        draw_mask = ImageDraw.Draw(mask)
+        draw_mask.ellipse((0, 0, icon_size[0], icon_size[1]), fill=255)
+        
+        icon_img = Image.new('RGBA', icon_size, (0, 0, 0, 0))
+        icon_img.paste(icon_raw, (0, 0), mask)
     except OSError:
         print(f"⚠️ アイコン読み込みエラー: {icon_path}")
-        return []
+        icon_img = None
 
     spectrum_clips = []
-    num_bars = 64
-    radius_base = 110
-    max_bar_length = 70
+    num_bars = 48
+    radius_base = 75
+    max_bar_length = 45
     
     os.makedirs(output_folder, exist_ok=True)
 
@@ -170,7 +170,7 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
         if i >= len(rms_boosted):
              break
              
-        comp_img = Image.new('RGBA', (400, 400), (0, 0, 0, 0))
+        comp_img = Image.new('RGBA', (340, 340), (0, 0, 0, 0))
         draw = ImageDraw.Draw(comp_img)
         
         center_x = comp_img.width / 2
@@ -180,7 +180,7 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
             angle = (360 / num_bars) * b
             rad = np.deg2rad(angle)
             
-            bar_len = max(5, int(volume * max_bar_length))
+            bar_len = max(4, int(volume * max_bar_length))
             
             start_r = radius_base
             end_r = radius_base + bar_len
@@ -190,15 +190,16 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
             end_x = center_x + end_r * np.cos(rad)
             end_y = center_y + end_r * np.sin(rad)
             
-            bar_width = 4
-            alpha = int(150 + volume * 100)
-            bar_color = (0, 200, 255, alpha)
+            bar_width = 3
+            alpha = int(180 + volume * 75)
+            bar_color = (0, 220, 255, alpha)
             
             draw.line([(start_x, start_y), (end_x, end_y)], fill=bar_color, width=bar_width)
 
-        icon_x = center_x - icon_size[0] / 2
-        icon_y = center_y - icon_size[1] / 2
-        comp_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
+        if icon_img:
+            icon_x = center_x - icon_size[0] / 2
+            icon_y = center_y - icon_size[1] / 2
+            comp_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
 
         frame_path = os.path.join(output_folder, f"spectrum_frame_{i}.png")
         comp_img.save(frame_path)
@@ -261,7 +262,8 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     
     if spectrum_clips:
         animated_spectrum = concatenate_videoclips(spectrum_clips).with_duration(duration)
-        animated_spectrum = animated_spectrum.with_position((340, 1450))
+        # 画面中央の下部（テロップの下など）に綺麗に配置
+        animated_spectrum = animated_spectrum.with_position((370, 1420))
         return CompositeVideoClip([base_img, bg_box, txt_clip, animated_spectrum], size=(1080, 1920)).with_audio(audio_clip)
     else:
         return CompositeVideoClip([base_img, bg_box, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
