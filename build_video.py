@@ -244,17 +244,31 @@ if __name__ == "__main__":
         print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
         
         try:
+            # 1. シナリオ生成（タイトルもここで決まる）
             script = generate_script()
             
+            # 2. クオリティチェック
             if not validate_script_quality(script):
                 print("🔄 条件に満たなかったため、新しいシナリオで作り直します...")
                 continue
             
             print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
+            
+            # 3. 動画の組み立て・レンダリング
             build_full_video(script, "output_shorts.mp4")
             
             success = True
             print("🎉 完璧な品質の動画が完成しました！")
+            
+            # ==========================================
+            # 🚀 ここを追加：GitHub Actionsの次のステップ（アップロード）
+            # にタイトルを渡すため、テキストファイルとして保存しておく
+            # ==========================================
+            with open("title.txt", "w", encoding="utf-8") as f:
+                f.write(script.title)
+            print(f"📝 タイトルを保存しました: {script.title}")
+            # ==========================================
+
             break
             
         except Exception as e:
