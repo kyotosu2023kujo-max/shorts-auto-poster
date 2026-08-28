@@ -18,13 +18,7 @@ from PIL import Image, ImageDraw, ImageFont
 PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY", "")
 FONT_PATH = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc'
 
-# ==========================================
-# Pillowを使ったテキスト画像生成（見切れ防止対応）
-# ==========================================
 def generate_text_image(text: str, font_path: str, font_size: int, max_width: int, output_path: str, text_color: str):
-    """
-    指定幅で自動折返しを行い、下部の見切れを防ぐパディングを追加した透過PNGを生成する
-    """
     try:
         font = ImageFont.truetype(font_path, size=font_size, index=0)
     except OSError:
@@ -70,17 +64,11 @@ def generate_text_image(text: str, font_path: str, font_size: int, max_width: in
     img.save(output_path)
     return output_path
 
-# ==========================================
-# 音声生成
-# ==========================================
 async def generate_scene_audio(text: str, output_path: str) -> str:
     communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural")
     await communicate.save(output_path)
     return output_path
 
-# ==========================================
-# 背景画像取得（Wikimedia優先、Pexelsフォールバック）
-# ==========================================
 def fetch_wikimedia_image(query: str, output_path: str) -> bool:
     url = "https://commons.wikimedia.org/w/api.php"
     params = {
@@ -116,37 +104,47 @@ def fetch_wikimedia_image(query: str, output_path: str) -> bool:
     return False
 
 def fetch_scene_image(query: str, output_path: str) -> str:
+    success = False
     if fetch_wikimedia_image(query, output_path):
-        return output_path
+        success = True
+    else:
+        headers = {"Authorization": PEXELS_API_KEY}
+        url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
+        
+        try:
+            response = requests.get(url, headers=headers)
+            data = response.json()
+            if data.get("photos") and len(data["photos"]) > 0:
+                image_url = data["photos"][0]["src"]["large2x"]
+                img_data = requests.get(image_url).content
+                with open(output_path, "wb") as f:
+                    f.write(img_data)
+                print(f"Pexelsから画像を取得: {query}")
+                success = True
+        except Exception as e:
+            print(f"Pexels画像取得エラー: {e}")
 
-    headers = {"Authorization": PEXELS_API_KEY}
-    url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
-    
+    if not success:
+        fallback_url = "https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg"
+        with open(output_path, "wb") as f:
+            f.write(requests.get(fallback_url).content)
+
     try:
-        response = requests.get(url, headers=headers)
-        data = response.json()
-        if data.get("photos") and len(data["photos"]) > 0:
-            image_url = data["photos"][0]["src"]["large2x"]
-            img_data = requests.get(image_url).content
-            with open(output_path, "wb") as f:
-                f.write(img_data)
-            print(f"Pexelsから画像を取得: {query}")
-            return output_path
+        with Image.open(output_path) as img:
+            img = img.convert('RGB')
+            img.save(output_path, "JPEG")
     except Exception as e:
-        print(f"Pexels画像取得エラー: {e}")
+        print(f"⚠️ 画像の変換に失敗したため、安全なフォールバック画像に置き換えます: {e}")
+        fallback_url = "https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg"
+        with open(output_path, "wb") as f:
+            f.write(requests.get(fallback_url).content)
+        with Image.open(output_path) as img:
+            img = img.convert('RGB')
+            img.save(output_path, "JPEG")
 
-    fallback_url = "https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg"
-    with open(output_path, "wb") as f:
-        f.write(requests.get(fallback_url).content)
     return output_path
 
-# ==========================================
-# 円形スペクトラムアナライザー生成関数
-# ==========================================
 def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int, icon_path: str, output_folder: str):
-    """
-    音声ボリュームに合わせて脈動する円形スペクトラムを生成し、連番PNGとして保存する
-    """
     y, sr = librosa.load(audio_path)
     hop_length = int(sr / fps)
     rms = librosa.feature.rms(y=y, hop_length=hop_length)[0]
@@ -208,23 +206,19 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
 
     return spectrum_clips
 
-# ==========================================
-# シーン動画の組み立て（スペクトラム合成を追加）
-# ==========================================
 def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoClip:
     audio_path = f"audio_{index}.mp3"
     image_path = f"image_{index}.jpg"
     icon_path = "youtubeicon.png"
     spec_output_folder = f"spectrum_frames_{index}"
+    
     asyncio.run(generate_scene_audio(scene.narration, audio_path))
     fetch_scene_image(scene.visual_search_query, image_path)
     
-    # 👇 ここから追加：ファイルが正常に生成されているかチェック
     if not os.path.exists(audio_path) or os.path.getsize(audio_path) == 0:
         raise RuntimeError(f"音声ファイルの生成に失敗しました: {audio_path}")
     if not os.path.exists(image_path) or os.path.getsize(image_path) < 100:
         raise RuntimeError(f"画像ファイルの取得に失敗しました: {image_path}")
-    # 👆 ここまで追加
 
     audio_clip = AudioFileClip(audio_path)
     duration = audio_clip.duration
@@ -267,14 +261,11 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     
     if spectrum_clips:
         animated_spectrum = concatenate_videoclips(spectrum_clips).with_duration(duration)
-        animated_spectrum = animated_spectrum.with_position((340, 1450)) # 画面上の配置位置
+        animated_spectrum = animated_spectrum.with_position((340, 1450))
         return CompositeVideoClip([base_img, bg_box, txt_clip, animated_spectrum], size=(1080, 1920)).with_audio(audio_clip)
     else:
         return CompositeVideoClip([base_img, bg_box, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
 
-# ==========================================
-# 全体動画の合成とレンダリング
-# ==========================================
 def build_full_video(script: DetailedScript, output_path: str = "output_shorts.mp4"):
     scene_clips = []
     
