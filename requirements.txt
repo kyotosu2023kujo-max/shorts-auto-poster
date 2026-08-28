@@ -5,3 +5,5 @@ moviepy
 pillow
 requests
 edge-tts
+imageio[pyav]
+imageio[opencv]
