@@ -40,9 +40,7 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-# scenario.py の PROMPT 定義部分を丸ごとこれに置き換えます
-# ※ f文字列の中で波括弧 {} を文字として扱うために {{ }} と二重にしています
-
+# f文字列のまま、JSONのフォーマット（{}はエスケープのために二重にしています）を追加します
 PROMPT = f"""#依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー・構成作家です。YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学動画の台本と詳細な映像演出構成を作成してください。
 
@@ -55,18 +53,26 @@ PROMPT = f"""#依頼内容
 3. タイトル: 全角15〜20文字以内で作成してください。
 4. 映像演出: 各シーンの `visual_search_query` は、Pexelsで確実にヒットする具体的な英語名詞（2〜3単語）にしてください。
 
-# 出力形式
-必ず以下のJSONフォーマット（スキーマ）に厳密に従って出力してください。他のテキストは一切含めないでください。
+# 必須出力フォーマット（厳守）
+以下のJSON構造に厳密に従って出力してください。キー名（narrationなど）は絶対に変更しないでください。
 {{
   "title": "動画のタイトル",
   "scenes": [
     {{
-      "narration": "ナレーションのテキスト",
-      "subtitle_text": "強調テロップ(10〜15文字)",
-      "visual_search_query": "検索キーワード",
-      "subtitle_position": "top または center または bottom",
-      "subtitle_color": "yellow または white または cyan",
-      "motion_effect": "zoom_in または zoom_out または static"
+      "narration": "このシーンで読み上げるナレーション原稿",
+      "subtitle_text": "画面に大きく表示する強調テロップ",
+      "visual_search_query": "Pexels検索用の英語キーワード",
+      "subtitle_position": "bottom",
+      "subtitle_color": "yellow",
+      "motion_effect": "zoom_in"
+    }},
+    {{
+      "narration": "次のシーンのナレーション...",
+      "subtitle_text": "...",
+      "visual_search_query": "...",
+      "subtitle_position": "center",
+      "subtitle_color": "white",
+      "motion_effect": "static"
     }}
   ]
 }}
