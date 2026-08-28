@@ -7,3 +7,5 @@ requests
 edge-tts
 imageio[pyav]
 imageio[opencv]
+numpy
+librosa
