@@ -16,15 +16,11 @@ from PIL import Image, ImageDraw, ImageFont
 PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY", "")
 FONT_PATH = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc'
 
-# ==========================================
-# 新規追加: Pillowを使った見切れ防止＆自動折返しテキスト生成関数
-# ==========================================
 def generate_text_image(text: str, font_path: str, font_size: int, max_width: int, output_path: str, text_color: str):
     """
     指定幅で自動折返しを行い、下部の見切れを防ぐパディングを追加した透過PNGを生成する
     """
     try:
-        # ttcファイルの場合、index=0 を指定（Boldウェイト等が先頭でない場合は要調整）
         font = ImageFont.truetype(font_path, size=font_size, index=0)
     except OSError:
         print(f"⚠️ フォント読み込みエラー: {font_path}")
@@ -33,7 +29,6 @@ def generate_text_image(text: str, font_path: str, font_size: int, max_width: in
     lines = []
     current_line = ""
     
-    # 1文字ずつ幅を計測して自動折返し (CJK向け)
     for char in text:
         if char == '\n':
             lines.append(current_line)
@@ -52,37 +47,73 @@ def generate_text_image(text: str, font_path: str, font_size: int, max_width: in
     if current_line:
         lines.append(current_line)
 
-    # 行の高さと見切れ防止の下部パディングを計算
     ascent, descent = font.getmetrics()
     line_height = ascent + descent
-    bottom_padding = int(descent * 1.5)  # 濁点やハネが切れないように余裕を持たせる
+    bottom_padding = int(descent * 1.5)
     total_height = (line_height * len(lines)) + bottom_padding
 
-    # 透明な背景の画像を生成
     img = Image.new('RGBA', (max_width, total_height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
     y_text = 0
     for line in lines:
-        # 中央揃えにするためのXオフセット計算
         line_width = font.getlength(line)
         x_offset = (max_width - line_width) / 2
-        
         draw.text((x_offset, y_text), line, font=font, fill=text_color)
         y_text += line_height
 
     img.save(output_path)
     return output_path
-# ==========================================
 
-# 音声生成
 async def generate_scene_audio(text: str, output_path: str) -> str:
     communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural")
     await communicate.save(output_path)
     return output_path
 
-# 背景画像取得
+def fetch_wikimedia_image(query: str, output_path: str) -> bool:
+    """
+    Wikimedia Commons APIから学術的・生物的な画像を検索して取得する
+    """
+    url = "https://commons.wikimedia.org/w/api.php"
+    params = {
+        "action": "query",
+        "format": "json",
+        "generator": "search",
+        "gsrnamespace": 6,
+        "gsrsearch": query,
+        "gsrlimit": 1,
+        "prop": "imageinfo",
+        "iiprop": "url"
+    }
+    headers = {"User-Agent": "CuriosityScienceBot/1.0 (Educational YouTube Project)"}
+    
+    try:
+        response = requests.get(url, params=params, headers=headers)
+        data = response.json()
+        pages = data.get("query", {}).get("pages", {})
+        
+        for page_id, page_info in pages.items():
+            imageinfo = page_info.get("imageinfo", [])
+            if imageinfo:
+                img_url = imageinfo[0].get("url")
+                if img_url:
+                    img_data = requests.get(img_url, headers=headers).content
+                    with open(output_path, "wb") as f:
+                        f.write(img_data)
+                    print(f"博物・学術画像をWikimedia Commonsから取得: {query}")
+                    return True
+    except Exception as e:
+        print(f"Wikimedia Commons取得エラー: {e}")
+        
+    return False
+
 def fetch_scene_image(query: str, output_path: str) -> str:
+    """
+    まずWikimedia Commonsを試し、ヒットしない場合はPexelsから取得する
+    """
+    if fetch_wikimedia_image(query, output_path):
+        return output_path
+
     headers = {"Authorization": PEXELS_API_KEY}
     url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
     
@@ -94,6 +125,7 @@ def fetch_scene_image(query: str, output_path: str) -> str:
             img_data = requests.get(image_url).content
             with open(output_path, "wb") as f:
                 f.write(img_data)
+            print(f"Pexelsから画像を取得: {query}")
             return output_path
     except Exception as e:
         print(f"Pexels画像取得エラー: {e}")
@@ -103,7 +135,6 @@ def fetch_scene_image(query: str, output_path: str) -> str:
         f.write(requests.get(fallback_url).content)
     return output_path
 
-# シーン動画の組み立て（半透明の黒帯ベース）
 def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
     audio_path = f"audio_{index}.mp3"
     image_path = f"image_{index}.jpg"
@@ -114,7 +145,6 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
     audio_clip = AudioFileClip(audio_path)
     duration = audio_clip.duration
 
-    # 背景画像とズーム
     base_img = (
         ImageClip(image_path)
         .with_duration(duration)
@@ -133,7 +163,6 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
     }
     y_pos = y_pos_map.get(scene.subtitle_position, 1450)
 
-    # 1. 文字の背後に敷く「半透明の黒帯」
     box_img = Image.new("RGBA", (1000, 160), (0, 0, 0, 160))
     box_path = f"box_{index}.png"
     box_img.save(box_path)
@@ -144,7 +173,6 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
         .with_position(('center', y_pos - 20))
     )
 
-    # 2. メインテロップ (TextClipから自作Pillow関数へ変更)
     txt_path = f"text_{index}.png"
     generate_text_image(
         text=scene.subtitle_text,
@@ -163,7 +191,6 @@ def build_scene_clip(scene: Scene, index: int) -> CompositeVideoClip:
 
     return CompositeVideoClip([base_img, bg_box, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
 
-# 全体動画の合成とレンダリング
 def build_full_video(script: DetailedScript, output_path: str = "output_shorts.mp4"):
     scene_clips = []
     
@@ -179,7 +206,6 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
     if not raw_title.startswith("【"):
         raw_title = f"【{raw_title}】"
 
-    # タイトル用の黒帯
     title_box_img = Image.new("RGBA", (1060, 140), (0, 0, 0, 190))
     title_box_path = "title_box.png"
     title_box_img.save(title_box_path)
@@ -190,7 +216,6 @@ def build_full_video(script: DetailedScript, output_path: str = "output_shorts.m
         .with_position(('center', 120))
     )
 
-    # タイトルテキスト本体 (TextClipから自作Pillow関数へ変更)
     title_text_path = "title_text.png"
     generate_text_image(
         text=raw_title,
@@ -244,37 +269,25 @@ if __name__ == "__main__":
         print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
         
         try:
-            # 1. シナリオ生成（タイトルもここで決まる）
             script = generate_script()
             
-            # 2. クオリティチェック
             if not validate_script_quality(script):
                 print("🔄 条件に満たなかったため、新しいシナリオで作り直します...")
                 continue
             
             print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
             
-            # 3. 動画の組み立て・レンダリング
             build_full_video(script, "output_shorts.mp4")
             
             success = True
             print("🎉 完璧な品質の動画が完成しました！")
             
-            # ==========================================
-            # 🚀 ここを追加：GitHub Actionsの次のステップ（アップロード）
-            # にタイトルを渡すため、テキストファイルとして保存しておく
-            # ==========================================
             with open("title.txt", "w", encoding="utf-8") as f:
                 f.write(script.title)
             print(f"📝 タイトルを保存しました: {script.title}")
-            # ==========================================
 
             break
             
         except Exception as e:
             print(f"⚠️ 構築中にエラーが発生しました: {e}")
             print("🔄 エラーが発生したため再試行します...")
-
-    if not success:
-        print("❌ 最大試行回数に達しましたが、合格する動画を作れませんでした。")
-        exit(1)
