@@ -84,7 +84,7 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | 
     for attempt in range(max_retries):
         try:
             response = gemini_client.models.generate_content(
-                model="gemini-1.5-flash", # 存在しない3.6から安定版の1.5に修正
+                model="gemini-3.6-flash", # 存在しない3.6から安定版の1.5に修正
                 contents=prompt,
                 config={
                     "response_mime_type": "application/json",
