@@ -69,57 +69,22 @@ async def generate_scene_audio(text: str, output_path: str) -> str:
     await communicate.save(output_path)
     return output_path
 
-def fetch_wikimedia_image(query: str, output_path: str) -> bool:
-    url = "https://commons.wikimedia.org/w/api.php"
-    params = {
-        "action": "query",
-        "format": "json",
-        "generator": "search",
-        "gsrnamespace": 6,
-        "gsrsearch": query,
-        "gsrlimit": 1,
-        "prop": "imageinfo",
-        "iiprop": "url"
-    }
-    headers = {"User-Agent": "CuriosityScienceBot/1.0 (Educational YouTube Project)"}
-    
-    try:
-        response = requests.get(url, params=params, headers=headers)
-        data = response.json()
-        pages = data.get("query", {}).get("pages", {})
-        
-        for page_id, page_info in pages.items():
-            imageinfo = page_info.get("imageinfo", [])
-            if imageinfo:
-                img_url = imageinfo[0].get("url")
-                if img_url:
-                    img_data = requests.get(img_url, headers=headers).content
-                    with open(output_path, "wb") as f:
-                        f.write(img_data)
-                    return True
-    except Exception:
-        pass
-        
-    return False
-
 def fetch_scene_image(query: str, output_path: str) -> str:
     success = False
-    if fetch_wikimedia_image(query, output_path):
-        success = True
-    else:
-        headers = {"Authorization": PEXELS_API_KEY}
-        url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
-        try:
-            response = requests.get(url, headers=headers)
-            data = response.json()
-            if data.get("photos") and len(data["photos"]) > 0:
-                image_url = data["photos"][0]["src"]["large2x"]
-                img_data = requests.get(image_url).content
-                with open(output_path, "wb") as f:
-                    f.write(img_data)
-                success = True
-        except Exception:
-            pass
+    headers = {"Authorization": PEXELS_API_KEY}
+    url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
+    
+    try:
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        if data.get("photos") and len(data["photos"]) > 0:
+            image_url = data["photos"][0]["src"]["large2x"]
+            img_data = requests.get(image_url).content
+            with open(output_path, "wb") as f:
+                f.write(img_data)
+            success = True
+    except Exception:
+        pass
 
     if success:
         try:
@@ -143,7 +108,6 @@ def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int
     rms_normalized = (rms - np.min(rms)) / (np.max(rms) - np.min(rms) + 1e-8)
     rms_boosted = np.power(rms_normalized, 0.5)
     
-    # アイコンを読み込み、四角い白背景を消して綺麗な丸型（円形）にマスクする処理
     try:
         icon_raw = Image.open(icon_path).convert('RGBA')
         icon_size = (130, 130)
@@ -262,7 +226,6 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     
     if spectrum_clips:
         animated_spectrum = concatenate_videoclips(spectrum_clips).with_duration(duration)
-        # 画面中央の下部（テロップの下など）に綺麗に配置
         animated_spectrum = animated_spectrum.with_position((50, 1300))
         return CompositeVideoClip([base_img, bg_box, txt_clip, animated_spectrum], size=(1080, 1920)).with_audio(audio_clip)
     else:
