@@ -102,7 +102,7 @@ PROMPT = f"""#依頼内容
 # 過去に扱ったテーマ（※これらと重複する切り口や具体例は絶対に避けてください）
 {json.dumps(past_themes, ensure_ascii=False)}
 
-# 今回のテーマ
+# 今回のテ
 [{current_theme}]
 """
 
@@ -110,7 +110,7 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | 
     for attempt in range(max_retries):
         try:
             response = gemini_client.models.generate_content(
-                model="gemini-1.5-flash",
+                model="gemini-3.7-flash",
                 contents=prompt,
                 config={
                     "response_mime_type": "application/json",
