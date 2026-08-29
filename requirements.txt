@@ -9,3 +9,4 @@ imageio[pyav]
 imageio[opencv]
 numpy
 librosa
+gspread
