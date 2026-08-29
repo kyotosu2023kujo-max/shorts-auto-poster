@@ -226,7 +226,24 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     
     if spectrum_clips:
         animated_spectrum = concatenate_videoclips(spectrum_clips).with_duration(duration)
-        animated_spectrum = animated_spectrum.with_position((50, 1300))
+        
+        # --- 自動重なり検知ロジック ---
+        icon_x = 50
+        icon_y = 1300  # デフォルトのY座標
+        icon_height = 340
+        
+        sub_top = y_pos - 20
+        sub_bottom = sub_top + 160
+        
+        # アイコンの領域と字幕ボックスの領域が重なっているか判定
+        is_overlapping = not (icon_y + icon_height < sub_top or icon_y > sub_bottom)
+        
+        if is_overlapping:
+            # 重なる場合はアイコンを上部に退避（例: Y = 200）
+            icon_y = 200
+        # ---------------------------
+
+        animated_spectrum = animated_spectrum.with_position((icon_x, icon_y))
         return CompositeVideoClip([base_img, bg_box, txt_clip, animated_spectrum], size=(1080, 1920)).with_audio(audio_clip)
     else:
         return CompositeVideoClip([base_img, bg_box, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
