@@ -6,8 +6,44 @@ from typing import List, Literal
 from google import genai
 from openai import OpenAI
 from pydantic import BaseModel, Field
+import gspread
+from google.oauth2.service_account import Credentials
 
-# --- テーマをリスト化してランダムに選ぶ ---
+# --- Googleスプレッドシート設定 ---
+# サービスアカウントのJSONファイル名とスプレッドシート名（またはID）を指定
+CREDENTIALS_FILE = "credentials.json"
+SPREADSHEET_NAME = "YouTube_Shorts_History"
+
+def get_past_themes() -> List[str]:
+    """スプレッドシートから過去のテーマ一覧を取得する"""
+    try:
+        scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+        creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=scopes)
+        gc = gspread.authorize(creds)
+        sheet = gc.open(SPREADSHEET_NAME).sheet1
+        # 2列目（テーマ列）を想定して取得（1行目はヘッダー）
+        themes = sheet.col_values(2)[1:] 
+        return themes
+    except Exception as e:
+        print(f"⚠️ スプレッドシートからの履歴取得に失敗しました（初回は無視して続行します）: {e}")
+        return []
+
+def append_to_sheet(theme: str, title: str):
+    """生成成功したテーマとタイトルをスプレッドシートに追記する"""
+    try:
+        scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+        creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=scopes)
+        gc = gspread.authorize(creds)
+        sheet = gc.open(SPREADSHEET_NAME).sheet1
+        # [日時, テーマ, タイトル] の形式で追記
+        from datetime import datetime
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        sheet.append_row([now, theme, title])
+        print("📝 スプレッドシートに履歴を保存しました。")
+    except Exception as e:
+        print(f"⚠️ スプレッドシートへの書き込みに失敗しました: {e}")
+
+# --- テーマの選定と重複回避 ---
 THEMES = [
     "深海生物の異常な生存戦略",
     "日常に潜む量子力学の不思議",
@@ -18,7 +54,16 @@ THEMES = [
     "人間の体内で起きている信じられない細胞の戦い",
     "地球外生命体が存在するかもしれない極限環境の科学"
 ]
-current_theme = random.choice(THEMES)
+
+past_themes = get_past_themes()
+# 過去に選ばれたテーマを候補から除外
+available_themes = [t for t in THEMES if t not in past_themes]
+
+if not available_themes:
+    print("すべてのテーマを消化しました。候補リストをリセットします。")
+    available_themes = THEMES
+
+current_theme = random.choice(available_themes)
 
 # シーン（カット）単位の詳細データ構造
 class Scene(BaseModel):
@@ -40,10 +85,11 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-# f文字列のまま、JSONのフォーマット（{}はエスケープのために二重にしています）を追加します
+# 過去の履歴をプロンプトに組み込んで重複した切り口を防ぐ
 PROMPT = f"""#依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー・構成作家です。YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学動画の台本と詳細な映像演出構成を作成してください。
 また、専門性とエンタメ性を両立したコンテンツを目指して、センセーショナルに取り上げてください。SNSでのバズりを完全に熟知し、語り口調にこのチャンネル特有の尖りを出して欲しいです。
+
 # 条件
 1. シーン構成: 視聴者を飽きさせないよう、テンポの良い4つのシーン（カット）に分割してください。動画の最後には、動画へのいいねとチャンネルの登録の催促、このチャンネルはどのようなチャンネルなのか視聴者に呼びかけてください。
 2. 情報の深さ（重要）: 
@@ -53,38 +99,18 @@ PROMPT = f"""#依頼内容
 3. タイトル: 全角15〜20文字以内で作成してください。
 4. 映像演出: 各シーンの `visual_search_query` は、Pexelsで確実にヒットする具体的な英語名詞（2〜3単語）にしてください。
 
-# 必須出力フォーマット（厳守）
-以下のJSON構造に厳密に従って出力してください。キー名（narrationなど）は絶対に変更しないでください。
-{{
-  "title": "動画のタイトル",
-  "scenes": [
-    {{
-      "narration": "このシーンで読み上げるナレーション原稿",
-      "subtitle_text": "画面に大きく表示する強調テロップ",
-      "visual_search_query": "Pexels検索用の英語キーワード",
-      "subtitle_position": "bottom",
-      "subtitle_color": "yellow",
-      "motion_effect": "zoom_in"
-    }},
-    {{
-      "narration": "次のシーンのナレーション...",
-      "subtitle_text": "...",
-      "visual_search_query": "...",
-      "subtitle_position": "center",
-      "subtitle_color": "white",
-      "motion_effect": "static"
-    }}
-  ]
-}}
+# 過去に扱ったテーマ（※これらと重複する切り口や具体例は絶対に避けてください）
+{json.dumps(past_themes, ensure_ascii=False)}
 
 # 今回のテーマ
-[{current_theme}]"""
+[{current_theme}]
+"""
 
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | None:
     for attempt in range(max_retries):
         try:
             response = gemini_client.models.generate_content(
-                model="gemini-3.6-flash", # 存在しない3.6から安定版の1.5に修正
+                model="gemini-1.5-flash",
                 contents=prompt,
                 config={
                     "response_mime_type": "application/json",
@@ -129,3 +155,5 @@ def generate_script(prompt: str = PROMPT) -> DetailedScript:
 if __name__ == "__main__":
     script = generate_script()
     print(script.model_dump_json(indent=2))
+    # 動画生成パイプラインの成功時に以下を実行してスプレッドシートに記録する
+    append_to_sheet(current_theme, script.title)
