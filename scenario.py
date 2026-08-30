@@ -103,7 +103,7 @@ PROMPT = f"""#依頼内容
 
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | None:
     # 503混雑時用にフォールバックするGeminiモデルリスト
-    gemini_models = ["gemini-2.5-flash", "gemini-1.5-flash"]
+    gemini_models = ["gemini-3.7-flash"]
     for attempt in range(max_retries):
         model_name = gemini_models[attempt % len(gemini_models)]
         try:
