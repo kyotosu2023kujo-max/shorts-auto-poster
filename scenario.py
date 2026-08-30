@@ -10,7 +10,6 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 # --- Googleスプレッドシート設定 ---
-# サービスアカウントのJSONファイル名とスプレッドシート名（またはID）を指定
 CREDENTIALS_FILE = "credentials.json"
 SPREADSHEET_NAME = "YouTube_Shorts_History"
 
@@ -21,7 +20,6 @@ def get_past_themes() -> List[str]:
         creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=scopes)
         gc = gspread.authorize(creds)
         sheet = gc.open(SPREADSHEET_NAME).sheet1
-        # 2列目（テーマ列）を想定して取得（1行目はヘッダー）
         themes = sheet.col_values(2)[1:] 
         return themes
     except Exception as e:
@@ -35,7 +33,6 @@ def append_to_sheet(theme: str, title: str):
         creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=scopes)
         gc = gspread.authorize(creds)
         sheet = gc.open(SPREADSHEET_NAME).sheet1
-        # [日時, テーマ, タイトル] の形式で追記
         from datetime import datetime
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         sheet.append_row([now, theme, title])
@@ -56,7 +53,6 @@ THEMES = [
 ]
 
 past_themes = get_past_themes()
-# 過去に選ばれたテーマを候補から除外
 available_themes = [t for t in THEMES if t not in past_themes]
 
 if not available_themes:
@@ -72,7 +68,7 @@ class Scene(BaseModel):
     visual_search_query: str = Field(description="Pexels検索用の英語キーワード（例: 'cut watermelon summer', 'galaxy stars'）")
     subtitle_position: Literal["top", "center", "bottom"] = Field(default="bottom", description="テロップの表示位置")
     subtitle_color: Literal["yellow", "white", "cyan"] = Field(default="yellow", description="テロップの文字色")
-    motion_effect: Literal["zoom_in", "zoom_out", "static"] = Field(default="zoom_in", description="カメラワーク演出（ズームイン、ズームアウト、固定）")
+    motion_effect: Literal["zoom_in", "zoom_out", "static"] = Field(default="zoom_in", description="カメラワーク演出")
 
 # 全体台本
 class DetailedScript(BaseModel):
@@ -85,7 +81,6 @@ groq_client = OpenAI(
     base_url="https://api.groq.com/openai/v1"
 )
 
-# 過去の履歴をプロンプトに組み込んで重複した切り口を防ぐ
 PROMPT = f"""#依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー・構成作家です。YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学動画の台本と詳細な映像演出構成を作成してください。
 また、専門性とエンタメ性を両立したコンテンツを目指して、センセーショナルに取り上げてください。SNSでのバズりを完全に熟知し、語り口調にこのチャンネル特有の尖りを出して欲しいです。
@@ -102,15 +97,18 @@ PROMPT = f"""#依頼内容
 # 過去に扱ったテーマ（※これらと重複する切り口や具体例は絶対に避けてください）
 {json.dumps(past_themes, ensure_ascii=False)}
 
-# 今回のテ
+# 今回のテーマ
 [{current_theme}]
 """
 
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | None:
+    # 503混雑時用にフォールバックするGeminiモデルリスト
+    gemini_models = ["gemini-2.5-flash", "gemini-1.5-flash"]
     for attempt in range(max_retries):
+        model_name = gemini_models[attempt % len(gemini_models)]
         try:
             response = gemini_client.models.generate_content(
-                model="gemini-3.7-flash",
+                model=model_name,
                 contents=prompt,
                 config={
                     "response_mime_type": "application/json",
@@ -121,23 +119,33 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | 
                 return response.parsed
             return DetailedScript.model_validate_json(response.text)
         except Exception as e:
-            print(f"Gemini試行 {attempt + 1}/{max_retries} 失敗: {e}")
+            print(f"Gemini({model_name}) 試行 {attempt + 1}/{max_retries} 失敗: {e}")
             if attempt < max_retries - 1:
-                time.sleep(3)
+                # 指数バックオフ（5秒, 10秒...）で待機
+                time.sleep(5 * (attempt + 1))
     return None
 
 def generate_with_groq(prompt: str) -> DetailedScript | None:
     try:
+        # Pydanticのスキーマ定義をプロンプトに注入して確実に出力させる
+        schema_json = json.dumps(DetailedScript.model_json_schema(), ensure_ascii=False)
+        system_instruction = (
+            "You are a helpful assistant. Output valid JSON ONLY adhering to the following JSON schema:\n"
+            f"{schema_json}\n"
+            "Do not include markdown codeblocks or any additional text."
+        )
+
         response = groq_client.chat.completions.create(
-            model="openai/gpt-oss-20b",
+            model="llama-3.3-70b-versatile",  # 安定して高速なGroq公式モデルに変更
             messages=[
-                {"role": "system", "content": "必ず指定されたスキーマのJSON形式のみで出力してください。"},
+                {"role": "system", "content": system_instruction},
                 {"role": "user", "content": prompt}
             ],
             response_format={"type": "json_object"},
+            temperature=0.7
         )
-        data = json.loads(response.choices[0].message.content)
-        return DetailedScript(**data)
+        content = response.choices[0].message.content
+        return DetailedScript.model_validate_json(content)
     except Exception as e:
         print(f"Groq失敗: {e}")
         return None
@@ -155,5 +163,4 @@ def generate_script(prompt: str = PROMPT) -> DetailedScript:
 if __name__ == "__main__":
     script = generate_script()
     print(script.model_dump_json(indent=2))
-    # 動画生成パイプラインの成功時に以下を実行してスプレッドシートに記録する
     append_to_sheet(current_theme, script.title)
