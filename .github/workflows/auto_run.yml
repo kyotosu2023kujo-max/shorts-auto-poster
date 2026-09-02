@@ -35,8 +35,8 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
           python build_video.py
-
       - name: Googleドライブへ自動保存
+        continue-on-error: true
         env:
           GOOGLE_DRIVE_REFRESH_TOKEN: ${{ secrets.GOOGLE_DRIVE_REFRESH_TOKEN }}
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
@@ -45,6 +45,7 @@ jobs:
         run: |
           pip install google-api-python-client google-auth
           python upload_drive.py
+
       - name: YouTubeへ自動アップロード
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
