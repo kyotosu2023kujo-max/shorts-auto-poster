@@ -3,9 +3,11 @@ import requests
 import asyncio
 import numpy as np
 import librosa
+import soundfile as sf
 from moviepy import (
     AudioFileClip,
     ImageClip,
+    VideoClip,
     CompositeVideoClip,
     CompositeAudioClip,
     concatenate_videoclips,
@@ -65,8 +67,20 @@ def generate_text_image(text: str, font_path: str, font_size: int, max_width: in
     return output_path
 
 async def generate_scene_audio(text: str, output_path: str) -> str:
-    communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural")
-    await communicate.save(output_path)
+    temp_path = output_path.replace(".wav", "_temp.mp3")
+    # 1.5倍速 (rate="+50%")
+    communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural", rate="+50%")
+    await communicate.save(temp_path)
+    
+    # 前後の無音をトリミング
+    y, sr = librosa.load(temp_path, sr=None)
+    trimmed_y, _ = librosa.effects.trim(y, top_db=25)
+    
+    sf.write(output_path, trimmed_y, sr)
+    
+    if os.path.exists(temp_path):
+        os.remove(temp_path)
+        
     return output_path
 
 def fetch_scene_image(query: str, output_path: str) -> str:
@@ -75,11 +89,11 @@ def fetch_scene_image(query: str, output_path: str) -> str:
     url = f"https://api.pexels.com/v1/search?query={query}&orientation=portrait&per_page=1"
     
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
         data = response.json()
         if data.get("photos") and len(data["photos"]) > 0:
             image_url = data["photos"][0]["src"]["large2x"]
-            img_data = requests.get(image_url).content
+            img_data = requests.get(image_url, timeout=10).content
             with open(output_path, "wb") as f:
                 f.write(img_data)
             success = True
@@ -100,82 +114,66 @@ def fetch_scene_image(query: str, output_path: str) -> str:
     img.save(output_path, "JPEG")
     return output_path
 
-def generate_circular_spectrum_frames(audio_path: str, duration: float, fps: int, icon_path: str, output_folder: str):
+def create_spectrum_videoclip(audio_path: str, duration: float, fps: int, icon_path: str) -> VideoClip:
     y, sr = librosa.load(audio_path)
     hop_length = int(sr / fps)
     rms = librosa.feature.rms(y=y, hop_length=hop_length)[0]
     
     rms_normalized = (rms - np.min(rms)) / (np.max(rms) - np.min(rms) + 1e-8)
     rms_boosted = np.power(rms_normalized, 0.5)
-    
-    try:
-        icon_raw = Image.open(icon_path).convert('RGBA')
-        icon_size = (130, 130)
-        icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
-        
-        mask = Image.new('L', icon_size, 0)
-        draw_mask = ImageDraw.Draw(mask)
-        draw_mask.ellipse((0, 0, icon_size[0], icon_size[1]), fill=255)
-        
-        icon_img = Image.new('RGBA', icon_size, (0, 0, 0, 0))
-        icon_img.paste(icon_raw, (0, 0), mask)
-    except OSError:
-        print(f"⚠️ アイコン読み込みエラー: {icon_path}")
-        icon_img = None
 
-    spectrum_clips = []
+    icon_img = None
+    icon_size = (130, 130)
+    if os.path.exists(icon_path):
+        try:
+            icon_raw = Image.open(icon_path).convert('RGBA')
+            icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
+            mask = Image.new('L', icon_size, 0)
+            draw_mask = ImageDraw.Draw(mask)
+            draw_mask.ellipse((0, 0, icon_size[0], icon_size[1]), fill=255)
+            icon_img = Image.new('RGBA', icon_size, (0, 0, 0, 0))
+            icon_img.paste(icon_raw, (0, 0), mask)
+        except OSError:
+            print(f"⚠️ アイコン読み込みエラー: {icon_path}")
+
     num_bars = 48
     radius_base = 75
     max_bar_length = 45
-    
-    os.makedirs(output_folder, exist_ok=True)
 
-    for i, volume in enumerate(rms_boosted):
-        if i >= len(rms_boosted):
-             break
-             
+    def make_frame(t):
+        frame_idx = min(int(t * fps), len(rms_boosted) - 1)
+        volume = rms_boosted[frame_idx]
+
         comp_img = Image.new('RGBA', (340, 340), (0, 0, 0, 0))
         draw = ImageDraw.Draw(comp_img)
-        
-        center_x = comp_img.width / 2
-        center_y = comp_img.height / 2
+        center_x, center_y = 170.0, 170.0
 
         for b in range(num_bars):
             angle = (360 / num_bars) * b
             rad = np.deg2rad(angle)
-            
             bar_len = max(4, int(volume * max_bar_length))
             
-            start_r = radius_base
-            end_r = radius_base + bar_len
+            start_x = center_x + radius_base * np.cos(rad)
+            start_y = center_y + radius_base * np.sin(rad)
+            end_x = center_x + (radius_base + bar_len) * np.cos(rad)
+            end_y = center_y + (radius_base + bar_len) * np.sin(rad)
             
-            start_x = center_x + start_r * np.cos(rad)
-            start_y = center_y + start_r * np.sin(rad)
-            end_x = center_x + end_r * np.cos(rad)
-            end_y = center_y + end_r * np.sin(rad)
-            
-            bar_width = 3
             alpha = int(180 + volume * 75)
-            bar_color = (0, 220, 255, alpha)
-            
-            draw.line([(start_x, start_y), (end_x, end_y)], fill=bar_color, width=bar_width)
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 220, 255, alpha), width=3)
 
         if icon_img:
-            icon_x = center_x - icon_size[0] / 2
-            icon_y = center_y - icon_size[1] / 2
-            comp_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
+            icon_x = int(center_x - icon_size[0] / 2)
+            icon_y = int(center_y - icon_size[1] / 2)
+            comp_img.paste(icon_img, (icon_x, icon_y), icon_img)
 
-        frame_path = os.path.join(output_folder, f"spectrum_frame_{i}.png")
-        comp_img.save(frame_path)
-        spectrum_clips.append(ImageClip(frame_path).with_duration(1/fps))
+        return np.array(comp_img)
 
-    return spectrum_clips
+    return VideoClip(make_frame, duration=duration, is_mask=False)
 
 def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoClip:
-    audio_path = f"audio_{index}.mp3"
+    audio_path = f"audio_{index}.wav"
     image_path = f"image_{index}.jpg"
     icon_path = "youtubeicon.png"
-    spec_output_folder = f"spectrum_frames_{index}"
     
     asyncio.run(generate_scene_audio(scene.narration, audio_path))
     fetch_scene_image(scene.visual_search_query, image_path)
@@ -199,6 +197,11 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     elif scene.motion_effect == "zoom_out":
         base_img = base_img.with_effects([vfx.Resize(lambda t: 1.15 - 0.04 * t)])
 
+    # --- アイコンと字幕の配置・衝突判定 ---
+    icon_x = 50
+    icon_y = 1300      # アイコンは常に左下の位置に固定
+    icon_height = 340
+
     y_pos_map = {
         "top": 350,
         "center": 900,
@@ -206,11 +209,24 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     }
     y_pos = y_pos_map.get(scene.subtitle_position, 1450)
 
+    # 字幕ボックスの上下Y座標
+    sub_top = y_pos - 20
+    sub_bottom = sub_top + 160
+
+    # アイコンと字幕ボックスの縦方向が被っているかを判定
+    is_overlapping = not (icon_y + icon_height < sub_top or icon_y > sub_bottom)
+
+    if is_overlapping:
+        # 被る場合は【文字（字幕）】を上に避ける（アイコンの上に配置）
+        y_pos = 1050
+
+    # 字幕背景ボックスの生成
     box_img = Image.new("RGBA", (1000, 160), (0, 0, 0, 160))
     box_path = f"box_{index}.png"
     box_img.save(box_path)
     bg_box = ImageClip(box_path).with_duration(duration).with_position(('center', y_pos - 20))
 
+    # 字幕テキストの生成
     txt_path = f"text_{index}.png"
     generate_text_image(
         text=scene.subtitle_text,
@@ -222,31 +238,11 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     )
     txt_clip = ImageClip(txt_path).with_position(('center', y_pos)).with_duration(duration)
 
-    spectrum_clips = generate_circular_spectrum_frames(audio_path, duration, fps, icon_path, spec_output_folder)
-    
-    if spectrum_clips:
-        animated_spectrum = concatenate_videoclips(spectrum_clips).with_duration(duration)
-        
-        # --- 自動重なり検知ロジック ---
-        icon_x = 50
-        icon_y = 1300  # デフォルトのY座標
-        icon_height = 340
-        
-        sub_top = y_pos - 20
-        sub_bottom = sub_top + 160
-        
-        # アイコンの領域と字幕ボックスの領域が重なっているか判定
-        is_overlapping = not (icon_y + icon_height < sub_top or icon_y > sub_bottom)
-        
-        if is_overlapping:
-            # 重なる場合はアイコンを上部に退避（例: Y = 200）
-            icon_y = 200
-        # ---------------------------
+    # スペクトラムアイコンクリップの生成と配置
+    animated_spectrum = create_spectrum_videoclip(audio_path, duration, fps, icon_path)
+    animated_spectrum = animated_spectrum.with_position((icon_x, icon_y))
 
-        animated_spectrum = animated_spectrum.with_position((icon_x, icon_y))
-        return CompositeVideoClip([base_img, bg_box, txt_clip, animated_spectrum], size=(1080, 1920)).with_audio(audio_clip)
-    else:
-        return CompositeVideoClip([base_img, bg_box, txt_clip], size=(1080, 1920)).with_audio(audio_clip)
+    return CompositeVideoClip([base_img, bg_box, txt_clip, animated_spectrum], size=(1080, 1920)).with_audio(audio_clip)
 
 def build_full_video(script: DetailedScript, output_path: str = "output_shorts.mp4"):
     scene_clips = []
@@ -320,7 +316,6 @@ def validate_script_quality(script) -> bool:
 
 if __name__ == "__main__":
     max_retries = 3
-    success = False
 
     for attempt in range(1, max_retries + 1):
         print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
@@ -335,19 +330,16 @@ if __name__ == "__main__":
             print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
             build_full_video(script, "output_shorts.mp4")
             
-            success = True
             print("🎉 完璧な品質の動画が完成しました！")
             
             with open("title.txt", "w", encoding="utf-8") as f:
                 f.write(script.title)
             print(f"📝 タイトルを保存しました: {script.title}")
-
             break
             
         except Exception as e:
             print(f"⚠️ 構築中にエラーが発生しました: {e}")
             print("🔄 エラーが発生したため再試行します...")
-
     if not success:
         print("❌ 最大試行回数に達しましたが、合格する動画を作れませんでした。")
         exit(1)
