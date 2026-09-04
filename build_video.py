@@ -316,6 +316,7 @@ def validate_script_quality(script) -> bool:
 
 if __name__ == "__main__":
     max_retries = 3
+    success = False  # ← これが抜けていたため NameError が発生していました
 
     for attempt in range(1, max_retries + 1):
         print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
@@ -330,6 +331,7 @@ if __name__ == "__main__":
             print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
             build_full_video(script, "output_shorts.mp4")
             
+            success = True
             print("🎉 完璧な品質の動画が完成しました！")
             
             with open("title.txt", "w", encoding="utf-8") as f:
@@ -340,6 +342,7 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"⚠️ 構築中にエラーが発生しました: {e}")
             print("🔄 エラーが発生したため再試行します...")
+
     if not success:
-        print("❌ 最大試行回数に達しましたが、合格する動画を作れませんでした。")
+        print("❌ 最大試行回数を超えて動画の生成に失敗しました。")
         exit(1)
