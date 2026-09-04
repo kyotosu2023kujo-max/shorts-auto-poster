@@ -68,7 +68,7 @@ def generate_text_image(text: str, font_path: str, font_size: int, max_width: in
 
 async def generate_scene_audio(text: str, output_path: str) -> str:
     temp_path = output_path.replace(".wav", "_temp.mp3")
-    communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural", rate="+50%")
+    communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural", rate="+30%")
     await communicate.save(temp_path)
     
     y, sr = librosa.load(temp_path, sr=None)
