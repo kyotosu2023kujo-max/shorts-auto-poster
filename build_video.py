@@ -19,7 +19,18 @@ from PIL import Image, ImageDraw, ImageFont
 
 PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY", "")
 FONT_PATH = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc'
-
+def upload_to_tmp_storage(file_path: str) -> str:
+    """完成した動画を一時ファイル共有サービスにアップロードしてURLを発行する"""
+    try:
+        url = "https://file.io"
+        with open(file_path, "rb") as f:
+            response = requests.post(url, files={"file": f}, data={"expires": "1d"})
+        res_data = response.json()
+        if res_data.get("success"):
+            return res_data.get("link")
+    except Exception as e:
+        print(f"⚠️ 一時URLの発行に失敗しました: {e}")
+    return None
 def generate_text_image(text: str, font_path: str, font_size: int, max_width: int, output_path: str, text_color: str):
     try:
         font = ImageFont.truetype(font_path, size=font_size, index=0)
