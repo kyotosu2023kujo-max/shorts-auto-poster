@@ -19,18 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY", "")
 FONT_PATH = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc'
-def upload_to_tmp_storage(file_path: str) -> str:
-    """完成した動画を一時ファイル共有サービスにアップロードしてURLを発行する"""
-    try:
-        url = "https://file.io"
-        with open(file_path, "rb") as f:
-            response = requests.post(url, files={"file": f}, data={"expires": "1d"})
-        res_data = response.json()
-        if res_data.get("success"):
-            return res_data.get("link")
-    except Exception as e:
-        print(f"⚠️ 一時URLの発行に失敗しました: {e}")
-    return None
+
 def generate_text_image(text: str, font_path: str, font_size: int, max_width: int, output_path: str, text_color: str):
     try:
         font = ImageFont.truetype(font_path, size=font_size, index=0)
@@ -79,11 +68,9 @@ def generate_text_image(text: str, font_path: str, font_size: int, max_width: in
 
 async def generate_scene_audio(text: str, output_path: str) -> str:
     temp_path = output_path.replace(".wav", "_temp.mp3")
-    # 1.5倍速 (rate="+50%")
     communicate = edge_tts.Communicate(text, "ja-JP-NanamiNeural", rate="+50%")
     await communicate.save(temp_path)
     
-    # 前後の無音をトリミング
     y, sr = librosa.load(temp_path, sr=None)
     trimmed_y, _ = librosa.effects.trim(y, top_db=25)
     
@@ -208,9 +195,8 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     elif scene.motion_effect == "zoom_out":
         base_img = base_img.with_effects([vfx.Resize(lambda t: 1.15 - 0.04 * t)])
 
-    # --- アイコンと字幕の配置・衝突判定 ---
     icon_x = 50
-    icon_y = 1300      # アイコンは常に左下の位置に固定
+    icon_y = 1300
     icon_height = 340
 
     y_pos_map = {
@@ -220,24 +206,19 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     }
     y_pos = y_pos_map.get(scene.subtitle_position, 1450)
 
-    # 字幕ボックスの上下Y座標
     sub_top = y_pos - 20
     sub_bottom = sub_top + 160
 
-    # アイコンと字幕ボックスの縦方向が被っているかを判定
     is_overlapping = not (icon_y + icon_height < sub_top or icon_y > sub_bottom)
 
     if is_overlapping:
-        # 被る場合は【文字（字幕）】を上に避ける（アイコンの上に配置）
         y_pos = 1050
 
-    # 字幕背景ボックスの生成
     box_img = Image.new("RGBA", (1000, 160), (0, 0, 0, 160))
     box_path = f"box_{index}.png"
     box_img.save(box_path)
     bg_box = ImageClip(box_path).with_duration(duration).with_position(('center', y_pos - 20))
 
-    # 字幕テキストの生成
     txt_path = f"text_{index}.png"
     generate_text_image(
         text=scene.subtitle_text,
@@ -249,7 +230,6 @@ def build_scene_clip_with_spectrum(scene: Scene, index: int) -> CompositeVideoCl
     )
     txt_clip = ImageClip(txt_path).with_position(('center', y_pos)).with_duration(duration)
 
-    # スペクトラムアイコンクリップの生成と配置
     animated_spectrum = create_spectrum_videoclip(audio_path, duration, fps, icon_path)
     animated_spectrum = animated_spectrum.with_position((icon_x, icon_y))
 
@@ -325,9 +305,22 @@ def validate_script_quality(script) -> bool:
 
     return True
 
+def upload_to_tmp_storage(file_path: str) -> str:
+    """完成した動画を一時ファイル共有サービスにアップロードしてURLを発行する"""
+    try:
+        url = "https://file.io"
+        with open(file_path, "rb") as f:
+            response = requests.post(url, files={"file": f}, data={"expires": "1d"})
+        res_data = response.json()
+        if res_data.get("success"):
+            return res_data.get("link")
+    except Exception as e:
+        print(f"⚠️ 一時URLの発行に失敗しました: {e}")
+    return None
+
 if __name__ == "__main__":
     max_retries = 3
-    success = False  # ← これが抜けていたため NameError が発生していました
+    success = False
 
     for attempt in range(1, max_retries + 1):
         print(f"\n🔄 【品質チェック付き生成ループ】 試行回数: {attempt}/{max_retries}")
@@ -342,15 +335,26 @@ if __name__ == "__main__":
             print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
             build_full_video(script, "output_shorts.mp4")
             
-            def upload_to_tmp_storage(file_path: str) -> str:
-    """完成した動画を一時ファイル共有サービスにアップロードしてURLを発行する"""
-    try:
-        url = "https://file.io"
-        with open(file_path, "rb") as f:
-            response = requests.post(url, files={"file": f}, data={"expires": "1d"})
-        res_data = response.json()
-        if res_data.get("success"):
-            return res_data.get("link")
-    except Exception as e:
-        print(f"⚠️ 一時URLの発行に失敗しました: {e}")
-    return None
+            success = True
+            print("🎉 完璧な品質の動画が完成しました！")
+            
+            with open("title.txt", "w", encoding="utf-8") as f:
+                f.write(script.title)
+            print(f"📝 タイトルを保存しました: {script.title}")
+
+            print("\n" + "=" * 60)
+            print("📦 手動ダウンロード用URLを発行中...")
+            download_url = upload_to_tmp_storage("output_shorts.mp4")
+            if download_url:
+                print(f"🔗 動画ダウンロードURL（有効期限1日）:")
+                print(f"👉 {download_url}")
+            print("=" * 60 + "\n")
+            break
+            
+        except Exception as e:
+            print(f"⚠️ 構築中にエラーが発生しました: {e}")
+            print("🔄 エラーが発生したため再試行します...")
+
+    if not success:
+        print("❌ 最大試行回数を超えて動画の生成に失敗しました。")
+        exit(1)
