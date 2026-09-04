@@ -4,7 +4,6 @@ import time
 import random
 from typing import List, Literal
 from google import genai
-from openai import OpenAI
 from pydantic import BaseModel, Field
 import gspread
 from google.oauth2.service_account import Credentials
@@ -20,7 +19,7 @@ def get_past_themes() -> List[str]:
         creds = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=scopes)
         gc = gspread.authorize(creds)
         sheet = gc.open(SPREADSHEET_NAME).sheet1
-        themes = sheet.col_values(2)[1:] 
+        themes = sheet.col_values(2)[1:]
         return themes
     except Exception as e:
         print(f"⚠️ スプレッドシートからの履歴取得に失敗しました（初回は無視して続行します）: {e}")
@@ -75,11 +74,7 @@ class DetailedScript(BaseModel):
     title: str = Field(description="動画全体のフックになるタイトル（常時上部表示）")
     scenes: List[Scene] = Field(description="3〜5つのシーンに分割された台本リスト")
 
-gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-groq_client = OpenAI(
-    api_key=os.environ["GROQ_API_KEY"],
-    base_url="https://api.groq.com/openai/v1"
-)
+gemini_client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY", ""))
 
 PROMPT = f"""#依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー・構成作家です。YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学動画の台本と詳細な映像演出構成を作成してください。
@@ -102,8 +97,8 @@ PROMPT = f"""#依頼内容
 """
 
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | None:
-    # 503混雑時用にフォールバックするGeminiモデルリスト
-    gemini_models = ["gemini-3.7-flash"]
+    # 混雑時やクォータ対策でフォールバック可能なモデル順
+    gemini_models = ["gemini-2.5-flash", "gemini-1.5-flash"]
     for attempt in range(max_retries):
         model_name = gemini_models[attempt % len(gemini_models)]
         try:
@@ -121,44 +116,14 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript | 
         except Exception as e:
             print(f"Gemini({model_name}) 試行 {attempt + 1}/{max_retries} 失敗: {e}")
             if attempt < max_retries - 1:
-                # 指数バックオフ（5秒, 10秒...）で待機
                 time.sleep(5 * (attempt + 1))
     return None
-
-def generate_with_groq(prompt: str) -> DetailedScript | None:
-    try:
-        # Pydanticのスキーマ定義をプロンプトに注入して確実に出力させる
-        schema_json = json.dumps(DetailedScript.model_json_schema(), ensure_ascii=False)
-        system_instruction = (
-            "You are a helpful assistant. Output valid JSON ONLY adhering to the following JSON schema:\n"
-            f"{schema_json}\n"
-            "Do not include markdown codeblocks or any additional text."
-        )
-
-        response = groq_client.chat.completions.create(
-            model="llama-3.3-70b-versatile",  # 安定して高速なGroq公式モデルに変更
-            messages=[
-                {"role": "system", "content": system_instruction},
-                {"role": "user", "content": prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.7
-        )
-        content = response.choices[0].message.content
-        return DetailedScript.model_validate_json(content)
-    except Exception as e:
-        print(f"Groq失敗: {e}")
-        return None
 
 def generate_script(prompt: str = PROMPT) -> DetailedScript:
     result = generate_with_gemini(prompt)
     if result:
         return result
-    print("Groqにフォールバックします...")
-    result = generate_with_groq(prompt)
-    if result:
-        return result
-    raise RuntimeError("GeminiもGroqも失敗しました。")
+    raise RuntimeError("Gemini API での台本生成に失敗しました。")
 
 if __name__ == "__main__":
     script = generate_script()
