@@ -331,18 +331,15 @@ if __name__ == "__main__":
             print("✅ シナリオの品質チェック合格！動画のビルドを開始します。")
             build_full_video(script, "output_shorts.mp4")
             
-            success = True
-            print("🎉 完璧な品質の動画が完成しました！")
-            
-            with open("title.txt", "w", encoding="utf-8") as f:
-                f.write(script.title)
-            print(f"📝 タイトルを保存しました: {script.title}")
-            break
-            
-        except Exception as e:
-            print(f"⚠️ 構築中にエラーが発生しました: {e}")
-            print("🔄 エラーが発生したため再試行します...")
-
-    if not success:
-        print("❌ 最大試行回数を超えて動画の生成に失敗しました。")
-        exit(1)
+            def upload_to_tmp_storage(file_path: str) -> str:
+    """完成した動画を一時ファイル共有サービスにアップロードしてURLを発行する"""
+    try:
+        url = "https://file.io"
+        with open(file_path, "rb") as f:
+            response = requests.post(url, files={"file": f}, data={"expires": "1d"})
+        res_data = response.json()
+        if res_data.get("success"):
+            return res_data.get("link")
+    except Exception as e:
+        print(f"⚠️ 一時URLの発行に失敗しました: {e}")
+    return None
