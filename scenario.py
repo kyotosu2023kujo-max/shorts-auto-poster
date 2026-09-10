@@ -104,7 +104,7 @@ SNSで指を止めさせるため、冷笑的かつセンセーショナルで�
 
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript:
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY", ""))
-    gemini_models = ["gemini-2.5-flash", "gemini-2.0-flash"]
+    gemini_models = ["gemini-3.8-flash", "gemini-3.7-flash"]
 
     last_error = None
     for attempt in range(max_retries):
