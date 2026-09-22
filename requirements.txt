@@ -3,6 +3,7 @@ openai
 pydantic
 moviepy
 pillow
+gTTS
 requests
 edge-tts
 imageio[pyav]
