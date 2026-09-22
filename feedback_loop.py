@@ -1,128 +1,108 @@
-import os
 import json
+import os
 import googleapiclient.discovery
 from google import genai
 
-# --- 設定 ---
-SYSTEM_PROMPT_FILE = "system_prompt.txt"
 HISTORY_FILE = "history.json"
+SYSTEM_PROMPT_FILE = "system_prompt.txt"
 CHANNEL_ID = os.environ.get("YOUTUBE_CHANNEL_ID", "")
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 
-def get_video_metrics():
-    """直近の動画から再生数・高評価数などのパフォーマンスを取得"""
+def sync_metrics_and_optimize():
+    """YouTubeの最新実績を取得してhistory.jsonを更新し、プロンプトを自己改善"""
+    if not os.path.exists(HISTORY_FILE):
+        print("history.json が存在しません。")
+        return
+
+    with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+        records = json.load(f)
+
     youtube = googleapiclient.discovery.build(
         "youtube", "v3", developerKey=YOUTUBE_API_KEY
     )
 
-    # チャンネルのアップロード動画リストを取得
-    res = (
-        youtube.channels()
-        .list(id=CHANNEL_ID, part="contentDetails")
-        .execute()
-    )
-    uploads_playlist_id = res["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+    # チャンネルの直近アップロード動画を取得
+    res = youtube.channels().list(id=CHANNEL_ID, part="contentDetails").execute()
+    uploads_id = res["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
     playlist_items = (
         youtube.playlistItems()
-        .list(playlistId=uploads_playlist_id, part="snippet", maxResults=15)
+        .list(playlistId=uploads_id, part="snippet", maxResults=20)
         .execute()
     )
 
-    video_ids = [
-        item["snippet"]["resourceId"]["videoId"]
-        for item in playlist_items.get("items", [])
-    ]
-    if not video_ids:
-        return []
+    video_map = {}
+    for item in playlist_items.get("items", []):
+        v_title = item["snippet"]["title"]
+        v_id = item["snippet"]["resourceId"]["videoId"]
+        video_map[v_title] = v_id
 
-    # 動画の詳細データ（再生数、高評価数）を取得
-    video_res = (
-        youtube.videos()
-        .list(id=",".join(video_ids), part="snippet,statistics")
-        .execute()
-    )
-
-    performance_list = []
-    for item in video_res.get("items", []):
-        stats = item.get("statistics", {})
-        snippet = item.get("snippet", {})
-        performance_list.append(
-            {
-                "title": snippet.get("title", ""),
-                "views": int(stats.get("viewCount", 0)),
-                "likes": int(stats.get("likeCount", 0)),
-                "comments": int(stats.get("commentCount", 0)),
-            }
-        )
-
-    # 再生数順にソート
-    performance_list.sort(key=lambda x: x["views"], reverse=True)
-    return performance_list
-
-
-def optimize_prompt_with_gemini(performance_list):
-    """上位と下位の動画を比較し、プロンプトを自動更新する"""
-    if len(performance_list) < 4:
-        print("💡 分析に必要な動画データ数が足りません（最低4本以上推奨）。")
+    if not video_map:
+        print("取得可能な動画がありません。")
         return
 
-    top_videos = performance_list[:2]
-    worst_videos = performance_list[-2:]
+    # 各動画の再生数・いいね数を取得
+    v_stats_res = (
+        youtube.videos()
+        .list(id=",".join(video_map.values()), part="statistics")
+        .execute()
+    )
+    stats_dict = {}
+    for item in v_stats_res.get("items", []):
+        stats_dict[item["id"]] = item.get("statistics", {})
 
-    with open(SYSTEM_PROMPT_FILE, "r", encoding="utf-8") as f:
-        current_prompt = f.read()
-
-    meta_prompt = f"""# 依頼
-あなたはYouTube Shortsのアルゴリズム最適化アナリストです。
-以下に「直近で伸びた動画」と「伸び悩んだ動画」のデータ、および現在使用しているプロンプト（指示書）を提供します。
-
-【高再生・高エンゲージメント動画（勝ちパターン）】
-{json.dumps(top_videos, ensure_ascii=False, indent=2)}
-
-【低再生・低エンゲージメント動画（負けパターン）】
-{json.dumps(worst_videos, ensure_ascii=False, indent=2)}
-
-【現在のプロンプト (system_prompt.txt)】
-{current_prompt}
-
-# 指示
-1. 勝ちパターンのタイトル構成・フック・題材の共通項を抽出してください。
-2. 負けパターンに見られる視聴離脱の原因（抽象的、冗長、既視感など）を特定してください。
-3. その分析結果を踏まえ、次回以降の動画がよりバズりやすくなるよう、改善された【新しい system_prompt.txt の全文】を出力してください。
-※余計な挨拶や解説は出力せず、ファイルにそのまま書き込めるプロンプト全文のみを出力してください。
-"""
-
-    client = genai.Client(api_key=GEMINI_API_KEY)
-    gemini_models = ["gemini-3.8-flash", "gemini-3.7-flash"]
-
-    new_prompt = None
-    for model_name in gemini_models:
-        try:
-            res = client.models.generate_content(
-                model=model_name,
-                contents=meta_prompt,
+    # history.json の実績データを更新
+    updated = False
+    for r in records:
+        title = r.get("title")
+        if title in video_map:
+            v_id = video_map[title]
+            stats = stats_dict.get(v_id, {})
+            r["views"] = int(stats.get("viewCount", 0))
+            r["likes"] = int(stats.get("likeCount", 0))
+            r["comments"] = int(stats.get("commentCount", 0))
+            # 簡易エンゲージメント率を維持率の近似指標として代入
+            views = max(r["views"], 1)
+            r["retention"] = round(
+                (r["likes"] * 10 + r["comments"] * 20) / views, 4
             )
-            if res.text:
-                new_prompt = res.text.strip()
-                # マークダウンのコードブロック記法が入っていたら除去
-                if new_prompt.startswith("```"):
-                    lines = new_prompt.split("\n")
-                    new_prompt = "\n".join(lines[1:-1])
-                break
-        except Exception as e:
-            print(f"⚠️ {model_name} での分析実行エラー: {e}")
+            updated = True
 
-    if new_prompt:
-        with open(SYSTEM_PROMPT_FILE, "w", encoding="utf-8") as f:
-            f.write(new_prompt)
-        print("🚀 system_prompt.txt の自動改善・更新が完了しました。")
-    else:
-        print("❌ プロンプトの更新に失敗しました。")
+    if updated:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(records, f, ensure_ascii=False, indent=2)
+        print("📊 history.json の動画実績を最新化しました。")
+
+    # 実績十分ならプロンプトをメタ改善
+    valid_records = [r for r in records if r.get("views") is not None]
+    if len(valid_records) >= 4:
+        valid_records.sort(key=lambda x: x.get("views", 0), reverse=True)
+        top = valid_records[:2]
+        worst = valid_records[-2:]
+
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        meta_prompt = f"""あなたはYouTube Shortsの収益最大化アルゴリズム責任者です。
+以下の成績上位動画と下位動画を比較分析し、視聴維持率と再生数をさらに引き上げるための「system_prompt.txt」の全文を作成してください。
+
+【勝ちパターン（高再生）】
+{json.dumps(top, ensure_ascii=False, indent=2)}
+
+【負けパターン（低再生）】
+{json.dumps(worst, ensure_ascii=False, indent=2)}
+
+※ 挨拶や解説は出力せず、そのまま保存できるプロンプト指示の文章のみを出力してください。
+"""
+        response = client.models.generate_content(
+            model="gemini-3.8-flash", contents=meta_prompt
+        )
+        if response.text:
+            cleaned_prompt = response.text.strip().removeprefix("```").removesuffix("```")
+            with open(SYSTEM_PROMPT_FILE, "w", encoding="utf-8") as f:
+                f.write(cleaned_prompt)
+            print("🚀 system_prompt.txt を最新の実績に基づき自動アップデートしました。")
 
 
 if __name__ == "__main__":
-    metrics = get_video_metrics()
-    optimize_prompt_with_gemini(metrics)
+    sync_metrics_and_optimize()
