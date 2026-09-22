@@ -62,13 +62,15 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
           python upload_youtube.py
+          
 　　　　- name: YouTube実績集計とプロンプト自動最適化
-        env:
+　　　　　env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python feedback_loop.py
+         
       - name: 履歴ファイルをリポジトリに保存
         run: |
           git config --global user.name "github-actions[bot]"
