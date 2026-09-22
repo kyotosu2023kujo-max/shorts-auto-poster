@@ -12,3 +12,6 @@ numpy
 librosa
 gspread
 moviepy==1.0.3
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
