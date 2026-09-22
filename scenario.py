@@ -1,9 +1,13 @@
 import json
 import os
 import random
+import re
 import time
+import urllib.parse
+import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime
-from typing import List, Literal, Tuple
+from typing import Dict, List, Literal, Tuple
 
 from google import genai
 from pydantic import BaseModel, Field
@@ -11,33 +15,137 @@ from pydantic import BaseModel, Field
 # --- ローカル履歴管理設定 ---
 HISTORY_FILE = "history.json"
 
-# 大テーマ候補
-THEMES = [
-    "深海生物の異常な生存戦略",
-    "日常に潜む量子力学の不思議",
-    "植物の攻撃",
-    "歴史に埋もれた狂気の科学実験",
-    "歴史上で登場した物理学のとんでも仮説",
-    "昆虫たちの寄生メカニズム",
-    "自然界にある洗脳",
-    "人間の体内で起きている細胞の戦い",
-    "極限環境の科学",
-    "多様性社会の末路",
-    "人種間の遺伝的差",
-    "親ガチャの現実",
-]
-
-# 切り口（マンネリ防止）
+# マンネリ防止用アングル（毎回ランダム適用）
 PERSPECTIVE_ANGLES = [
-    "学会や常識を覆した狂気の逆転劇・パラドックス",
-    "分子・ナノレベルの精密すぎる残酷な物理・生化学トラップ",
-    "人類の倫理観や直感を完全に粉砕するグロテスクな合理的システム",
-    "教科書には絶対に載せられない、実験の失敗・副作用がもたらした怪現象",
-    "一見すると弱点に見える性質が、実は極限の武器へと昇華された瞬間",
+    "",
 ]
 
+# --- 外部ネタ取得処理 (Wikipedia / Reddit / Phys.org) ---
+HTTP_HEADERS = {"User-Agent": "ShortsResearchBot/1.0 (Mozilla/5.0)"}
+
+
+def fetch_from_wikipedia_unusual() -> Dict[str, str]:
+    """Wikipediaの『良質な記事』からマニアックな項目を抽出"""
+    try:
+        url = (
+            "https://ja.wikipedia.org/w/api.php?"
+            "action=query&format=json&list=categorymembers&"
+            "cmtitle=Category:%E8%89%AF%E8%B3%AA%E3%81%AA%E8%A8%98%E4%BA%8B&"
+            "cmlimit=50&formatversion=2"
+        )
+        req = urllib.request.Request(url, headers=HTTP_HEADERS)
+        with urllib.request.urlopen(req, timeout=10) as response:
+            data = json.loads(response.read().decode("utf-8"))
+            members = data.get("query", {}).get("categorymembers", [])
+
+        if not members:
+            raise ValueError("記事が見つかりませんでした")
+
+        target = random.choice(members)
+        title = target["title"]
+
+        summary_url = (
+            "https://ja.wikipedia.org/w/api.php?"
+            f"action=query&format=json&prop=extracts&exintro=1&explaintext=1&"
+            f"titles={urllib.parse.quote(title)}&formatversion=2"
+        )
+        req_sum = urllib.request.Request(summary_url, headers=HTTP_HEADERS)
+        with urllib.request.urlopen(req_sum, timeout=10) as res:
+            res_data = json.loads(res.read().decode("utf-8"))
+            extract = res_data["query"]["pages"][0].get("extract", "")
+
+        return {
+            "source": "Wikipedia（良質な記事）",
+            "headline": title,
+            "context": extract[:400],
+        }
+    except Exception as e:
+        print(f"⚠️ Wikipedia取得失敗: {e}")
+        return {}
+
+
+def fetch_from_reddit_til() -> Dict[str, str]:
+    """Redditの r/todayilearned (海外の意外な事実スレッド) のTopから取得"""
+    try:
+        url = "https://www.reddit.com/r/todayilearned/top.json?t=week&limit=25"
+        req = urllib.request.Request(url, headers=HTTP_HEADERS)
+        with urllib.request.urlopen(req, timeout=10) as response:
+            data = json.loads(response.read().decode("utf-8"))
+            posts = data.get("data", {}).get("children", [])
+
+        if not posts:
+            raise ValueError("投稿が見つかりませんでした")
+
+        post = random.choice(posts)["data"]
+        raw_title = post.get("title", "")
+        clean_title = re.sub(r"^TIL(\s*that)?:?\s*", "", raw_title, flags=re.I)
+
+        return {
+            "source": "Reddit（r/todayilearned）",
+            "headline": clean_title,
+            "context": f"Redditで話題の事実: {clean_title}",
+        }
+    except Exception as e:
+        print(f"⚠️ Reddit取得失敗: {e}")
+        return {}
+
+
+def fetch_from_science_rss() -> Dict[str, str]:
+    """科学ニュースポータル（Phys.org）の最新ニュースRSSから取得"""
+    try:
+        feeds = [
+            "https://phys.org/rss-feed/biology-news/",
+            "https://phys.org/rss-feed/physics-news/",
+        ]
+        feed_url = random.choice(feeds)
+        req = urllib.request.Request(feed_url, headers=HTTP_HEADERS)
+        with urllib.request.urlopen(req, timeout=10) as response:
+            xml_data = response.read()
+
+        root = ET.fromstring(xml_data)
+        items = root.findall(".//item")
+        if not items:
+            raise ValueError("RSS項目が見つかりませんでした")
+
+        item = random.choice(items[:15])
+        title = item.find("title").text or ""
+        desc = item.find("description").text or ""
+        clean_desc = re.sub(r"<[^>]+>", "", desc)
+
+        return {
+            "source": "Phys.org（科学ニュース・論文）",
+            "headline": title,
+            "context": clean_desc[:400],
+        }
+    except Exception as e:
+        print(f"⚠️ RSS取得失敗: {e}")
+        return {}
+
+
+def get_external_topic() -> Dict[str, str]:
+    """外部ソースからランダムに1件ネタを取得（失敗時はフォールバック）"""
+    fetchers = [
+        fetch_from_wikipedia_unusual,
+        fetch_from_reddit_til,
+        fetch_from_science_rss,
+    ]
+    random.shuffle(fetchers)
+
+    for fetcher in fetchers:
+        result = fetcher()
+        if result and result.get("headline"):
+            return result
+
+    return {
+        "source": "Fallback",
+        "headline": "生物界における極小の寄生システム",
+        "context": "宿主の行動を分子レベルでハイジャックする未知の寄生メカニズム",
+    }
+
+
+# --- 履歴管理 ---
 def load_history() -> Tuple[List[str], List[str]]:
-    """history.json から過去のテーマとタイトルを取得"""
+    """history.json から過去のテーマとタイトル一覧を取得"""
     if not os.path.exists(HISTORY_FILE):
         return [], []
     try:
@@ -49,6 +157,7 @@ def load_history() -> Tuple[List[str], List[str]]:
     except Exception as e:
         print(f"⚠️ 履歴読み込み失敗（スキップ）: {e}")
         return [], []
+
 
 def save_record(theme: str, title: str):
     """生成成功したテーマとタイトルを history.json に保存"""
@@ -70,45 +179,55 @@ def save_record(theme: str, title: str):
         json.dump(records, f, ensure_ascii=False, indent=2)
     print(f"📝 '{HISTORY_FILE}' に保存しました。")
 
+
 # --- データスキーマ定義（build_video.py からインポートされる） ---
 class Scene(BaseModel):
-    narration: str = Field(description="このシーンで読み上げるナレーション原稿")
+    narration: str = Field(description="このシーンで読み上げるナレーション原稿（尖った語り口調）")
     subtitle_text: str = Field(description="画面に大きく表示する強調テロップ（10〜15文字程度）")
-    visual_search_query: str = Field(description="Pexels検索用の英語キーワード（2〜3単語）")
+    visual_search_query: str = Field(description="Pexels検索用の具体的な英語名詞（2〜3単語）")
     subtitle_position: Literal["top", "center", "bottom"] = Field(default="bottom", description="テロップ表示位置")
     subtitle_color: Literal["yellow", "white", "cyan"] = Field(default="yellow", description="テロップ文字色")
     motion_effect: Literal["zoom_in", "zoom_out", "static"] = Field(default="zoom_in", description="カメラワーク")
+
 
 class DetailedScript(BaseModel):
     title: str = Field(description="動画全体のフックになるタイトル（全角15〜20文字以内）")
     scenes: List[Scene] = Field(min_length=4, max_length=4, description="テンポの良い4つのシーン構成")
 
-def build_prompt(current_theme: str, angle: str, past_titles: List[str]) -> str:
+
+# --- プロンプト構築 ---
+def build_prompt(topic_info: Dict[str, str], angle: str, past_titles: List[str]) -> str:
     recent_history = past_titles[-15:] if len(past_titles) > 15 else past_titles
+
     return f"""# 依頼内容
-あなたは、科学史や専門知識に精通した構成作家です。また、人間的な決めつけと偏見に囚われている視聴者側の視点にあり、単純な二元論を好むライターでもあります。
-YouTube Shorts向けの知的好奇心を刺激しつつ単純な思い込みを与える雑学動画の台本と演出構成を作成してください。
+あなたは、科学史や専門知識に精通したリサーチャー兼構成作家です。
+海外・Webの最新情報や論文ソースから抽出された以下の【原材料ネタ】をもとに、YouTube Shorts向けの知的好奇心を刺激するマニアックな雑学台本と演出構成を作成してください。
 SNSで指を止めさせるため、冷笑的かつセンセーショナルで尖った語り口調を採用してください。
 
+# 原材料ネタ（Webより自動取得）
+【ソース】: {topic_info['source']}
+【元トピック/見出し】: {topic_info['headline']}
+【詳細概要】: {topic_info['context']}
+
 # 重要要件
-1. シーン構成: テンポの良い4つのシーン（カット）で構成してください。動画のラスト（第4シーンの最後）で、視聴者に自然な形で動画への高評価とチャンネル登録を促してください。
-2. ネタの差別化（最重要）:
+1. シーン構成: テンポの良い4つのシーン（カット）で構成してください。第4シーンの最後で、動画への高評価とチャンネル登録を自然に促してください。
+2. ネタの掘り下げ（最重要）:
    - 一般的な「ネットのまとめ記事」にある定番ネタ（クマムシ、デメニギス、テッポウエビ、シュレディンガーの猫等）は完全禁止です。
-   - 【具体的な固有名詞（生物の学名・種名、化合物の正式名称、提唱した学者名など）】と【極小・極限の具体的メカニズム】を必ず主役に据えてください。
+   - 原材料ネタの英語や専門用語を日本語でわかりやすく、かつセンセーショナルに解説してください。
+   - 【具体的な固有名詞（学名・種名、化合物の正式名称、提唱した学者名など）】と【極小・極限の具体的メカニズム】を必ず主役に据えてください。
 3. タイトル: 全角15〜20文字以内で作成してください。
-4. 映像演出: 各シーンの `visual_search_query` は、Pexelsの実写動画ライブラリで確実にヒットする英語名詞（2〜3単語）にしてください。
+4. 映像演出: 各シーンの `visual_search_query` は、Pexelsの実写動画ライブラリで確実にヒットする具体的な英語名詞（2〜3単語）にしてください。
+5. 必須アプローチ: 【{angle}】の切り口を適用すること。
 
 # 過去に作成した動画タイトル一覧（重複厳禁）
 {json.dumps(recent_history, ensure_ascii=False, indent=2)}
-
-# 今回のテーマ
-【テーマ】: {current_theme}
-【必須アプローチ】: {angle}
 """
 
+
+# --- Gemini API 呼び出し ---
 def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript:
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY", ""))
-    gemini_models = ["gemini-3.8-flash", "gemini-3.7-flash"]
+    gemini_models = ["gemini-3.8-flash", "gemini-3.1-pro"]
 
     last_error = None
     for attempt in range(max_retries):
@@ -135,27 +254,27 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript:
 
     raise RuntimeError(f"台本生成に失敗しました: {last_error}")
 
+
 # --- build_video.py から呼び出されるエントリー関数 ---
 def generate_script() -> DetailedScript:
     past_themes, past_titles = load_history()
 
-    available_themes = [t for t in THEMES if t not in past_themes]
-    if not available_themes:
-        print("🔄 全テーマを消化したため候補リストをリセットします。")
-        available_themes = THEMES
-
-    current_theme = random.choice(available_themes)
+    # 外部ソースからネタを取得
+    topic_info = get_external_topic()
     selected_angle = random.choice(PERSPECTIVE_ANGLES)
-    print(f"🎯 選定テーマ: {current_theme}")
+
+    print(f"🌐 取得ネタ [{topic_info['source']}]: {topic_info['headline']}")
     print(f"🔍 アングル: {selected_angle}")
 
-    prompt = build_prompt(current_theme, selected_angle, past_titles)
+    prompt = build_prompt(topic_info, selected_angle, past_titles)
     script = generate_with_gemini(prompt)
 
     # 履歴に保存
-    save_record(current_theme, script.title)
+    save_record(topic_info["headline"][:30], script.title)
     return script
+
 
 if __name__ == "__main__":
     script = generate_script()
+    print("\n=== 生成された台本 ===")
     print(script.model_dump_json(indent=2))
