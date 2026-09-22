@@ -1,15 +1,19 @@
 import json
+import math
 import os
 import random
+import subprocess
 import urllib.parse
 import urllib.request
+import librosa
+import numpy as np
 from gtts import gTTS
 from moviepy.editor import (
     AudioFileClip,
     ColorClip,
-    CompositeAudioClip,
     CompositeVideoClip,
     ImageClip,
+    ImageSequenceClip,
     VideoFileClip,
     concatenate_videoclips,
     vfx,
@@ -23,6 +27,8 @@ PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY", "")
 OUTPUT_VIDEO_PATH = "output_shorts.mp4"
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
+ICON_PATH = "youtubeicon.png"
+VOICE_SPEED_FACTOR = 1.3  # 音声読み上げ倍速（1.3倍）
 
 
 def get_available_font(size: int = 72) -> ImageFont.FreeTypeFont:
@@ -119,10 +125,23 @@ def create_solid_fallback_video(duration: float, output_path: str):
     clip.close()
 
 
-def generate_audio_gtts(text: str, output_path: str) -> float:
-    """gTTSで音声を生成して正確な尺を返す"""
+def generate_audio_gtts(text: str, output_path: str, speed_factor: float = VOICE_SPEED_FACTOR) -> float:
+    """gTTSで生成した音声をFFmpegで指定倍速（1.3倍）に加速して保存し、正確な尺を返す"""
+    raw_tts_path = f"raw_{output_path}"
     tts = gTTS(text=text, lang="ja", slow=False)
-    tts.save(output_path)
+    tts.save(raw_tts_path)
+
+    # FFmpegのatempoフィルタで音程を保ったまま加速
+    cmd = [
+        "ffmpeg", "-y", "-i", raw_tts_path,
+        "-filter:a", f"atempo={speed_factor}",
+        "-vn", output_path
+    ]
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+    if os.path.exists(raw_tts_path):
+        os.remove(raw_tts_path)
+
     audio = AudioFileClip(output_path)
     duration = audio.duration
     audio.close()
@@ -185,6 +204,75 @@ def render_rich_subtitle_image(
     return out_file
 
 
+def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -> ImageSequenceClip:
+    """音声をlibrosaで解析し、中央アイコン＋円形スペクトラムの透過アニメーションクリップを生成"""
+    icon_size = (180, 180)
+    if os.path.exists(ICON_PATH):
+        icon_raw = Image.open(ICON_PATH).convert("RGBA")
+    else:
+        icon_raw = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+        draw_ico = ImageDraw.Draw(icon_raw)
+        draw_ico.ellipse((10, 10, 190, 190), fill=(0, 200, 255, 255))
+
+    icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
+    mask = Image.new("L", icon_size, 0)
+    draw_mask = ImageDraw.Draw(mask)
+    draw_mask.ellipse((0, 0, icon_size[0], icon_size[1]), fill=255)
+
+    icon_img = Image.new("RGBA", icon_size, (0, 0, 0, 0))
+    icon_img.paste(icon_raw, (0, 0), mask)
+
+    # 1.3倍速後の音声をロードしてRMS解析
+    y, sr = librosa.load(audio_path)
+    hop_length = int(sr / fps)
+    rms = librosa.feature.rms(y=y, hop_length=hop_length)[0]
+
+    if len(rms) > 0 and (np.max(rms) - np.min(rms) > 1e-8):
+        rms_normalized = (rms - np.min(rms)) / (np.max(rms) - np.min(rms) + 1e-8)
+        rms_boosted = np.power(rms_normalized, 0.4)
+    else:
+        rms_boosted = np.zeros(int(duration * fps))
+
+    num_bars = 48
+    radius_base = 105
+    max_bar_length = 90
+    box_size = 460
+    center_x = box_size / 2
+    center_y = box_size / 2
+
+    total_frames = max(len(rms_boosted), int(duration * fps))
+    frames = []
+
+    for i in range(total_frames):
+        volume = float(rms_boosted[i]) if i < len(rms_boosted) else 0.0
+        frame_img = Image.new("RGBA", (box_size, box_size), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(frame_img)
+
+        for b in range(num_bars):
+            angle = (360 / num_bars) * b
+            rad = np.deg2rad(angle)
+
+            bar_len = max(10, int(volume * max_bar_length))
+            start_r = radius_base
+            end_r = radius_base + bar_len
+
+            start_x = center_x + start_r * np.cos(rad)
+            start_y = center_y + start_r * np.sin(rad)
+            end_x = center_x + end_r * np.cos(rad)
+            end_y = center_y + end_r * np.sin(rad)
+
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 230), width=6)
+
+        icon_x = center_x - icon_size[0] / 2
+        icon_y = center_y - icon_size[1] / 2
+        frame_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
+
+        frames.append(np.array(frame_img))
+
+    clip = ImageSequenceClip(frames, fps=fps)
+    return clip.set_duration(duration)
+
+
 def apply_camera_motion(clip: VideoFileClip, motion_type: str) -> VideoFileClip:
     """ズームイン・ズームアウト演出"""
     duration = clip.duration
@@ -196,13 +284,13 @@ def apply_camera_motion(clip: VideoFileClip, motion_type: str) -> VideoFileClip:
 
 
 def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
-    """1シーンの音声・映像・テロップ・トランジションの合成"""
+    """1シーンの音声・映像・テロップ・スペクトラムの合成"""
     print(f"\n--- シーン {index + 1} 構築中 ---")
     audio_path = f"temp_voice_{index}.mp3"
     raw_video_path = f"temp_raw_{index}.mp4"
 
-    # 1. 音声生成（シーンの尺は音声の実尺と完全に一致させて範囲外アクセスを防ぐ）
-    scene_duration = generate_audio_gtts(scene.narration, audio_path)
+    # 1. 1.3倍速音声を生成
+    scene_duration = generate_audio_gtts(scene.narration, audio_path, speed_factor=VOICE_SPEED_FACTOR)
 
     # 2. 素材動画ダウンロード
     downloaded = download_pexels_video(
@@ -231,7 +319,11 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     # 4. カメラワーク
     base_clip = apply_camera_motion(base_clip, scene.camera_motion)
 
-    # 5. テロップ描画
+    # 5. 円形スペクトラムアナライザー＋アイコンの合成
+    spectrum_clip = generate_spectrum_overlay(audio_path, scene_duration)
+    spectrum_clip = spectrum_clip.set_position(("center", 620))
+
+    # 6. テロップ描画
     sub_img_path = render_rich_subtitle_image(scene.subtitle_text, scene.subtitle_color)
     sub_clip = ImageClip(sub_img_path).set_duration(scene_duration)
 
@@ -244,9 +336,9 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
 
     sub_clip = sub_clip.set_position(("center", sub_y))
 
-    # 6. 音声とレイヤーの合成（音声尺と映像尺を厳密に一致させる）
+    # 7. レイヤー合成
     audio_clip = AudioFileClip(audio_path).set_duration(scene_duration)
-    layers = [base_clip, sub_clip]
+    layers = [base_clip, spectrum_clip, sub_clip]
 
     if scene.screen_effect == "flash":
         flash_clip = (
@@ -288,7 +380,7 @@ def build_full_video(script: DetailedScript):
     for clip in scene_clips:
         clip.close()
     final_video.close()
-    print(f"🎉 Shorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
+    print(f"🎉 1.3倍速・スペクトラム付きShorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
 
 
 if __name__ == "__main__":
