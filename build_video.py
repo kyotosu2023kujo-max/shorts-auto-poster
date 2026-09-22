@@ -28,7 +28,8 @@ OUTPUT_VIDEO_PATH = "output_shorts.mp4"
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 ICON_PATH = "youtubeicon.png"
-VOICE_SPEED_FACTOR = 1.45  # 読み上げ速度を1.45倍へ高速化
+VOICE_SPEED_FACTOR = 1.45  # 読み上げ速度1.45倍
+VOICE_VOLUME_BOOST = 1.5   # 音量を1.5倍（約+3.5dB）にブースト
 
 
 def get_available_font(size: int = 72) -> ImageFont.FreeTypeFont:
@@ -125,15 +126,18 @@ def create_solid_fallback_video(duration: float, output_path: str):
     clip.close()
 
 
-def generate_audio_gtts(text: str, output_path: str, speed_factor: float = VOICE_SPEED_FACTOR) -> float:
-    """gTTSで生成した音声をFFmpegで指定倍速に加速して保存し、正確な尺を返す"""
+def generate_audio_gtts(
+    text: str, output_path: str, speed_factor: float = VOICE_SPEED_FACTOR, volume_boost: float = VOICE_VOLUME_BOOST
+) -> float:
+    """gTTS音声をFFmpegで加速＋音量増幅して保存"""
     raw_tts_path = f"raw_{output_path}"
     tts = gTTS(text=text, lang="ja", slow=False)
     tts.save(raw_tts_path)
 
+    # atempoで倍速化、volumeで音量ブースト
     cmd = [
         "ffmpeg", "-y", "-i", raw_tts_path,
-        "-filter:a", f"atempo={speed_factor}",
+        "-filter:a", f"atempo={speed_factor},volume={volume_boost}",
         "-vn", output_path
     ]
     subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
@@ -204,14 +208,15 @@ def render_rich_subtitle_image(
 
 
 def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -> ImageSequenceClip:
-    """コンパクト化した左下配置用スペクトラムアナライザー（アイコン付き）を生成"""
-    icon_size = (110, 110)
+    """サイズを拡大した左下配置用スペクトラムアナライザー（アイコン付き）を生成"""
+    # アイコンサイズを 110px -> 145px に拡大
+    icon_size = (145, 145)
     if os.path.exists(ICON_PATH):
         icon_raw = Image.open(ICON_PATH).convert("RGBA")
     else:
-        icon_raw = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
+        icon_raw = Image.new("RGBA", (180, 180), (0, 0, 0, 0))
         draw_ico = ImageDraw.Draw(icon_raw)
-        draw_ico.ellipse((5, 5, 135, 135), fill=(0, 200, 255, 255))
+        draw_ico.ellipse((5, 5, 175, 175), fill=(0, 200, 255, 255))
 
     icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
     mask = Image.new("L", icon_size, 0)
@@ -232,11 +237,11 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
     else:
         rms_boosted = np.zeros(int(duration * fps))
 
-    # 左下コーナーに収まるコンパクトサイズに調整
-    num_bars = 36
-    radius_base = 65
-    max_bar_length = 45
-    box_size = 280
+    # アナライザー全体の描画領域を拡大 (280px -> 360px)
+    num_bars = 42
+    radius_base = 85
+    max_bar_length = 65
+    box_size = 360
     center_x = box_size / 2
     center_y = box_size / 2
 
@@ -253,7 +258,7 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
             angle = (360 / num_bars) * b
             rad = np.deg2rad(angle)
 
-            bar_len = max(6, int(volume * max_bar_length))
+            bar_len = max(8, int(volume * max_bar_length))
             start_r = radius_base
             end_r = radius_base + bar_len
 
@@ -262,7 +267,7 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
             end_x = center_x + end_r * np.cos(rad)
             end_y = center_y + end_r * np.sin(rad)
 
-            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 230), width=4)
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 235), width=5)
 
         # 中央にアイコン配置
         icon_x = center_x - icon_size[0] / 2
@@ -291,8 +296,10 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     audio_path = f"temp_voice_{index}.mp3"
     raw_video_path = f"temp_raw_{index}.mp4"
 
-    # 1. 音声を1.45倍速で生成
-    scene_duration = generate_audio_gtts(scene.narration, audio_path, speed_factor=VOICE_SPEED_FACTOR)
+    # 1. 音声生成（1.45倍速＋音量1.5倍ブースト）
+    scene_duration = generate_audio_gtts(
+        scene.narration, audio_path, speed_factor=VOICE_SPEED_FACTOR, volume_boost=VOICE_VOLUME_BOOST
+    )
 
     # 2. 素材動画ダウンロード
     downloaded = download_pexels_video(
@@ -321,11 +328,11 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     # 4. カメラワーク
     base_clip = apply_camera_motion(base_clip, scene.camera_motion)
 
-    # 5. 左下配置のスペクトラムアナライザー（左余白50px、下部セーフゾーンやや上の位置）
+    # 5. 左下配置のスペクトラムアナライザー（拡大サイズに対応して位置を微調整）
     spectrum_clip = generate_spectrum_overlay(audio_path, scene_duration)
-    spectrum_clip = spectrum_clip.set_position((50, VIDEO_HEIGHT - 480))
+    spectrum_clip = spectrum_clip.set_position((40, VIDEO_HEIGHT - 530))
 
-    # 6. テロップ描画（中央やや下部に配置）
+    # 6. テロップ描画
     sub_img_path = render_rich_subtitle_image(scene.subtitle_text, scene.subtitle_color)
     sub_clip = ImageClip(sub_img_path).set_duration(scene_duration)
 
@@ -334,7 +341,6 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     elif scene.subtitle_position == "center":
         sub_y = (VIDEO_HEIGHT - 380) // 2
     else:
-        # スペクトラムと干渉しないようテロップ高さを調整
         sub_y = VIDEO_HEIGHT - 480
 
     sub_clip = sub_clip.set_position(("center", sub_y))
@@ -383,9 +389,19 @@ def build_full_video(script: DetailedScript):
     for clip in scene_clips:
         clip.close()
     final_video.close()
-    print(f"🎉 1.45倍速・左下アイコン配置Shorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
+    print(f"🎉 Shorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
 
 
 if __name__ == "__main__":
     generated_script = generate_script()
+
+    # YouTubeアップロード用タイトルを title.txt に保存
+    final_title = generated_script.title.strip()
+    if "#Shorts" not in final_title:
+        final_title = f"{final_title} #Shorts"
+
+    with open("title.txt", "w", encoding="utf-8") as f:
+        f.write(final_title)
+    print(f"📌 アップロード用タイトル決定: {final_title}")
+
     build_full_video(generated_script)
