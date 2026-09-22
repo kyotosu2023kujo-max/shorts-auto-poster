@@ -11,3 +11,4 @@ imageio[opencv]
 numpy
 librosa
 gspread
+moviepy==1.0.3
