@@ -54,14 +54,14 @@ jobs:
         run: |
           python upload_drive.py
 
-      - name: YouTubeへ自動アップロード
-        continue-on-error: true
-        env:
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: |
-          python upload_youtube.py
+#      - name: YouTubeへ自動アップロード
+#        continue-on-error: true
+#        env:
+#          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+#          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+#          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+#        run: |
+#          python upload_youtube.py
       - name: 履歴ファイルをリポジトリに保存
         run: |
           git config --global user.name "github-actions[bot]"
