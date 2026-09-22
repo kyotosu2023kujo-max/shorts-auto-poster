@@ -44,14 +44,12 @@ def load_history_with_metrics() -> Tuple[List[Dict], List[Dict]]:
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as f:
             records = json.load(f)
-            # views や retention が記録されているものを評価
-            evaluated = [r for r in records if "views" in r]
+            evaluated = [r for r in records if "views" in r and r.get("views") is not None]
             if not evaluated:
                 return records, []
 
-            # 視聴回数と維持率の複合スコアでソート
             evaluated.sort(
-                key=lambda x: (x.get("views", 0) * x.get("retention", 0.5)),
+                key=lambda x: (x.get("views", 0) * (x.get("retention", 0.5) + 0.5)),
                 reverse=True,
             )
             top_performers = evaluated[:3]
@@ -63,7 +61,7 @@ def load_history_with_metrics() -> Tuple[List[Dict], List[Dict]]:
 
 
 def save_initial_record(theme: str, angle: str, title: str):
-    """動画生成直後のメタデータを保存（後からAnalyticsで数値を更新）"""
+    """動画生成直後のメタデータを保存"""
     records = []
     if os.path.exists(HISTORY_FILE):
         try:
@@ -80,6 +78,7 @@ def save_initial_record(theme: str, angle: str, title: str):
         "views": None,
         "retention": None,
         "likes": None,
+        "comments": None,
     })
 
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
@@ -89,12 +88,16 @@ def save_initial_record(theme: str, angle: str, title: str):
 
 # --- データスキーマ定義 ---
 class Scene(BaseModel):
-    narration: str = Field(description="ナレーション。無駄な前置きを排除し、早口で情報を詰め込む構成")
-    subtitle_text: str = Field(description="画面中央〜下に大きく表示する強烈なテロップ（8〜12文字程度）")
+    narration: str = Field(
+        description="ナレーション。無駄な前置きを排除し、早口で情報を畳み掛ける構成（1シーンあたり25〜45文字程度）"
+    )
+    subtitle_text: str = Field(
+        description="画面中央〜下に大きく表示する強烈なテロップ（8〜12文字程度）"
+    )
     visual_search_queries: List[str] = Field(
         min_length=2,
         max_length=3,
-        description="Pexels検索用キーワード候補。感情や緊張感を煽る実写映像（例: ['counting money rich', 'stressed person dark', 'crowd walking time lapse']）",
+        description="Pexels検索用キーワード候補。感情や緊張感を煽る実写映像（例: ['counting money dark', 'stressed businessman', 'airport window rain']）",
     )
     camera_motion: Literal["zoom_in", "zoom_out", "static"] = Field(default="zoom_in")
     screen_effect: Literal["none", "flash"] = Field(default="none")
@@ -103,11 +106,17 @@ class Scene(BaseModel):
 
 
 class DetailedScript(BaseModel):
-    title: str = Field(description="クリック・タップを強制させるタイトル（全角15〜20文字以内）")
+    title: str = Field(
+        description=(
+            "YouTube Shorts用タイトル。全角22〜32文字程度。"
+            "【損失回避・警告・暴露・数字】のフックを先頭に置き、末尾に必ず『 #Shorts』を付けること。"
+            "例: '【知らないと全損】定価が存在しないネット社会の裏ルール #Shorts', '【警告】9割が搾取されている旅行予約の罠 #Shorts'"
+        )
+    )
     scenes: List[Scene] = Field(min_length=4, max_length=5, description="4〜5カットの構成")
 
 
-# --- プロンプト構築（自己改善型） ---
+# --- プロンプト構築（自己改善型＋タイトル強化） ---
 def build_prompt(theme: str, angle: str, top_vids: List[Dict], worst_vids: List[Dict]) -> str:
     base_instructions = ""
     if os.path.exists(SYSTEM_PROMPT_FILE):
@@ -119,14 +128,23 @@ def build_prompt(theme: str, angle: str, top_vids: List[Dict], worst_vids: List[
 
     if not base_instructions:
         base_instructions = """# 役割
-あなたはYouTube Shortsで再生数と視聴維持率を極限までハックするプロの構成作家です。
-知的好奇心ではなく「人間の恐怖心・損失回避・承認欲求・金銭欲」を刺激し、画面から指を離させない台本を作成してください。
+あなたはYouTube Shortsでミリオン再生と最高視聴維持率を叩き出す凄腕の映像ディレクター兼コピーライターです。
+知的好奇心ではなく「人間の恐怖心・損失回避・承認欲求・金銭欲」を直接刺激し、視聴者がスワイプの手を止める台本とタイトルを作成してください。
+
+# タイトル命名ルール（最重要・厳格遵守）
+1. 構造: 【強烈なフック単語】＋【具体的な自分ごと化ワード（数字・行動）】＋【 #Shorts】
+2. 文字数: 全角22〜32文字以内（スマホ画面のShortsフィードで改行されても最も目立つ黄金比）。
+3. 先頭フック候補:
+   - 【知らないと損】 / 【※警告】 / 【閲覧注意】 / 【9割が損してる】 / 【プロが隠す闇】 / 【カモ確定】
+4. NGタイトル（絶対禁止）:
+   - 「〜について解説」「〜の仕組み」「〜の紹介」といった退屈な説明口調。
+5. 必須: 末尾に必ず「 #Shorts」をスペース付きで付与すること。
 
 # 構成ルール
-1. 冒頭0.5秒のフック: 挨拶や前置きは厳禁。「実は〜」「あなたは〜」など、視聴者を名指しして危機感を煽る出だしにすること。
+1. 冒頭0.5秒のフック: 挨拶や前置きは厳禁。「実は〜」「まだ〜してる？」など、視聴者の無知や損失を突きつけること。
 2. テンポ: 短文で言い切り、視聴者に考える隙を与えずに結論を連続投下する。
-3. ループ誘導: 最終シーンのナレーション末尾を、第1シーンの冒頭に綺麗に繋がる文脈にして視聴維持率100%超えを狙う。
-4. アクション喚起: 最終シーンで「保存して後で見返せ」「コメント欄で意見を書け」と短く指示する。"""
+3. ループ誘導: 最終シーンの末尾を冒頭のセリフに自然に繋がる文脈にして、視聴維持率100%超えを狙う。
+4. アクション喚起: 最終シーン末尾に「今すぐ保存して見返せ」「高評価と登録を」と短く指示する。"""
 
     learning_context = ""
     if top_vids and top_vids[0].get("views") is not None:
@@ -137,7 +155,7 @@ def build_prompt(theme: str, angle: str, top_vids: List[Dict], worst_vids: List[
 
 【伸び悩んだ負けパターン】
 {json.dumps(worst_vids, ensure_ascii=False, indent=2)}
-※ 勝ちパターンの言い回しや煽り方を踏襲し、負けパターンの単調さを徹底的に排除してください。
+※ 勝ちパターンの言い回しやタイトルの煽り方を強く踏襲してください。
 """
 
     return f"""{base_instructions}
@@ -164,13 +182,20 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript:
                 config={
                     "response_mime_type": "application/json",
                     "response_schema": DetailedScript,
-                    "temperature": 0.9,
+                    "temperature": 0.85,
                     "seed": random.randint(1, 10000000),
                 },
             )
             if response.parsed:
-                return response.parsed
-            return DetailedScript.model_validate_json(response.text)
+                script = response.parsed
+            else:
+                script = DetailedScript.model_validate_json(response.text)
+
+            # タイトル末尾に #Shorts が抜けていた場合の安全ガード
+            if "#Shorts" not in script.title:
+                script.title = f"{script.title.strip()} #Shorts"
+
+            return script
         except Exception as e:
             last_error = e
             print(f"Gemini({model_name}) 試行 {attempt + 1}/{max_retries} 失敗: {e}")
@@ -183,7 +208,6 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript:
 def generate_script() -> DetailedScript:
     top_vids, worst_vids = load_history_with_metrics()
 
-    # テーマとアングルをランダム選定
     theme = random.choice(PROFIT_THEMES)
     angle = random.choice(PROFIT_ANGLES)
 
