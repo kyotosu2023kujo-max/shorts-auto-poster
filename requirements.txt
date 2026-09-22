@@ -2,7 +2,7 @@ google-genai
 openai
 pydantic
 moviepy
-pillow
+Pillow==9.5.0
 gTTS
 requests
 edge-tts
