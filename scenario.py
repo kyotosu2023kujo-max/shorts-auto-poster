@@ -25,7 +25,7 @@ PERSPECTIVE_ANGLES = [
     "一見すると弱点に見える性質が、実は極限の武器へと昇華された瞬間",
 ]
 
-# --- 外部ネタ取得処理 (Wikipedia / Reddit / Phys.org) ---
+# 共通ヘッダー
 HTTP_HEADERS = {"User-Agent": "ShortsResearchBot/1.0 (Mozilla/5.0)"}
 
 
@@ -70,10 +70,14 @@ def fetch_from_wikipedia_unusual() -> Dict[str, str]:
 
 
 def fetch_from_reddit_til() -> Dict[str, str]:
-    """Redditの r/todayilearned のTopから取得"""
+    """Redditの r/todayilearned のTopから取得（APIガイドライン準拠ヘッダー）"""
     try:
         url = "https://www.reddit.com/r/todayilearned/top.json?t=week&limit=25"
-        req = urllib.request.Request(url, headers=HTTP_HEADERS)
+        # Redditの規制回避用フォーマット: <platform>:<app ID>:<version> (by /u/<username>)
+        reddit_headers = {
+            "User-Agent": "script:shorts_research_bot:v1.0 (by /u/reddit_user_research)"
+        }
+        req = urllib.request.Request(url, headers=reddit_headers)
         with urllib.request.urlopen(req, timeout=10) as response:
             data = json.loads(response.read().decode("utf-8"))
             posts = data.get("data", {}).get("children", [])
@@ -204,7 +208,6 @@ class DetailedScript(BaseModel):
 def build_prompt(topic_info: Dict[str, str], angle: str, past_titles: List[str]) -> str:
     recent_history = past_titles[-15:] if len(past_titles) > 15 else past_titles
 
-    # 自己改善される外部プロンプトファイルがあれば読み込む
     base_instructions = ""
     if os.path.exists(SYSTEM_PROMPT_FILE):
         try:
@@ -213,7 +216,6 @@ def build_prompt(topic_info: Dict[str, str], angle: str, past_titles: List[str])
         except Exception as e:
             print(f"⚠️ {SYSTEM_PROMPT_FILE} 読み込み失敗: {e}")
 
-    # ファイルがない場合のデフォルト指示
     if not base_instructions:
         base_instructions = """# 依頼内容
 あなたは、科学史や専門知識に精通したリサーチャー兼構成作家です。
