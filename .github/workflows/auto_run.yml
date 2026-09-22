@@ -3,7 +3,7 @@ name: Auto Generate Script
 on:
   workflow_dispatch:
   schedule:
-  - cron: '45 9 * * *'
+    - cron: '45 9 * * *'
 
 jobs:
   run-ai-script:
@@ -15,7 +15,7 @@ jobs:
       - name: システムツールと日本語フォントのインストール
         run: |
           sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk ffmpeg imagemagick
+          sudo apt-get install -y fonts-noto-cjk fonts-ipafont-gothic ffmpeg imagemagick
 
       - name: Pythonのセットアップ
         uses: actions/setup-python@v5
@@ -26,7 +26,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install edge-tts requests moviepy pillow google-api-python-client google-auth-oauthlib google-auth-httplib2 google-auth
+          pip install edge-tts requests google-api-python-client google-auth-oauthlib google-auth-httplib2 google-auth
 
       - name: AIスクリプトの実行と動画生成
         run: python build_video.py
@@ -62,18 +62,21 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
           python upload_youtube.py
-          
-　　　　- name: YouTube実績集計とプロンプト自動最適化
-　　　　　env:
+
+      - name: YouTube実績集計とプロンプト自動最適化
+        continue-on-error: true
+        env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python feedback_loop.py
-         
-      - name: 履歴ファイルをリポジトリに保存
+
+      - name: 履歴ファイルと更新プロンプトをリポジトリに保存
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add history.json
-          git diff --staged --quiet || (git commit -m "Update history.json [skip ci]" && git push)
+          git add history.json system_prompt.txt
+          git diff --staged --quiet || git commit -m "Update history.json and system_prompt.txt [skip ci]"
+          git pull --rebase origin main
+          git push origin main
