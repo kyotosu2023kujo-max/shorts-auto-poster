@@ -28,7 +28,7 @@ OUTPUT_VIDEO_PATH = "output_shorts.mp4"
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 ICON_PATH = "youtubeicon.png"
-VOICE_SPEED_FACTOR = 1.3  # 音声読み上げ倍速（1.3倍）
+VOICE_SPEED_FACTOR = 1.45  # 読み上げ速度を1.45倍へ高速化
 
 
 def get_available_font(size: int = 72) -> ImageFont.FreeTypeFont:
@@ -126,12 +126,11 @@ def create_solid_fallback_video(duration: float, output_path: str):
 
 
 def generate_audio_gtts(text: str, output_path: str, speed_factor: float = VOICE_SPEED_FACTOR) -> float:
-    """gTTSで生成した音声をFFmpegで指定倍速（1.3倍）に加速して保存し、正確な尺を返す"""
+    """gTTSで生成した音声をFFmpegで指定倍速に加速して保存し、正確な尺を返す"""
     raw_tts_path = f"raw_{output_path}"
     tts = gTTS(text=text, lang="ja", slow=False)
     tts.save(raw_tts_path)
 
-    # FFmpegのatempoフィルタで音程を保ったまま加速
     cmd = [
         "ffmpeg", "-y", "-i", raw_tts_path,
         "-filter:a", f"atempo={speed_factor}",
@@ -205,14 +204,14 @@ def render_rich_subtitle_image(
 
 
 def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -> ImageSequenceClip:
-    """音声をlibrosaで解析し、中央アイコン＋円形スペクトラムの透過アニメーションクリップを生成"""
-    icon_size = (180, 180)
+    """コンパクト化した左下配置用スペクトラムアナライザー（アイコン付き）を生成"""
+    icon_size = (110, 110)
     if os.path.exists(ICON_PATH):
         icon_raw = Image.open(ICON_PATH).convert("RGBA")
     else:
-        icon_raw = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+        icon_raw = Image.new("RGBA", (140, 140), (0, 0, 0, 0))
         draw_ico = ImageDraw.Draw(icon_raw)
-        draw_ico.ellipse((10, 10, 190, 190), fill=(0, 200, 255, 255))
+        draw_ico.ellipse((5, 5, 135, 135), fill=(0, 200, 255, 255))
 
     icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
     mask = Image.new("L", icon_size, 0)
@@ -222,7 +221,7 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
     icon_img = Image.new("RGBA", icon_size, (0, 0, 0, 0))
     icon_img.paste(icon_raw, (0, 0), mask)
 
-    # 1.3倍速後の音声をロードしてRMS解析
+    # 音声解析 (RMS音量計算)
     y, sr = librosa.load(audio_path)
     hop_length = int(sr / fps)
     rms = librosa.feature.rms(y=y, hop_length=hop_length)[0]
@@ -233,10 +232,11 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
     else:
         rms_boosted = np.zeros(int(duration * fps))
 
-    num_bars = 48
-    radius_base = 105
-    max_bar_length = 90
-    box_size = 460
+    # 左下コーナーに収まるコンパクトサイズに調整
+    num_bars = 36
+    radius_base = 65
+    max_bar_length = 45
+    box_size = 280
     center_x = box_size / 2
     center_y = box_size / 2
 
@@ -248,11 +248,12 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
         frame_img = Image.new("RGBA", (box_size, box_size), (0, 0, 0, 0))
         draw = ImageDraw.Draw(frame_img)
 
+        # 円形イコライザーバー描画
         for b in range(num_bars):
             angle = (360 / num_bars) * b
             rad = np.deg2rad(angle)
 
-            bar_len = max(10, int(volume * max_bar_length))
+            bar_len = max(6, int(volume * max_bar_length))
             start_r = radius_base
             end_r = radius_base + bar_len
 
@@ -261,8 +262,9 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
             end_x = center_x + end_r * np.cos(rad)
             end_y = center_y + end_r * np.sin(rad)
 
-            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 230), width=6)
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 230), width=4)
 
+        # 中央にアイコン配置
         icon_x = center_x - icon_size[0] / 2
         icon_y = center_y - icon_size[1] / 2
         frame_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
@@ -289,7 +291,7 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     audio_path = f"temp_voice_{index}.mp3"
     raw_video_path = f"temp_raw_{index}.mp4"
 
-    # 1. 1.3倍速音声を生成
+    # 1. 音声を1.45倍速で生成
     scene_duration = generate_audio_gtts(scene.narration, audio_path, speed_factor=VOICE_SPEED_FACTOR)
 
     # 2. 素材動画ダウンロード
@@ -319,11 +321,11 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     # 4. カメラワーク
     base_clip = apply_camera_motion(base_clip, scene.camera_motion)
 
-    # 5. 円形スペクトラムアナライザー＋アイコンの合成
+    # 5. 左下配置のスペクトラムアナライザー（左余白50px、下部セーフゾーンやや上の位置）
     spectrum_clip = generate_spectrum_overlay(audio_path, scene_duration)
-    spectrum_clip = spectrum_clip.set_position(("center", 620))
+    spectrum_clip = spectrum_clip.set_position((50, VIDEO_HEIGHT - 480))
 
-    # 6. テロップ描画
+    # 6. テロップ描画（中央やや下部に配置）
     sub_img_path = render_rich_subtitle_image(scene.subtitle_text, scene.subtitle_color)
     sub_clip = ImageClip(sub_img_path).set_duration(scene_duration)
 
@@ -332,6 +334,7 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     elif scene.subtitle_position == "center":
         sub_y = (VIDEO_HEIGHT - 380) // 2
     else:
+        # スペクトラムと干渉しないようテロップ高さを調整
         sub_y = VIDEO_HEIGHT - 480
 
     sub_clip = sub_clip.set_position(("center", sub_y))
@@ -343,7 +346,7 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
     if scene.screen_effect == "flash":
         flash_clip = (
             ColorClip(size=(VIDEO_WIDTH, VIDEO_HEIGHT), color=(255, 255, 255))
-            .set_duration(0.1)
+            .set_duration(0.08)
             .set_opacity(0.85)
         )
         layers.append(flash_clip)
@@ -380,7 +383,7 @@ def build_full_video(script: DetailedScript):
     for clip in scene_clips:
         clip.close()
     final_video.close()
-    print(f"🎉 1.3倍速・スペクトラム付きShorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
+    print(f"🎉 1.45倍速・左下アイコン配置Shorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
 
 
 if __name__ == "__main__":
