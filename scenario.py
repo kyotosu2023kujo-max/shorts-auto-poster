@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 HISTORY_FILE = "history.json"
 SYSTEM_PROMPT_FILE = "system_prompt.txt"
 
-# マンネリ防止用アングル（毎回ランダム適用）
+# マンネリ防止用アングル
 PERSPECTIVE_ANGLES = [
     "学会や常識を覆した狂気の逆転劇・パラドックス",
     "分子・ナノレベルの精密すぎる残酷な物理・生化学トラップ",
@@ -70,10 +70,9 @@ def fetch_from_wikipedia_unusual() -> Dict[str, str]:
 
 
 def fetch_from_reddit_til() -> Dict[str, str]:
-    """Redditの r/todayilearned のTopから取得（APIガイドライン準拠ヘッダー）"""
+    """Redditの r/todayilearned のTopから取得"""
     try:
         url = "https://www.reddit.com/r/todayilearned/top.json?t=week&limit=25"
-        # Redditの規制回避用フォーマット: <platform>:<app ID>:<version> (by /u/<username>)
         reddit_headers = {
             "User-Agent": "script:shorts_research_bot:v1.0 (by /u/reddit_user_research)"
         }
@@ -189,19 +188,32 @@ def save_record(theme: str, title: str):
     print(f"📝 '{HISTORY_FILE}' に保存しました。")
 
 
-# --- データスキーマ定義（build_video.py からインポートされる） ---
+# --- データスキーマ定義（クオリティ演出対応版） ---
 class Scene(BaseModel):
-    narration: str = Field(description="このシーンで読み上げるナレーション原稿（尖った語り口調）")
-    subtitle_text: str = Field(description="画面に大きく表示する強調テロップ（10〜15文字程度）")
-    visual_search_query: str = Field(description="Pexels検索用の具体的な英語名詞（2〜3単語）")
-    subtitle_position: Literal["top", "center", "bottom"] = Field(default="bottom", description="テロップ表示位置")
-    subtitle_color: Literal["yellow", "white", "cyan"] = Field(default="yellow", description="テロップ文字色")
-    motion_effect: Literal["zoom_in", "zoom_out", "static"] = Field(default="zoom_in", description="カメラワーク")
+    narration: str = Field(description="このシーンの読み上げナレーション（冗長さを排した鋭い語り口調）")
+    subtitle_text: str = Field(description="画面中央〜下に大きく表示する強調テロップ（10〜15文字程度）")
+    visual_search_queries: List[str] = Field(
+        min_length=2,
+        max_length=3,
+        description="Pexels検索用キーワード候補。第1候補がヒットしなかった場合の第2・第3候補まで英語2〜3単語で指定（例: ['macro cell division', 'microscope bacteria', 'laboratory flask']）",
+    )
+    camera_motion: Literal["zoom_in", "zoom_out", "static"] = Field(
+        default="zoom_in", description="カメラワーク演出"
+    )
+    screen_effect: Literal["none", "flash"] = Field(
+        default="none", description="シーン転換時の一瞬の視覚効果（強調時はflash）"
+    )
+    subtitle_position: Literal["top", "center", "bottom"] = Field(
+        default="bottom", description="テロップ表示位置"
+    )
+    subtitle_color: Literal["yellow", "white", "cyan"] = Field(
+        default="yellow", description="テロップ文字色"
+    )
 
 
 class DetailedScript(BaseModel):
     title: str = Field(description="動画全体のフックになるタイトル（全角15〜20文字以内）")
-    scenes: List[Scene] = Field(min_length=4, max_length=4, description="テンポの良い4つのシーン構成")
+    scenes: List[Scene] = Field(min_length=4, max_length=5, description="4〜5つのテンポの良いシーン構成")
 
 
 # --- プロンプト構築 ---
@@ -218,18 +230,18 @@ def build_prompt(topic_info: Dict[str, str], angle: str, past_titles: List[str])
 
     if not base_instructions:
         base_instructions = """# 依頼内容
-あなたは、科学史や専門知識に精通したリサーチャー兼構成作家です。
-知的好奇心を刺激するマニアックな雑学台本と演出構成を作成してください。
-SNSで指を止めさせるため、冷笑的かつセンセーショナルで尖った語り口調を採用してください。
+あなたはYouTube Shortsでミリオン再生を狙う科学系リサーチャー兼映像ディレクターです。
+視聴者が冒頭1秒で指を止め、最後まで離脱しないハイクオリティな演出構成と台本を作成してください。
+冷笑的かつセンセーショナルで、直感を裏切る語り口調を採用してください。
 
-# 重要要件
-1. シーン構成: テンポの良い4つのシーン（カット）で構成してください。第4シーンの最後で、動画への高評価とチャンネル登録を自然に促してください。
-2. ネタの掘り下げ:
-   - 一般的な「ネットのまとめ記事」にある定番ネタ（クマムシ、デメニギス等）は完全禁止です。
-   - 原材料ネタの英語や専門用語を日本語でわかりやすく、かつセンセーショナルに解説してください。
-   - 【具体的な固有名詞（学名・種名、化合物の正式名称、提唱した学者名など）】と【極小・極限の具体的メカニズム】を必ず主役に据えてください。
-3. タイトル: 全角15〜20文字以内で作成してください。
-4. 映像演出: 各シーンの `visual_search_query` は、Pexelsの実写動画ライブラリで確実にヒットする具体的な英語名詞（2〜3単語）にしてください。"""
+# 演出・クオリティ要件
+1. シーン構成: 4〜5カット構成。第1シーンは冒頭で強烈な違和感や問いを突きつけ、最終シーン末尾で高評価とチャンネル登録を促す。
+2. 素材選定（Pexels API連携）:
+   - 各シーンの `visual_search_queries` には、実写映像が確実にヒットする英語2〜3単語の候補を優先度順に2〜3個指定してください。
+   - 抽象的すぎる単語（'science', 'nature'）は避け、具体的な被写体・構図（'deep sea glowing squid', 'microscope cells dividing', 'laser laboratory reflection'）を指定すること。
+3. カメラワーク・エフェクト:
+   - 冒頭シーンや衝撃の事実を明かすシーンには `screen_effect: flash` や動的な `camera_motion` を適切に割り当て、単調なスライドショー化を絶対に防ぐこと。
+4. タイトル: 全角15〜20文字以内。"""
 
     return f"""{base_instructions}
 
@@ -277,11 +289,10 @@ def generate_with_gemini(prompt: str, max_retries: int = 3) -> DetailedScript:
     raise RuntimeError(f"台本生成に失敗しました: {last_error}")
 
 
-# --- build_video.py から呼び出されるエントリー関数 ---
+# --- エントリー関数 ---
 def generate_script() -> DetailedScript:
     past_themes, past_titles = load_history()
 
-    # 外部ソースからネタを取得
     topic_info = get_external_topic()
     selected_angle = random.choice(PERSPECTIVE_ANGLES)
 
@@ -291,7 +302,6 @@ def generate_script() -> DetailedScript:
     prompt = build_prompt(topic_info, selected_angle, past_titles)
     script = generate_with_gemini(prompt)
 
-    # 履歴に保存
     save_record(topic_info["headline"][:30], script.title)
     return script
 
