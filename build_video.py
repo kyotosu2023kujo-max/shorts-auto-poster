@@ -30,12 +30,10 @@ VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 ICON_PATH = "youtubeicon.png"
 
-# 利用可能な高品質ニューラル音声リスト（動画ごとにランダム選定）
+# 確実に動作する安定版ニューラル音声リスト（男性・女性の2系統でランダム選定）
 AVAILABLE_VOICES = [
     "ja-JP-KeitaNeural",   # 落ち着いた男性（解説・暴露向き）
     "ja-JP-NanamiNeural",  # 明瞭な女性アナウンサー声
-    "ja-JP-NaokiNeural",   # 若々しい男性声
-    "ja-JP-AoiNeural",     # 落ち着いたトーンの女性声
 ]
 
 VOICE_RATE = "+38%"        # 1.4倍速相当のテンポ感
@@ -181,7 +179,6 @@ def render_rich_subtitle_image(
     font_color = color_map.get(color_name, (255, 230, 0, 255))
     outline_color = (0, 0, 0, 255)
 
-    # 横幅圧迫を防ぐためフォントサイズを 74 -> 68 に微調整
     font = get_available_font(size=68)
 
     try:
@@ -352,7 +349,7 @@ def build_single_scene(scene: Scene, index: int, voice_name: str) -> VideoFileCl
     elif scene.subtitle_position == "center":
         sub_y = (VIDEO_HEIGHT - 260) // 2
     else:
-        # bottom 指定時: アナライザーの上端（1470px）より高い位置（1240px）に配置
+        # bottom 指定時: アナライザー上端（1470px）より上の安全位置に配置
         sub_y = VIDEO_HEIGHT - 680
 
     sub_clip = sub_clip.set_position(("center", sub_y))
