@@ -1,0 +1,31 @@
+name: Note Automation
+
+on:
+  workflow_dispatch: # まずはGitHubの画面から手動テスト実行できるようにします
+  schedule:
+    - cron: '0 22 * * *' # 日本時間 朝7時に自動実行（UTC 22:00）
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Run article generator
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AMAZON_TRACKING_ID: ${{ secrets.AMAZON_TRACKING_ID }}
+        run: |
+          python scripts/generate_review.py
