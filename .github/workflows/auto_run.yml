@@ -28,6 +28,17 @@ jobs:
           pip install -r requirements.txt
           pip install edge-tts requests google-api-python-client google-auth-oauthlib google-auth-httplib2 google-auth
 
+      # 1. 新しい動画を作る前に、前日までの実績を集計して system_prompt.txt を最新化
+      - name: YouTube実績集計とプロンプト自動最適化（生成前実行）
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python feedback_loop.py
+
+      # 2. 最新化されたプロンプトとアングルをもとに本日の動画を生成
       - name: AIスクリプトの実行と動画生成
         run: python build_video.py
         env:
@@ -63,15 +74,7 @@ jobs:
         run: |
           python upload_youtube.py
 
-      - name: YouTube実績集計とプロンプト自動最適化
-        continue-on-error: true
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python feedback_loop.py
-
+      # 3. 集計結果（history.json）と更新されたプロンプト（system_prompt.txt）をリポジトリへ保存
       - name: 履歴ファイルと更新プロンプトをリポジトリに保存
         run: |
           git config --global user.name "github-actions[bot]"
