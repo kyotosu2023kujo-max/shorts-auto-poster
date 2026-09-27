@@ -1,17 +1,23 @@
 import os
-import json
 import time
 from playwright.sync_api import sync_playwright
 
-def upload_to_note_draft(json_file_path: str):
-    if not os.path.exists(json_file_path):
-        raise FileNotFoundError(f"記事ファイルが見つかりません: {json_file_path}")
+def upload_to_note_draft(txt_file_path: str = "article_output.txt"):
+    if not os.path.exists(txt_file_path):
+        raise FileNotFoundError(f"記事ファイルが見つかりません: {txt_file_path}")
 
-    with open(json_file_path, "r", encoding="utf-8") as f:
-        article = json.load(f)
+    # txtファイルを行ごとに読み込み
+    with open(txt_file_path, "r", encoding="utf-8") as f:
+        lines = f.readlines()
 
-    title = article.get("title", "")
-    body = article.get("body", "")
+    if not lines:
+        raise ValueError("記事ファイルが空です。")
+
+    # 1行目をタイトル、それ以降を本文として抽出
+    title = lines[0].strip()
+    body = "".join(lines[1:]).strip()
+
+    print(f"読み込み完了 - タイトル: {title}")
 
     auth_json = os.environ.get("NOTE_AUTH_JSON")
     if not auth_json:
@@ -21,7 +27,6 @@ def upload_to_note_draft(json_file_path: str):
         f.write(auth_json)
 
     with sync_playwright() as p:
-        # ヘッドレスブラウザ起動
         browser = p.chromium.launch(headless=True)
         context = browser.new_context(
             storage_state="auth_state.json",
@@ -34,7 +39,6 @@ def upload_to_note_draft(json_file_path: str):
         page.wait_for_load_state("domcontentloaded")
         time.sleep(5)
 
-        # 現在のURLを出力
         current_url = page.url
         print(f"==========================================")
         print(f"現在開いているURL: {current_url}")
@@ -46,12 +50,10 @@ def upload_to_note_draft(json_file_path: str):
             raise RuntimeError("ログイン状態が切れています。auth.jsonの再作成が必要です。")
 
         print("2. タイトルと本文を入力中...")
-        # 複数のセレクタ候補でタイトルを探す
         title_element = page.locator('textarea[placeholder*="タイトル"], input[placeholder*="タイトル"], textarea').first
         title_element.wait_for(state="visible", timeout=15000)
         title_element.fill(title)
 
-        # 本文入力
         body_element = page.locator('.ProseMirror, [contenteditable="true"]').first
         body_element.wait_for(state="visible", timeout=15000)
         body_element.click()
@@ -68,11 +70,11 @@ def upload_to_note_draft(json_file_path: str):
             print("自動保存を確認しました。")
 
         browser.close()
-        
+
         if os.path.exists("auth_state.json"):
             os.remove("auth_state.json")
 
-        print("🎉 完了: noteの下書き保存が正常に終了しました！")
+        print("完了: noteの下書き保存が正常に終了しました！")
 
 if __name__ == "__main__":
-    upload_to_note_draft("article_output.json")
+    upload_to_note_draft("article_output.txt")
