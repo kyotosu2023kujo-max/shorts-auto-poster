@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from datetime import datetime
 from typing import Dict, List
 
@@ -9,14 +10,19 @@ import googleapiclient.discovery
 HISTORY_FILE = "history.json"
 SYSTEM_PROMPT_FILE = "system_prompt.txt"
 
-# 環境変数から認証情報を取得
 CHANNEL_ID = os.environ.get("YOUTUBE_CHANNEL_ID", "")
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 
-def get_channel_recent_videos(youtube, channel_id: str, max_results: int = 30) -> Dict[str, str]:
-    """チャンネルのアップロード動画一覧（タイトル -> videoId の辞書）を取得"""
+def clean_title_for_match(title: str) -> str:
+    """照合精度を上げるため、タグや記号・空白を除去して正規化"""
+    cleaned = re.sub(r"[【】\[\]#＃\s\-_]", "", title)
+    return cleaned.lower()
+
+
+def get_channel_recent_videos(youtube, channel_id: str, max_results: int = 50) -> Dict[str, str]:
+    """チャンネルのアップロード動画一覧（タイトル -> videoId）を取得"""
     res = youtube.channels().list(id=channel_id, part="contentDetails").execute()
     items = res.get("items", [])
     if not items:
@@ -33,9 +39,9 @@ def get_channel_recent_videos(youtube, channel_id: str, max_results: int = 30) -
 
     video_map = {}
     for item in playlist_items.get("items", []):
-        title = item["snippet"]["title"]
-        video_id = item["snippet"]["resourceId"]["videoId"]
-        video_map[title] = video_id
+        t = item["snippet"]["title"]
+        v_id = item["snippet"]["resourceId"]["videoId"]
+        video_map[t] = v_id
 
     return video_map
 
@@ -46,7 +52,6 @@ def fetch_video_statistics(youtube, video_ids: List[str]) -> Dict[str, Dict]:
         return {}
 
     stats_map = {}
-    # APIの制約（1回最大50件）
     for i in range(0, len(video_ids), 50):
         chunk = video_ids[i : i + 50]
         res = youtube.videos().list(id=",".join(chunk), part="statistics").execute()
@@ -74,11 +79,15 @@ def update_history_with_metrics():
         print("履歴データが空です。")
         return
 
+    if not YOUTUBE_API_KEY or not CHANNEL_ID:
+        print("⚠️ YOUTUBE_API_KEY または YOUTUBE_CHANNEL_ID が環境変数に設定されていません。")
+        return
+
     youtube = googleapiclient.discovery.build(
         "youtube", "v3", developerKey=YOUTUBE_API_KEY
     )
 
-    print("🔍 YouTubeから直近の投稿動画を取得中...")
+    print("🔍 YouTubeから動画一覧を取得中...")
     video_map = get_channel_recent_videos(youtube, CHANNEL_ID)
     if not video_map:
         return
@@ -89,10 +98,13 @@ def update_history_with_metrics():
     updated_count = 0
     for r in records:
         title = r.get("title", "")
-        # タイトルで完全一致または部分一致を判定
+        clean_target = clean_title_for_match(title)
+        
         matched_id = None
         for yt_title, v_id in video_map.items():
-            if title in yt_title or yt_title in title:
+            clean_yt = clean_title_for_match(yt_title)
+            # 部分一致または高類似度で判定
+            if clean_target in clean_yt or clean_yt in clean_target:
                 matched_id = v_id
                 break
 
@@ -102,7 +114,7 @@ def update_history_with_metrics():
             r["likes"] = st["likes"]
             r["comments"] = st["comments"]
 
-            # エンゲージメント率による維持率の近似スコア (0.00〜1.00)
+            # エンゲージメント比率（維持率の代用指標）
             views = max(st["views"], 1)
             engagement_score = round(
                 min(1.0, (st["likes"] * 10 + st["comments"] * 25) / views), 4
@@ -113,35 +125,33 @@ def update_history_with_metrics():
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
 
-    print(f"✅ {updated_count}件の動画メトリクスを {HISTORY_FILE} に反映しました。")
+    print(f"✅ {updated_count}件の実績を {HISTORY_FILE} に反映しました。")
 
 
 def optimize_system_prompt():
-    """蓄積された上位・下位動画のデータからプロンプトを自己進化させる"""
+    """蓄積データから system_prompt.txt を自動改訂"""
     if not os.path.exists(HISTORY_FILE):
         return
 
     with open(HISTORY_FILE, "r", encoding="utf-8") as f:
         records = json.load(f)
 
-    # 実績値が存在する動画を抽出
+    # 実際に再生されている動画（再生数 > 0）を抽出
     evaluated = [r for r in records if r.get("views") is not None and r.get("views") > 0]
 
-    # データ数が5本未満の場合は初期学習のサンプル不足としてスキップ
-    if len(evaluated) < 5:
-        print(f"ℹ️ 分析に必要な動画データが不足しています（現在: {len(evaluated)}本 / 最低5本必要）。スキップします。")
+    if len(evaluated) < 3:
+        print(f"ℹ️ 分析に必要な実績データが不足しています（現在: {len(evaluated)}本 / 最低3本必要）。")
         return
 
-    # 再生数 × 維持率近似値 で総合評価スコアを算出してソート
     evaluated.sort(key=lambda x: x.get("views", 0) * (x.get("retention", 0.1) + 0.5), reverse=True)
 
     top_performers = evaluated[:3]
-    worst_performers = evaluated[-3:]
+    worst_performers = evaluated[-3:] if len(evaluated) >= 6 else []
 
-    print("\n🧠 Gemini による勝ちパターン・負けパターンのメタ分析を開始...")
+    print("\n🧠 Gemini による勝ちパターン・負けパターンのメタ分析を実行中...")
     client = genai.Client(api_key=GEMINI_API_KEY)
 
-    meta_prompt = f"""あなたはYouTube Shortsのアルゴリズムをハックし、再生維持率・インプレッションを極大化するプロのプロンプトエンジニア兼映像ディレクターです。
+    meta_prompt = f"""あなたはYouTube Shortsのアルゴリズムをハックし、再生維持率・インプレッションを極大化するプロのディレクターです。
 
 以下の【高実績動画（勝ちパターン）】と【低迷動画（負けパターン）】のデータを比較分析してください。
 タイトル、テーマ、アングル、フックの切り口を比較し、何が視聴者のスワイプを防ぎ、何が離脱を招いたかを明確に抽出してください。
@@ -152,7 +162,7 @@ def optimize_system_prompt():
 【低迷動画（負けパターン）】
 {json.dumps(worst_performers, ensure_ascii=False, indent=2)}
 
-この分析結果に基づき、次回以降の台本生成スクリプト（scenario.py）に読み込ませる「system_prompt.txt」の全文を作成・更新してください。
+この分析結果に基づき、次回以降の台本生成スクリプト（scenario.py）に読み込ませる「system_prompt.txt」の全文を作成してください。
 
 # 出力要件
 - 解説や前置き、コードブロック記号（```）は一切出力しないでください。
@@ -169,7 +179,7 @@ def optimize_system_prompt():
             cleaned_text = response.text.strip().removeprefix("```").removesuffix("```").strip()
             with open(SYSTEM_PROMPT_FILE, "w", encoding="utf-8") as f:
                 f.write(cleaned_text)
-            print(f"🚀 {SYSTEM_PROMPT_FILE} を最新の分析結果に基づいて自動更新しました！")
+            print(f"🚀 {SYSTEM_PROMPT_FILE} を自己改善・更新しました！")
     except Exception as e:
         print(f"⚠️ プロンプト自己改善処理に失敗しました: {e}")
 
