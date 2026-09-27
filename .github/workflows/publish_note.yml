@@ -1,9 +1,9 @@
 name: Note Draft Automation
 
 on:
-  workflow_dispatch: # GitHubの画面から手動テスト用
+  workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *' # 毎日JST午前7時（UTC 22:00）に実行
+    - cron: '0 22 * * *'
 
 jobs:
   build-and-draft:
@@ -29,9 +29,18 @@ jobs:
           AMAZON_TRACKING_ID: ${{ secrets.AMAZON_TRACKING_ID }}
         run: |
           python scripts/generate_review.py
-          
+
       - name: Upload draft to note
         env:
-          NOTE_AUTH_JSON: ${{ secrets.NOTE_AUTH_JSON }}   # ← この行が必要です
+          NOTE_AUTH_JSON: ${{ secrets.NOTE_AUTH_JSON }}
         run: |
           python scripts/note_uploader.py
+
+      # ↓ ここを追加：article_output.txt をダウンロード可能にする
+      - name: Upload Article as Artifact
+        if: always() # 前のステップが失敗してもtxtが生成されていれば保存
+        uses: actions/upload-artifact@v4
+        with:
+          name: article_output
+          path: article_output.txt
+          retention-days: 7
