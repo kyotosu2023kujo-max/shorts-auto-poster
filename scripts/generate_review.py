@@ -1,4 +1,3 @@
-gemini-3.0-flashimport os
 import json
 from google import genai
 from google.genai import types
