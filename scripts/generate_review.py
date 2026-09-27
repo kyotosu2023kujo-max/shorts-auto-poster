@@ -1,8 +1,10 @@
+import os
 import json
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
 
+# 以降のコード（class NoteArticle...）はそのまま
 class NoteArticle(BaseModel):
     title: str = Field(description="note読者の興味を惹くキャッチーな記事タイトル（30〜45文字程度）")
     summary: str = Field(description="記事の要約・導入リード文（100〜150文字程度）")
