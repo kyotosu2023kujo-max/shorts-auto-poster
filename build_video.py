@@ -1,3 +1,4 @@
+import asyncio
 import json
 import math
 import os
@@ -5,9 +6,9 @@ import random
 import subprocess
 import urllib.parse
 import urllib.request
+import edge_tts
 import librosa
 import numpy as np
-from gtts import gTTS
 from moviepy.editor import (
     AudioFileClip,
     ColorClip,
@@ -28,8 +29,17 @@ OUTPUT_VIDEO_PATH = "output_shorts.mp4"
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
 ICON_PATH = "youtubeicon.png"
-VOICE_SPEED_FACTOR = 1.45  # 読み上げ速度1.45倍
-VOICE_VOLUME_BOOST = 1.5   # 音量を1.5倍（約+3.5dB）にブースト
+
+# 利用可能な高品質ニューラル音声リスト（動画ごとにランダム選定）
+AVAILABLE_VOICES = [
+    "ja-JP-KeitaNeural",   # 落ち着いた男性（解説・暴露向き）
+    "ja-JP-NanamiNeural",  # 明瞭な女性アナウンサー声
+    "ja-JP-NaokiNeural",   # 若々しい男性声
+    "ja-JP-AoiNeural",     # 落ち着いたトーンの女性声
+]
+
+VOICE_RATE = "+38%"        # 1.4倍速相当のテンポ感
+VOICE_VOLUME_BOOST = 1.5   # FFmpegでの音量ブースト（約+3.5dB）
 
 
 def get_available_font(size: int = 72) -> ImageFont.FreeTypeFont:
@@ -126,18 +136,23 @@ def create_solid_fallback_video(duration: float, output_path: str):
     clip.close()
 
 
-def generate_audio_gtts(
-    text: str, output_path: str, speed_factor: float = VOICE_SPEED_FACTOR, volume_boost: float = VOICE_VOLUME_BOOST
-) -> float:
-    """gTTS音声をFFmpegで加速＋音量増幅して保存"""
-    raw_tts_path = f"raw_{output_path}"
-    tts = gTTS(text=text, lang="ja", slow=False)
-    tts.save(raw_tts_path)
+async def _synthesize_edge_tts(text: str, target_file: str, voice_name: str, rate: str):
+    """edge-tts を用いて高品質なニューラル音声を生成"""
+    communicate = edge_tts.Communicate(text, voice_name, rate=rate)
+    await communicate.save(target_file)
 
-    # atempoで倍速化、volumeで音量ブースト
+
+def generate_audio(
+    text: str, output_path: str, voice_name: str, volume_boost: float = VOICE_VOLUME_BOOST
+) -> float:
+    """edge-tts で音声を生成し、FFmpeg で音量を増幅して保存"""
+    raw_tts_path = f"raw_{output_path}"
+
+    asyncio.run(_synthesize_edge_tts(text, raw_tts_path, voice_name=voice_name, rate=VOICE_RATE))
+
     cmd = [
         "ffmpeg", "-y", "-i", raw_tts_path,
-        "-filter:a", f"atempo={speed_factor},volume={volume_boost}",
+        "-filter:a", f"volume={volume_boost}",
         "-vn", output_path
     ]
     subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
@@ -152,9 +167,9 @@ def generate_audio_gtts(
 
 
 def render_rich_subtitle_image(
-    text: str, color_name: str, width: int = VIDEO_WIDTH, height: int = 380
+    text: str, color_name: str, width: int = VIDEO_WIDTH, height: int = 260
 ) -> str:
-    """日本語フォントで太字・黒縁取りテロップ画像を生成"""
+    """被りを防ぐため、フォントサイズと描画エリアを最適化したテロップ画像を生成"""
     img = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
@@ -166,17 +181,18 @@ def render_rich_subtitle_image(
     font_color = color_map.get(color_name, (255, 230, 0, 255))
     outline_color = (0, 0, 0, 255)
 
-    font = get_available_font(size=74)
+    # 横幅圧迫を防ぐためフォントサイズを 74 -> 68 に微調整
+    font = get_available_font(size=68)
 
     try:
         bbox = draw.textbbox((0, 0), text, font=font)
         text_w = bbox[2] - bbox[0]
         text_h = bbox[3] - bbox[1]
     except Exception:
-        text_w = min(len(text) * 70, width - 40)
-        text_h = 80
+        text_w = min(len(text) * 65, width - 60)
+        text_h = 75
 
-    x = max((width - text_w) // 2, 20)
+    x = max((width - text_w) // 2, 30)
     y = (height - text_h) // 2
 
     stroke_width = 7
@@ -208,15 +224,14 @@ def render_rich_subtitle_image(
 
 
 def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -> ImageSequenceClip:
-    """サイズを拡大した左下配置用スペクトラムアナライザー（アイコン付き）を生成"""
-    # アイコンサイズを 110px -> 145px に拡大
-    icon_size = (145, 145)
+    """左下配置用スペクトラムアナライザー（340px枠）を生成"""
+    icon_size = (135, 135)
     if os.path.exists(ICON_PATH):
         icon_raw = Image.open(ICON_PATH).convert("RGBA")
     else:
-        icon_raw = Image.new("RGBA", (180, 180), (0, 0, 0, 0))
+        icon_raw = Image.new("RGBA", (160, 160), (0, 0, 0, 0))
         draw_ico = ImageDraw.Draw(icon_raw)
-        draw_ico.ellipse((5, 5, 175, 175), fill=(0, 200, 255, 255))
+        draw_ico.ellipse((5, 5, 155, 155), fill=(0, 200, 255, 255))
 
     icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
     mask = Image.new("L", icon_size, 0)
@@ -226,7 +241,6 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
     icon_img = Image.new("RGBA", icon_size, (0, 0, 0, 0))
     icon_img.paste(icon_raw, (0, 0), mask)
 
-    # 音声解析 (RMS音量計算)
     y, sr = librosa.load(audio_path)
     hop_length = int(sr / fps)
     rms = librosa.feature.rms(y=y, hop_length=hop_length)[0]
@@ -237,11 +251,10 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
     else:
         rms_boosted = np.zeros(int(duration * fps))
 
-    # アナライザー全体の描画領域を拡大 (280px -> 360px)
-    num_bars = 42
-    radius_base = 85
-    max_bar_length = 65
-    box_size = 360
+    num_bars = 40
+    radius_base = 80
+    max_bar_length = 55
+    box_size = 340
     center_x = box_size / 2
     center_y = box_size / 2
 
@@ -253,12 +266,11 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
         frame_img = Image.new("RGBA", (box_size, box_size), (0, 0, 0, 0))
         draw = ImageDraw.Draw(frame_img)
 
-        # 円形イコライザーバー描画
         for b in range(num_bars):
             angle = (360 / num_bars) * b
             rad = np.deg2rad(angle)
 
-            bar_len = max(8, int(volume * max_bar_length))
+            bar_len = max(6, int(volume * max_bar_length))
             start_r = radius_base
             end_r = radius_base + bar_len
 
@@ -267,9 +279,8 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
             end_x = center_x + end_r * np.cos(rad)
             end_y = center_y + end_r * np.sin(rad)
 
-            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 235), width=5)
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 235), width=4)
 
-        # 中央にアイコン配置
         icon_x = center_x - icon_size[0] / 2
         icon_y = center_y - icon_size[1] / 2
         frame_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
@@ -281,7 +292,7 @@ def generate_spectrum_overlay(audio_path: str, duration: float, fps: int = 30) -
 
 
 def apply_camera_motion(clip: VideoFileClip, motion_type: str) -> VideoFileClip:
-    """ズームイン・ズームアウト演出"""
+    """ズーム演出"""
     duration = clip.duration
     if motion_type == "zoom_in":
         return clip.resize(lambda t: 1.0 + 0.15 * (t / duration))
@@ -290,15 +301,15 @@ def apply_camera_motion(clip: VideoFileClip, motion_type: str) -> VideoFileClip:
     return clip
 
 
-def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
-    """1シーンの音声・映像・テロップ・スペクトラムの合成"""
-    print(f"\n--- シーン {index + 1} 構築中 ---")
+def build_single_scene(scene: Scene, index: int, voice_name: str) -> VideoFileClip:
+    """1シーンの合成処理"""
+    print(f"\n--- シーン {index + 1} 構築中 (ボイス: {voice_name}) ---")
     audio_path = f"temp_voice_{index}.mp3"
     raw_video_path = f"temp_raw_{index}.mp4"
 
-    # 1. 音声生成（1.45倍速＋音量1.5倍ブースト）
-    scene_duration = generate_audio_gtts(
-        scene.narration, audio_path, speed_factor=VOICE_SPEED_FACTOR, volume_boost=VOICE_VOLUME_BOOST
+    # 1. edge-tts で音声生成
+    scene_duration = generate_audio(
+        scene.narration, audio_path, voice_name=voice_name, volume_boost=VOICE_VOLUME_BOOST
     )
 
     # 2. 素材動画ダウンロード
@@ -325,23 +336,24 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
         height=VIDEO_HEIGHT,
     )
 
-    # 4. カメラワーク
+    # 4. カメラモーション
     base_clip = apply_camera_motion(base_clip, scene.camera_motion)
 
-    # 5. 左下配置のスペクトラムアナライザー（拡大サイズに対応して位置を微調整）
+    # 5. 左下配置のスペクトラムアナライザー（Y座標: 1920 - 450 = 1470px 付近に固定）
     spectrum_clip = generate_spectrum_overlay(audio_path, scene_duration)
-    spectrum_clip = spectrum_clip.set_position((40, VIDEO_HEIGHT - 530))
+    spectrum_clip = spectrum_clip.set_position((40, VIDEO_HEIGHT - 450))
 
-    # 6. テロップ描画
+    # 6. テロップ描画（アナライザーとの干渉を避けて配置）
     sub_img_path = render_rich_subtitle_image(scene.subtitle_text, scene.subtitle_color)
     sub_clip = ImageClip(sub_img_path).set_duration(scene_duration)
 
     if scene.subtitle_position == "top":
-        sub_y = 260
+        sub_y = 280
     elif scene.subtitle_position == "center":
-        sub_y = (VIDEO_HEIGHT - 380) // 2
+        sub_y = (VIDEO_HEIGHT - 260) // 2
     else:
-        sub_y = VIDEO_HEIGHT - 480
+        # bottom 指定時: アナライザーの上端（1470px）より高い位置（1240px）に配置
+        sub_y = VIDEO_HEIGHT - 680
 
     sub_clip = sub_clip.set_position(("center", sub_y))
 
@@ -367,10 +379,13 @@ def build_single_scene(scene: Scene, index: int) -> VideoFileClip:
 
 
 def build_full_video(script: DetailedScript):
-    """全シーンを結合してShorts動画を書き出し"""
+    """動画1本単位で音声をランダム決定し、全シーンを結合して書き出し"""
+    chosen_voice = random.choice(AVAILABLE_VOICES)
+    print(f"\n🎙️ 今回選定されたナレーションボイス: {chosen_voice}")
+
     scene_clips = []
     for i, scene_data in enumerate(script.scenes):
-        clip = build_single_scene(scene_data, i)
+        clip = build_single_scene(scene_data, i, voice_name=chosen_voice)
         scene_clips.append(clip)
 
     print("\n🎞 全シーンを結合中...")
@@ -395,7 +410,6 @@ def build_full_video(script: DetailedScript):
 if __name__ == "__main__":
     generated_script = generate_script()
 
-    # YouTubeアップロード用タイトルを title.txt に保存
     final_title = generated_script.title.strip()
     if "#Shorts" not in final_title:
         final_title = f"{final_title} #Shorts"
