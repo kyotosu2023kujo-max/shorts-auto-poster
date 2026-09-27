@@ -1,12 +1,12 @@
-name: Note Automation
+name: Note Draft Automation
 
 on:
-  workflow_dispatch: # まずはGitHubの画面から手動テスト実行できるようにします
+  workflow_dispatch: # GitHubの画面から手動テスト用
   schedule:
-    - cron: '0 22 * * *' # 日本時間 朝7時に自動実行（UTC 22:00）
+    - cron: '0 22 * * *' # 毎日JST午前7時（UTC 22:00）に実行
 
 jobs:
-  run-pipeline:
+  build-and-draft:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,9 +23,16 @@ jobs:
           pip install -r requirements.txt
           playwright install --with-deps chromium
 
-      - name: Run article generator
+      - name: Generate review article
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           AMAZON_TRACKING_ID: ${{ secrets.AMAZON_TRACKING_ID }}
         run: |
           python scripts/generate_review.py
+
+      - name: Upload draft to note
+        env:
+          NOTE_EMAIL: ${{ secrets.NOTE_EMAIL }}
+          NOTE_PASSWORD: ${{ secrets.NOTE_PASSWORD }}
+        run: |
+          python scripts/note_uploader.py
