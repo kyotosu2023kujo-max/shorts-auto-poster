@@ -1,0 +1,61 @@
+name: Test Build Only (No Upload)
+
+on:
+  workflow_dispatch: # Actions画面から手動実行ボタンを押せるように設定
+
+jobs:
+  run-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのコードを読み込み
+        uses: actions/checkout@v4
+
+      - name: システムツールと日本語フォントのインストール
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk fonts-ipafont-gothic ffmpeg imagemagick
+
+      - name: Pythonのセットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: ライブラリのインストール
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install edge-tts requests google-api-python-client google-auth-oauthlib google-auth-httplib2 google-auth
+
+      - name: YouTube実績集計とプロンプト自動最適化（生成前実行）
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python feedback_loop.py
+
+      - name: AIスクリプトの実行と動画生成
+        run: python build_video.py
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: 完成した動画をダウンロード可能にする（成果物保存）
+        uses: actions/upload-artifact@v4
+        if: success() || always()
+        with:
+          name: test-shorts-video
+          path: |
+            output_shorts.mp4
+            title.txt
+          retention-days: 3
+
+      - name: 履歴ファイルと更新プロンプトをリポジトリに保存
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add history.json system_prompt.txt
+          git diff --staged --quiet || git commit -m "Test: Update history and system prompt [skip ci]"
+          git pull --rebase origin main
+          git push origin main
