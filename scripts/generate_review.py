@@ -1,10 +1,9 @@
-import os
+gemini-3.0-flashimport os
 import json
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
 
-# 構造化出力用のスキーマ定義
 class NoteArticle(BaseModel):
     title: str = Field(description="note読者の興味を惹くキャッチーな記事タイトル（30〜45文字程度）")
     summary: str = Field(description="記事の要約・導入リード文（100〜150文字程度）")
@@ -13,7 +12,6 @@ class NoteArticle(BaseModel):
 def generate_affiliate_article(item_name: str, target_audience: str, affiliate_url: str) -> NoteArticle:
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
-    # システムプロンプト：note特有のトーン＆マナーと構成規約
     system_instruction = """
 あなたはnoteで高エンゲージメントを獲得するプロのガジェット・商品レビュアーです。
 読者に押し売り感を与えず、フラットかつ説得力のある文体（「〜です・ます調」、適度な体験感・本音感）で記事を執筆してください。
@@ -32,7 +30,6 @@ def generate_affiliate_article(item_name: str, target_audience: str, affiliate_u
 - アフィリエイトリンクは必ず指定された単一URLを独立した行に配置する。
 """
 
-    # ユーザープロンプト：具体的なインプット情報
     prompt = f"""
 以下の条件に基づいて、note向けのレビュー記事を作成してください。
 
@@ -44,7 +41,7 @@ def generate_affiliate_article(item_name: str, target_audience: str, affiliate_u
 """
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             system_instruction=system_instruction,
@@ -54,25 +51,18 @@ def generate_affiliate_article(item_name: str, target_audience: str, affiliate_u
         )
     )
 
-    # JSONからパースしてオブジェクトを返却
     article_data = json.loads(response.text)
     return NoteArticle(**article_data)
 
 if __name__ == "__main__":
-    # テスト実行用のサンプルパラメータ
     sample_item = "ロジクール MX Anywhere 3S (ワイヤレス静音マウス)"
     sample_target = "在宅勤務とカフェ作業を両立したいリモートワーカー・エンジニア"
-    sample_url = "https://www.amazon.co.jp/dp/B0C4M5XYZ?tag=yourtrackingid-22"
+    tracking_id = os.environ.get("AMAZON_TRACKING_ID", "yourtrackingid-22")
+    sample_url = f"https://www.amazon.co.jp/dp/B0C4M5XYZ?tag={tracking_id}"
 
     result = generate_affiliate_article(sample_item, sample_target, sample_url)
 
-    print("=== 生成されたタイトル ===")
-    print(result.title)
-    print("\n=== リード文 ===")
-    print(result.summary)
-    print("\n=== 本文プレビュー（先頭500文字） ===")
-    print(result.body[:500] + "\n...")
-
-    # 後続のPlaywright自動投稿スクリプトへ渡すためファイル出力
     with open("article_output.json", "w", encoding="utf-8") as f:
         f.write(result.model_dump_json(indent=2))
+        
+    print("記事生成完了: article_output.json に保存しました。")
