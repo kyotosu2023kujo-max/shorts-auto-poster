@@ -1,9 +1,10 @@
 name: Auto Generate Script
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '45 9 * * *'
+    # 毎日 日本時間 19:00 (UTC 10:00) に自動実行
+    - cron: '0 10 * * *'
+  workflow_dispatch: # 手動実行ボタン
 
 jobs:
   run-ai-script:
@@ -28,7 +29,6 @@ jobs:
           pip install -r requirements.txt
           pip install edge-tts requests google-api-python-client google-auth-oauthlib google-auth-httplib2 google-auth
 
-      # 1. 新しい動画を作る前に、前日までの実績を集計して system_prompt.txt を最新化
       - name: YouTube実績集計とプロンプト自動最適化（生成前実行）
         continue-on-error: true
         env:
@@ -38,34 +38,13 @@ jobs:
         run: |
           python feedback_loop.py
 
-      # 2. 最新化されたプロンプトとアングルをもとに本日の動画を生成
       - name: AIスクリプトの実行と動画生成
         run: python build_video.py
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-      - name: 完成した動画をダウンロード可能にする（成果物保存）
-        uses: actions/upload-artifact@v4
-        if: success() || always()
-        with:
-          name: shorts-video
-          path: |
-            output_shorts.mp4
-            title.txt
-          retention-days: 7
-
-      - name: Googleドライブへ自動保存
-        continue-on-error: true
-        env:
-          GOOGLE_DRIVE_REFRESH_TOKEN: ${{ secrets.GOOGLE_DRIVE_REFRESH_TOKEN }}
-          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-        run: |
-          python upload_drive.py
-
-      - name: YouTubeへ自動アップロード
+      - name: YouTubeへの自動投稿
         continue-on-error: true
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -74,12 +53,29 @@ jobs:
         run: |
           python upload_youtube.py
 
-      # 3. 集計結果（history.json）と更新されたプロンプト（system_prompt.txt）をリポジトリへ保存
+      - name: Googleドライブへのバックアップ保存
+        continue-on-error: true
+        env:
+          GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+        run: |
+          python upload_drive.py
+
+      - name: 成果物を保存（ダウンロード用）
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shorts-video
+          path: |
+            output_shorts.mp4
+            title.txt
+          retention-days: 3
+
       - name: 履歴ファイルと更新設定をリポジトリに保存
- 　　　 run: |
-   　　 git config --global user.name "github-actions[bot]"
-    　　git config --global user.email "github-actions[bot]@users.noreply.github.com"
-    　　git add history.json system_prompt.txt video_style_config.json
-    　　git diff --staged --quiet || git commit -m "Auto: Update metrics, prompt and video style [skip ci]"
-    　　git pull --rebase origin main
-    　　git push origin main
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add history.json system_prompt.txt video_style_config.json
+          git diff --staged --quiet || git commit -m "Auto: Update metrics, prompt and video style [skip ci]"
+          git pull --rebase origin main
+          git push origin main
