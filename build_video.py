@@ -229,7 +229,6 @@ def render_rich_subtitle_image(
     x = max((width - text_w) // 2, 30)
     y = (height - text_h) // 2
 
-    # 半透明の黒帯（座布団）を描画
     if use_bg_box:
         pad_x = 28
         pad_y = 16
@@ -274,4 +273,214 @@ def render_rich_subtitle_image(
 def generate_spectrum_overlay(
     audio_path: str, duration: float, box_size: int, icon_diameter: int, fps: int = 30
 ) -> ImageSequenceClip:
-    """指定サイズに応じたスペクトラムアナライザーを動
+    """指定サイズに応じたスペクトラムアナライザーを動的生成"""
+    icon_size = (icon_diameter, icon_diameter)
+    if os.path.exists(ICON_PATH):
+        icon_raw = Image.open(ICON_PATH).convert("RGBA")
+    else:
+        icon_raw = Image.new("RGBA", (160, 160), (0, 0, 0, 0))
+        draw_ico = ImageDraw.Draw(icon_raw)
+        draw_ico.ellipse((5, 5, 155, 155), fill=(0, 200, 255, 255))
+
+    icon_raw = icon_raw.resize(icon_size, Image.Resampling.LANCZOS)
+    mask = Image.new("L", icon_size, 0)
+    draw_mask = ImageDraw.Draw(mask)
+    draw_mask.ellipse((0, 0, icon_size[0], icon_size[1]), fill=255)
+
+    icon_img = Image.new("RGBA", icon_size, (0, 0, 0, 0))
+    icon_img.paste(icon_raw, (0, 0), mask)
+
+    y, sr = librosa.load(audio_path)
+    hop_length = int(sr / fps)
+    rms = librosa.feature.rms(y=y, hop_length=hop_length)[0]
+
+    if len(rms) > 0 and (np.max(rms) - np.min(rms) > 1e-8):
+        rms_normalized = (rms - np.min(rms)) / (np.max(rms) - np.min(rms) + 1e-8)
+        rms_boosted = np.power(rms_normalized, 0.4)
+    else:
+        rms_boosted = np.zeros(int(duration * fps))
+
+    num_bars = 40
+    radius_base = int(icon_diameter * 0.58)
+    max_bar_length = int(box_size * 0.16)
+    center_x = box_size / 2
+    center_y = box_size / 2
+
+    total_frames = max(len(rms_boosted), int(duration * fps))
+    frames = []
+
+    for i in range(total_frames):
+        volume = float(rms_boosted[i]) if i < len(rms_boosted) else 0.0
+        frame_img = Image.new("RGBA", (box_size, box_size), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(frame_img)
+
+        for b in range(num_bars):
+            angle = (360 / num_bars) * b
+            rad = np.deg2rad(angle)
+
+            bar_len = max(6, int(volume * max_bar_length))
+            start_r = radius_base
+            end_r = radius_base + bar_len
+
+            start_x = center_x + start_r * np.cos(rad)
+            start_y = center_y + start_r * np.sin(rad)
+            end_x = center_x + end_r * np.cos(rad)
+            end_y = center_y + end_r * np.sin(rad)
+
+            draw.line([(start_x, start_y), (end_x, end_y)], fill=(0, 240, 255, 235), width=4)
+
+        icon_x = center_x - icon_size[0] / 2
+        icon_y = center_y - icon_size[1] / 2
+        frame_img.paste(icon_img, (int(icon_x), int(icon_y)), icon_img)
+
+        frames.append(np.array(frame_img))
+
+    clip = ImageSequenceClip(frames, fps=fps)
+    return clip.set_duration(duration)
+
+
+def apply_camera_motion(clip: VideoFileClip, motion_type: str, zoom_ratio: float) -> VideoFileClip:
+    """設定ファイルのズーム倍率を反映したカメラワーク"""
+    duration = clip.duration
+    if motion_type == "zoom_in":
+        return clip.resize(lambda t: 1.0 + zoom_ratio * (t / duration))
+    elif motion_type == "zoom_out":
+        return clip.resize(lambda t: (1.0 + zoom_ratio) - zoom_ratio * (t / duration))
+    return clip
+
+
+def build_single_scene(scene: Scene, index: int, voice_name: str, config: dict) -> VideoFileClip:
+    """1シーンの合成処理（設定パラメータ適用）"""
+    print(f"\n--- シーン {index + 1} 構築中 (ボイス: {voice_name}) ---")
+    audio_path = f"temp_voice_{index}.mp3"
+    raw_video_path = f"temp_raw_{index}.mp4"
+
+    # 1. 音声生成
+    scene_duration = generate_audio(
+        scene.narration,
+        audio_path,
+        voice_name=voice_name,
+        volume_boost=config.get("voice_volume_boost", 1.5),
+        voice_rate=config.get("voice_rate", "+38%"),
+    )
+
+    # 2. 素材動画ダウンロード
+    downloaded = download_pexels_video(
+        scene.visual_search_queries, raw_video_path, min_duration=scene_duration
+    )
+    if not downloaded:
+        create_solid_fallback_video(scene_duration, raw_video_path)
+
+    # 3. 縦型リサイズ＆クロップ
+    base_clip = VideoFileClip(raw_video_path)
+    if base_clip.duration < scene_duration:
+        base_clip = vfx.loop(base_clip, duration=scene_duration)
+    else:
+        base_clip = base_clip.subclip(0, scene_duration)
+
+    base_clip = base_clip.resize(height=VIDEO_HEIGHT)
+    if base_clip.w < VIDEO_WIDTH:
+        base_clip = base_clip.resize(width=VIDEO_WIDTH)
+    base_clip = base_clip.crop(
+        x1=(base_clip.w - VIDEO_WIDTH) // 2,
+        y1=(base_clip.h - VIDEO_HEIGHT) // 2,
+        width=VIDEO_WIDTH,
+        height=VIDEO_HEIGHT,
+    )
+
+    # 4. カメラモーション
+    base_clip = apply_camera_motion(
+        base_clip, scene.camera_motion, zoom_ratio=config.get("zoom_ratio", 0.15)
+    )
+
+    # 5. スペクトラムアナライザー
+    box_size = config.get("spectrum_box_size", 340)
+    icon_dia = config.get("spectrum_icon_size", 135)
+    spectrum_clip = generate_spectrum_overlay(
+        audio_path, scene_duration, box_size=box_size, icon_diameter=icon_dia
+    )
+    spec_y = VIDEO_HEIGHT - config.get("spectrum_y_offset", 450)
+    spectrum_clip = spectrum_clip.set_position((40, spec_y))
+
+    # 6. テロップ描画（座布団設定・フォントサイズ反映）
+    sub_color = scene.subtitle_color or config.get("default_subtitle_color", "yellow")
+    sub_img_path = render_rich_subtitle_image(
+        scene.subtitle_text,
+        sub_color,
+        font_size=config.get("font_size", 68),
+        use_bg_box=config.get("subtitle_bg_box", True),
+        bg_opacity=config.get("subtitle_bg_opacity", 180),
+    )
+    sub_clip = ImageClip(sub_img_path).set_duration(scene_duration)
+
+    if scene.subtitle_position == "top":
+        sub_y = 280
+    elif scene.subtitle_position == "center":
+        sub_y = (VIDEO_HEIGHT - 280) // 2
+    else:
+        sub_y = VIDEO_HEIGHT - config.get("subtitle_y_offset", 680)
+
+    sub_clip = sub_clip.set_position(("center", sub_y))
+
+    # 7. レイヤー合成
+    audio_clip = AudioFileClip(audio_path).set_duration(scene_duration)
+    layers = [base_clip, spectrum_clip, sub_clip]
+
+    if (index == 0 and config.get("opening_flash_enabled", True)) or scene.screen_effect == "flash":
+        flash_clip = (
+            ColorClip(size=(VIDEO_WIDTH, VIDEO_HEIGHT), color=(255, 255, 255))
+            .set_duration(0.08)
+            .set_opacity(0.85)
+        )
+        layers.append(flash_clip)
+
+    composite = CompositeVideoClip(layers, size=(VIDEO_WIDTH, VIDEO_HEIGHT)).set_duration(scene_duration)
+    composite = composite.set_audio(audio_clip)
+
+    if os.path.exists(sub_img_path):
+        os.remove(sub_img_path)
+
+    return composite
+
+
+def build_full_video(script: DetailedScript):
+    """動画1本単位で音声を決定し、全シーンを結合して書き出し"""
+    chosen_voice = random.choice(AVAILABLE_VOICES)
+    print(f"\n🎙️ 今回選定されたナレーションボイス: {chosen_voice}")
+
+    scene_clips = []
+    for i, scene_data in enumerate(script.scenes):
+        clip = build_single_scene(scene_data, i, voice_name=chosen_voice, config=CONFIG)
+        scene_clips.append(clip)
+
+    print("\n🎞 全シーンを結合中...")
+    final_video = concatenate_videoclips(scene_clips, method="compose")
+
+    final_video.write_videofile(
+        OUTPUT_VIDEO_PATH,
+        fps=30,
+        codec="libx264",
+        audio_codec="aac",
+        threads=4,
+        preset="fast",
+        logger="bar",
+    )
+
+    for clip in scene_clips:
+        clip.close()
+    final_video.close()
+    print(f"🎉 Shorts動画の出力が完了しました: {OUTPUT_VIDEO_PATH}")
+
+
+if __name__ == "__main__":
+    generated_script = generate_script()
+
+    final_title = generated_script.title.strip()
+    if "#Shorts" not in final_title:
+        final_title = f"{final_title} #Shorts"
+
+    with open("title.txt", "w", encoding="utf-8") as f:
+        f.write(final_title)
+    print(f"📌 アップロード用タイトル決定: {final_title}")
+
+    build_full_video(generated_script)
