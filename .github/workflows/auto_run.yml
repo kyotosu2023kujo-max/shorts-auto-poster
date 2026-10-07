@@ -75,11 +75,11 @@ jobs:
           python upload_youtube.py
 
       # 3. 集計結果（history.json）と更新されたプロンプト（system_prompt.txt）をリポジトリへ保存
-      - name: 履歴ファイルと更新プロンプトをリポジトリに保存
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add history.json system_prompt.txt
-          git diff --staged --quiet || git commit -m "Update history.json and system_prompt.txt [skip ci]"
-          git pull --rebase origin main
-          git push origin main
+      - name: 履歴ファイルと更新設定をリポジトリに保存
+ 　　　 run: |
+   　　 git config --global user.name "github-actions[bot]"
+    　　git config --global user.email "github-actions[bot]@users.noreply.github.com"
+    　　git add history.json system_prompt.txt video_style_config.json
+    　　git diff --staged --quiet || git commit -m "Auto: Update metrics, prompt and video style [skip ci]"
+    　　git pull --rebase origin main
+    　　git push origin main
