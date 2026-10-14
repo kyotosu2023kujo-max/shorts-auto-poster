@@ -36,10 +36,10 @@
     "timestamp": "2026-09-13 13:55:31",
     "theme": "日常に潜む量子力学の不思議",
     "title": "雑音で光合成を爆速化する量子干渉の奇跡",
-    "views": 926,
+    "views": 927,
     "likes": 11,
     "comments": 1,
-    "retention": 0.1458
+    "retention": 0.14
   },
   {
     "timestamp": "2026-09-14 16:00:51",
@@ -48,7 +48,7 @@
     "views": 983,
     "likes": 9,
     "comments": 0,
-    "retention": 0.0916
+    "retention": 0.09
   },
   {
     "timestamp": "2026-09-15 14:32:41",
@@ -57,7 +57,7 @@
     "views": 949,
     "likes": 4,
     "comments": 0,
-    "retention": 0.0421
+    "retention": 0.04
   },
   {
     "timestamp": "2026-09-16 14:23:27",
@@ -66,7 +66,7 @@
     "views": 949,
     "likes": 5,
     "comments": 0,
-    "retention": 0.0527
+    "retention": 0.05
   },
   {
     "timestamp": "2026-09-17 14:28:54",
@@ -95,7 +95,7 @@
     "views": 1227,
     "likes": 7,
     "comments": 0,
-    "retention": 0.057
+    "retention": 0.06
   },
   {
     "timestamp": "2026-09-21 15:40:33",
@@ -210,7 +210,7 @@
     "angle": "『最初は笑っていた群衆が絶望に沈む』感情の急転直下ジェットコースター",
     "title": "【暴露】他人の炎上で脳がキマる中毒者の末路 #Shorts",
     "views": 780,
-    "retention": 0.0769,
+    "retention": 0.08,
     "likes": 6,
     "comments": 0
   },
@@ -249,8 +249,8 @@
     "theme": "破綻することが前提で設計された持続不可能な投機モデル",
     "angle": "『SNSのアルゴリズムが意図的に怒りや憎悪を拡散する仕組み』の暴露",
     "title": "【暴露】怒りを燃料に増殖する破綻型SNSの罠 #Shorts",
-    "views": 635,
-    "retention": 0.0472,
+    "views": 636,
+    "retention": 0.05,
     "likes": 3,
     "comments": 0
   },
@@ -259,8 +259,8 @@
     "theme": "王族の間で繰り返された遺伝的悲劇と近親交配",
     "angle": "『IQ140以上の集団が全員騙された』実験データの実証",
     "title": "【IQ140が全滅】王族を滅ぼした近親交配の罠 #Shorts",
-    "views": 1226,
-    "retention": 0.0408,
+    "views": 1228,
+    "retention": 0.04,
     "likes": 5,
     "comments": 0
   },
@@ -269,7 +269,7 @@
     "theme": "ギャンブル依存の構造をそのまま移植した課金アルゴリズム",
     "angle": "『知らない間にあなたの資産/健康が削られている』という不可視の損失提示",
     "title": "【理性が完全崩壊】脳をハックする変動強化の罠 #Shorts",
-    "views": 8,
+    "views": 11,
     "retention": 0.0,
     "likes": 0,
     "comments": 0
@@ -279,7 +279,7 @@
     "theme": "価格決定権を握る独占企業の見えざる談合",
     "angle": "『知った瞬間に過去の行動を激しく後悔させる』残酷な事実の突きつけ",
     "title": "【IQ140が全滅】独占企業が支配する価格談合の罠 #Shorts",
-    "views": 991,
+    "views": 982,
     "retention": 0.0,
     "likes": 0,
     "comments": 0
@@ -289,8 +289,8 @@
     "theme": "地図から突如として消滅した謎の集落と都市",
     "angle": "『あなたが今感じているその違和感の正体』という心理プロファイリング",
     "title": "【住民が全消滅】地図から消えた都市と脳の防衛バグ #Shorts",
-    "views": 1445,
-    "retention": 0.0484,
+    "views": 1446,
+    "retention": 0.05,
     "likes": 7,
     "comments": 0
   },
@@ -299,8 +299,8 @@
     "theme": "一本の誤報や偶然が決定づけた国家の滅亡",
     "angle": "『わずか0.01秒で脳が下している無意識の偏見判断』の測定データ",
     "title": "【帝国が全消滅】誤報を信じた脳の防衛バグ #Shorts",
-    "views": 1113,
-    "retention": 0.0359,
+    "views": 1114,
+    "retention": 0.04,
     "likes": 4,
     "comments": 0
   },
@@ -309,8 +309,8 @@
     "theme": "戦争を早期終結させるために隠された非人道技術",
     "angle": "『10秒以内に答えられたら天才』という知覚テスト導入",
     "title": "【10秒で脳崩壊】戦時下に封印された非人道兵器の罠 #Shorts",
-    "views": 621,
-    "retention": 0.0161,
+    "views": 824,
+    "retention": 0.01,
     "likes": 1,
     "comments": 0
   },
@@ -319,9 +319,18 @@
     "theme": "賞味期限と消費期限の間に潜む食品業界の廃棄ルール",
     "angle": "『努力すればするほど泥沼にハマる残酷な真実』の構造解明",
     "title": "【百万トン全消滅】安全管理が生む飢餓プログラミング #Shorts",
+    "views": 1,
+    "retention": 0.0,
+    "likes": 0,
+    "comments": 0
+  },
+  {
+    "title": "【致死量被曝で全消滅】死の金属が循環する市場の罠 #Shorts",
+    "theme": "中古車市場における情報の非対称性とレモン市場",
+    "angle": "1986年チェルノブイリ原発で最初に現場に入った消防士たちの証言",
     "views": null,
-    "retention": null,
     "likes": null,
-    "comments": null
+    "comments": null,
+    "retention": null
   }
 ]
