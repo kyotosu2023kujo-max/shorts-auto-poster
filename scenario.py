@@ -208,7 +208,7 @@ def generate_with_gemini(theme: str, angle: str, forbidden_titles: List[str]) ->
 - scenes: 4〜5つのシーン。各シーンにナレーション、Pexels検索キーワード（英語複数）、カメラワーク、テロップ情報を含めること。
 """
 
-    models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash"]
+    models_to_try = ["gemini-3.8-flash", "gemini-3.1-pro"]
     for model_name in models_to_try:
         try:
             # temperature, top_p, top_k などのサンプリングパラメータは廃止対応のため除外
