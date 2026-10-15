@@ -179,7 +179,7 @@ YouTube Shortsの映像ディレクターとして、実績データを踏まえ
 - マークダウン等の装飾は一切つけず、純粋なJSONオブジェクトのみを出力せよ。
 """
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=config_prompt
     )
 
