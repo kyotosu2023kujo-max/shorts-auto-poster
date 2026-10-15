@@ -141,7 +141,7 @@ YouTube Shortsの分析担当として、以下の実績データをもとに台
 - 余計な解説は省き、完成した新しいプロンプト全文のみを出力せよ。
 """
     res = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=meta_prompt
     )
     new_prompt = res.text.strip()
