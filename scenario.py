@@ -121,6 +121,9 @@ class DetailedScript(BaseModel):
     title: str = Field(description="動画タイトル（#Shorts を含める）")
     theme: str = Field(description="選定されたテーマ")
     angle: str = Field(description="選定された構成アングル")
+    hook_logic: str = Field(
+        description="【重要】選定されたアングル（語り口・導入フック）から、テーマの核心へ破綻なく接続するための論理的ロジック（1〜2文）。"
+    )
     scenes: List[Scene] = Field(description="4〜5シーンの構成リスト")
 
 
@@ -183,21 +186,27 @@ def get_base_system_prompt() -> str:
 
 
 def generate_with_gemini(theme: str, angle: str, forbidden_titles: List[str]) -> DetailedScript:
-    """Gemini API を呼び出して動画台本JSONを生成（非推奨パラメータ完全排除）"""
+    """Gemini API を呼び出して動画台本JSONを生成"""
     client = genai.Client(api_key=GEMINI_API_KEY)
 
     system_instruction = get_base_system_prompt()
-
     forbidden_text = "\n".join([f"- {t}" for t in forbidden_titles]) if forbidden_titles else "なし"
 
     prompt = f"""
 {system_instruction}
 
 【今回の指令】
-以下の「テーマ」と「構成アングル」を厳格に融合させて、唯一無二の尖ったショート動画台本を生成せよ。
+以下の「テーマ」と「構成アングル」を融合させ、知的で引き込みの強いショート動画台本を生成せよ。
 
-■ 抽象テーマ: {theme}
-■ 構成アングル（フック手法）: {angle}
+■ テーマ（何を伝えるか / 本題・ファクト）: {theme}
+■ 構成アングル（どう見せるか / フック・語り口のレンズ）: {angle}
+
+【論理破綻（チグハグ感）をゼロにする絶対ルール】
+1. アングルは「語り口・演出フック」であり、「テーマの事実関係を置き換える設定」ではない。
+   - 悪い例: 「ヒッグス場」の解説に「ある男が国家反逆罪に問われる」アングルを無理に適用し、架空の男が逮捕されるトンチキ創作劇にしてしまう。
+   - 良い例: 「ある国家反逆罪の容疑者が密かに持ち出そうとした極秘データ…それが、現代物理学の禁忌であるヒッグス場の操作技術だったとしたら？」というように、アングルを比喩・導入フックとして用い、直後にテーマの学術的・事実的解説へ自然にバトンを渡す。
+2. アングルに含まれる固有名詞や極端なシチュエーション（例：死刑囚、スマホ監視、国家機密など）は、テーマの持つ危険性・希少性・不気味さを際立たせるための「導入のメタファー（比喩・思考実験）」として柔軟に抽象化して解釈せよ。
+3. まず `hook_logic` フィールドで、「このアングルから本題のテーマへどう論理的に着地させるか」の筋道を明確に設計した上で、各シーンを記述すること。
 
 【重複禁止リスト（直近のタイトル）】
 以下の過去タイトルとネタや切り口が被ることは絶対に許されない:
@@ -205,13 +214,13 @@ def generate_with_gemini(theme: str, angle: str, forbidden_titles: List[str]) ->
 
 【出力要件】
 - title: 全角22〜32文字程度。スマホ通知や画面上で最もクリックしたくなる強烈なタイトル（末尾に #Shorts を付与）。
+- hook_logic: アングルとテーマを接続する論理ブリッジ（1〜2文）。
 - scenes: 4〜5つのシーン。各シーンにナレーション、Pexels検索キーワード（英語複数）、カメラワーク、テロップ情報を含めること。
 """
 
     models_to_try = ["gemini-3.8-flash", "gemini-3.1-pro"]
     for model_name in models_to_try:
         try:
-            # temperature, top_p, top_k などのサンプリングパラメータは廃止対応のため除外
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt,
@@ -242,6 +251,7 @@ def generate_script() -> DetailedScript:
     script = generate_with_gemini(selected_theme, selected_angle, forbidden_titles)
 
     print(f"\n✅ 台本生成完了: {script.title}")
+    print(f"💡 接続ロジック: {script.hook_logic}")
     save_history_record(script.title, selected_theme, selected_angle)
 
     return script
