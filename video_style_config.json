@@ -1,15 +1,15 @@
 {
-  "voice_rate": "+38%",
+  "voice_rate": "+35%",
   "voice_volume_boost": 1.5,
-  "max_cut_duration": 2.5,
-  "zoom_ratio": 0.2,
-  "font_size": 72,
+  "max_cut_duration": 2.2,
+  "zoom_ratio": 0.18,
+  "font_size": 70,
   "subtitle_y_offset": 680,
   "subtitle_bg_box": true,
-  "subtitle_bg_opacity": 185,
+  "subtitle_bg_opacity": 195,
   "spectrum_box_size": 340,
   "spectrum_icon_size": 135,
   "spectrum_y_offset": 450,
   "opening_flash_enabled": true,
-  "default_subtitle_color": "cyan"
+  "default_subtitle_color": "yellow"
 }
