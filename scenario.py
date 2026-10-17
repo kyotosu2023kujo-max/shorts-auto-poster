@@ -75,4 +75,207 @@ ANGLES = [
     # 逆張り・パラドックス・暴露 (21-40)
     "一般常識の真逆こそが正解であるという論理的証明", "良かれと思ってやっている善行が悪影響を生んでいる矛盾", "成功者が絶対に口にしない本当の成り上がりルール",
     "一見無駄に見えるものが実は最強の防衛策だった話", "『努力は報われない』という残酷な統計データを提示する", "学校や親が決して教えなかった社会の裏ルール",
-    "善人が損をし
+    "善人が損をし悪人が勝ち残るゲーム理論の冷徹な結論", "健康に良いとされる食品が実は体を蝕んでいるデータ", "大企業が巨額の赤字を出してまで無料でサービスを提供する真の狙い",
+    "頭が良い人ほどハマってしまう高度な思考の罠", "貧乏人ほど進んでお金を差し出してしまう巧妙な価格設定", "みんなが欲しい自由が実は人間を最も不幸にするパラドックス",
+    "愛する行為が相手を依存させて破滅に導く共依存の真実", "平和を維持するために秘密裏に行われている武力行使の記録", "正直者が馬鹿を見る社会システムを合法的にハックする方法",
+    "『失敗は成功の母』の嘘：ただ消耗して終わるパターンの共通点", "清潔すぎる環境が人間の免疫システムを狂わせる病理", "お金持ちが絶対に買わない、庶民だけが飛びつく商品の正体",
+    "優秀なリーダーほど組織を崩壊させてしまうマネジメントの罠", "誰もが羨む夢の職業の過酷すぎる労働環境と使い捨ての実態",
+
+    # なぜ？・種明かし・論理展開 (41-60)
+    "子供でもわかる素朴な疑問から宇宙の根本法則に繋げる", "プロのマジシャンが使う視線誘導を日常の騙しに応用した解説", "未解決事件のパズルのピースが1つの仮説で全てハマる快感",
+    "『なぜカジノには時計がないのか？』から始まる空間心理学", "たった1つのスペルミスで国家が崩壊しかけた歴史のバグ", "アリの行列が全員同じ方向に歩き続ける驚きのメカニズム",
+    "なぜ飛行機の窓は丸いのか？四角い窓が招いた航空機空中分解事故", "天才学者が一生をかけて解けなかった数式が遺したもの", "なぜ深夜のラーメンはあんなに美味いのか？脳の生化学的トリック",
+    "スーパーの入り口に野菜売り場が必ずあるマーケティングの必然", "なぜ人はジェットコースターでお金を払って恐怖を買うのか？", "死の直前に脳内で何が起きているのか？臨死体験の科学的解明",
+    "なぜピラミッドはいまだに現代技術でも完全再現できないのか？", "1ドル札のデザインに隠されたフリーメイソンの暗号を解読する", "なぜカラスは人間の顔を何年も覚えているのか？驚異の知能実験",
+    "世界最速の男の走りを物理学で分析したら浮いていた件", "なぜアップル製品の箱は開けるのに数秒かかる設計なのか？", "なぜ日本刀はあれほど強靭なのか？古代の製鉄技術が起こした奇跡",
+    "深海魚がグロテスクな姿に進化した過酷すぎる環境圧の理由", "なぜ人は『ここだけの話』を他人に喋ってしまうのか？心理的報酬",
+
+    # ストーリー・追体験・タイムリミット (61-80)
+    "ある平凡な男が知らずに国家反逆罪に問われるまでの緊迫の3日間", "極限の雪山で遭難した登山家が生き残るために下した究極の決断", "潜水艦の酸素が残り1時間となった密室での心理ドラマ",
+    "1億円を拾った男が転落していく様子をリアルタイムで追体験", "人工知能が人類に対して反乱を起こす最初の1秒間のログ", "もしも明日、太陽が消滅したら地球はどうなるのか時系列シミュレーション",
+    "1986年チェルノブイリ原発で最初に現場に入った消防士たちの証言", "ある朝起きたら世界から人間が自分以外消えていた場合の生存確率", "宇宙飛行士が船外活動中に命綱が切れて漂流した実話",
+    "無人島に漂着した少年たちが作った独自の社会が崩壊するまで", "死刑執行当日の朝、独房の扉が開いた瞬間の心理描写", "もしも光の速度が時速100キロになったら日常はどう崩壊するか",
+    "天才ハッカーが世界中の銀行口座をゼロにした伝説の1夜", "もしも全人類が同時にジャンプしたら地球は軌道を外れるのか？", "ある天才少女がIQが高すぎて精神を病んでいくカルテの記録",
+    "第二次世界大戦中、敵の兵士と奇跡のクリスマス休戦を過ごした手記", "もしも人間が一切眠らなくなったら何日目で精神が崩壊するか", "深海の沈没船から金塊を引き揚げようとしたトレジャーハンターの怪死",
+    "もしも地球の自転が突然停止したら地表を襲う超音速の暴風", "パンデミック発生初日のとある病院のカルテ流出から始まる記録",
+
+    # クイズ・思考実験・挑発 (81-100)
+    "『あなたはトロッコ問題を解けますか？』から始まる倫理の深淵", "100人中98人が間違える直感と確率の罠（モンティ・ホール問題）", "『この画像の中に1つだけ違和感があります』で凝視させる",
+    "IQ130以上の人だけが即答できる論理パズルの挑戦状", "『もしも悪魔から寿命10年と引き換えに10億円を提示されたら？』", "囚人のジレンマ：裏切るか協力するか、あなたの本性を暴くテスト",
+    "『3秒以内にこのボタンを押さないと全員消滅します』の極限心理", "あなたの認知バイアスを暴く3つの質問で自分を疑わせる", "『無人島に1つだけ持っていくなら？』科学的に正しい唯一の回答",
+    "テセウスの船：あなたの体は本当に昨日のあなたと同じものか？", "『この音声の違和感に気づけたら天才』聴覚の錯覚テスト", "あなたが今見ている色は、他人が見ている色と同じと言い切れますか？",
+    "『死後の世界を信じますか？』科学者が辿り着いた意識の量子論", "シュレーディンガーの猫を小学生でも絶対に理解できる例え話", "『もし過去に戻ってヒトラーを暗殺したら？』タイムパラドックスの罠",
+    "あなたのスマホの検索履歴からAIが予測する余命宣告シミュレーション", "『世界で一番危険な場所はどこ？』あなたの予想を100%裏切る回答", "この3つの特徴に当てはまる友達がいたら今すぐ距離を置くべき診断",
+    "『もし重力が半分になったら人間はどう進化するか？』の思考実験", "動画の最後に隠された重大なメッセージにあなたは気づけましたか？",
+]
+
+
+class ReferenceBook(BaseModel):
+    book_title: str = Field(description="動画テーマをさらに深く知るための実在する名著・学術書・新書・ノンフィクション（例: 『毒と薬の世界史』『利己的な遺伝子』など）")
+    hook_comment: str = Field(description="固定コメント用の一言（例: 『この狂気的な実験と隠蔽工作の全記録を記した禁断の文献はこちら』）")
+
+
+class Scene(BaseModel):
+    narration: str = Field(description="ナレーションの読み上げ原稿（1.4倍速でテンポよく話す）")
+    visual_search_queries: List[str] = Field(description="Pexels/Pixabay検索用の英語キーワードリスト（例: ['dark laboratory microscope', 'cellular motion']）")
+    camera_motion: Literal["zoom_in", "zoom_out", "static"] = Field(description="カメラワーク演出")
+    subtitle_text: str = Field(description="画面下部に大きく表示するテロップ（14文字以内の短文）")
+    subtitle_color: Literal["yellow", "white", "cyan"] = Field(description="テロップのフォントカラー")
+    subtitle_position: Literal["bottom", "center", "top"] = Field(description="テロップの画面配置位置")
+    screen_effect: Optional[Literal["flash", "none"]] = Field(default="none", description="シーン切替時の画面効果")
+
+
+class DetailedScript(BaseModel):
+    title: str = Field(description="動画タイトル（#Shorts を含める）")
+    theme: str = Field(description="選定されたテーマ")
+    angle: str = Field(description="選定された構成アングル")
+    scenes: List[Scene] = Field(description="4〜5シーンの構成リスト")
+    reference_book: ReferenceBook = Field(description="世界観を補強する実在書籍データ")
+
+
+def load_recent_history(n: int = 15) -> List[str]:
+    """直近n件の投稿タイトルを取得（ネタの重複防止）"""
+    if not os.path.exists(HISTORY_FILE):
+        return []
+    try:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            records = json.load(f)
+            return [r.get("title", "") for r in records[-n:] if r.get("title")]
+    except Exception:
+        return []
+
+
+def save_history_record(title: str, theme: str, angle: str):
+    """生成したタイトルとマトリクス選定結果を history.json に保存"""
+    records = []
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                records = json.load(f)
+        except Exception:
+            records = []
+
+    records.append({
+        "title": title,
+        "theme": theme,
+        "angle": angle,
+        "views": None,
+        "likes": None,
+        "comments": None,
+        "retention": None,
+    })
+
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
+
+
+def save_reference_book(ref: ReferenceBook):
+    """固定コメント・概要欄投稿用に書籍アソシエイトリンクを書き出し"""
+    encoded_query = urllib.parse.quote(ref.book_title)
+    amazon_search_url = f"https://www.amazon.co.jp/s?k={encoded_query}&tag={AMAZON_TRACKING_ID}"
+
+    comment_content = (
+        f"【本動画の参考文献・さらに深い真実を知る名著】\n"
+        f"📖 『{ref.book_title}』\n"
+        f"{ref.hook_comment}\n"
+        f"👉 {amazon_search_url}"
+    )
+
+    with open(BOOK_OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write(comment_content)
+    print(f"📚 参考文献アソシエイトリンクを '{BOOK_OUTPUT_FILE}' に保存しました。")
+
+
+def get_base_system_prompt() -> str:
+    """自己改訂された system_prompt.txt が存在すればそれを優先読み込み"""
+    if os.path.exists(SYSTEM_PROMPT_FILE):
+        try:
+            with open(SYSTEM_PROMPT_FILE, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                if content:
+                    return content
+        except Exception:
+            pass
+
+    return """あなたはYouTube Shortsのアルゴリズムをハックし、視聴維持率とインプレッションを極大化するショート動画専任のトップディレクターです。
+視聴者が日常で意識していない「脳のバグ・社会の裏ルール・歴史の暗部・生物の異常性・資本の罠」を突きつけ、スワイプの手を強制停止させる台本を作成してください。
+
+【構成ルール】
+1. 冒頭（第1シーン）: 最初の1秒で常識破壊・警告・恐怖を突きつけ、スワイプを反射的に止めさせる（screen_effectは'flash'を推奨）。
+2. 展開（第2〜3シーン）: 矢継ぎ早に具体的な証拠、数字、心理トリックを畳み掛ける。退屈を感じる隙を1ミリも与えない。
+3. 結末（最終シーン）: 視聴者に強い余韻、戦慄、またはコメント欄で議論したくなる問いかけを残す。冒頭へループできる構文を意識する。
+4. 全体の長さ: 4〜5シーン構成。各シーンのナレーションはテンポよく読み上げて30〜45秒に収める。
+5. テロップ（subtitle_text）: 1画面あたり8〜14文字以内。短く力強い単語で画面を支配する。
+6. 参考文献（reference_book）: テーマの深層に実在する名著（学術書、新書、ノンフィクション）を1冊選定すること。"""
+
+
+def generate_with_gemini(theme: str, angle: str, forbidden_titles: List[str]) -> DetailedScript:
+    """Gemini 3.8 Flash を用いて動画台本JSONを生成（非推奨パラメータ完全排除）"""
+    client = genai.Client(api_key=GEMINI_API_KEY)
+
+    system_instruction = get_base_system_prompt()
+    forbidden_text = "\n".join([f"- {t}" for t in forbidden_titles]) if forbidden_titles else "なし"
+
+    prompt = f"""
+{system_instruction}
+
+【今回の指令】
+以下の「テーマ」と「構成アングル」を有機的に融合させ、冷徹かつ知的好奇心を刺激するショート動画台本を生成せよ。
+
+■ 抽象テーマ: {theme}
+■ 構成アングル（フック手法）: {angle}
+
+【重複禁止リスト（直近のタイトル）】
+以下の過去タイトルとネタや切り口が被ることは絶対に許されない:
+{forbidden_text}
+
+【出力要件】
+- title: 全角22〜32文字程度。知的好奇心・本能的恐怖を刺激する硬質な名詞を使い、末尾に #Shorts を付与せよ。安っぽい【暴露】【警告】などの定型タグは使用禁止。
+- scenes: 4〜5つのシーン。各シーンにナレーション、Pexels/Pixabay検索キーワード（英語複数）、カメラワーク、テロップ情報を含めること。
+- reference_book: その事象や歴史を学術的・体系的に追及した実在の書籍名と紹介文を含めること。
+"""
+
+    models_to_try = ["gemini-3.8-flash", "gemini-3.7-flash"]
+    for model_name in models_to_try:
+        try:
+            # temperature, top_p, top_k などのサンプリングパラメータは廃止対応のため除外
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config={
+                    "response_mime_type": "application/json",
+                    "response_schema": DetailedScript,
+                    "seed": random.randint(1, 10000000),
+                },
+            )
+            return response.parsed
+        except Exception as e:
+            print(f"⚠️ {model_name} での生成失敗: {e}。次を試行します...")
+
+    raise RuntimeError("利用可能な全Geminiモデルで台本生成に失敗しました。")
+
+
+def generate_script() -> DetailedScript:
+    """マトリクス選定・重複回避・生成・履歴保存を一貫して実行"""
+    forbidden_titles = load_recent_history(n=15)
+
+    selected_theme = random.choice(THEMES)
+    selected_angle = random.choice(ANGLES)
+
+    print(f"🎲 マトリクス選定完了:")
+    print(f"   テーマ: {selected_theme}")
+    print(f"   アングル: {selected_angle}")
+
+    script = generate_with_gemini(selected_theme, selected_angle, forbidden_titles)
+
+    print(f"\n✅ 台本生成完了: {script.title}")
+    save_history_record(script.title, selected_theme, selected_angle)
+    save_reference_book(script.reference_book)
+
+    return script
+
+
+if __name__ == "__main__":
+    generated = generate_script()
+    print("\n--- 生成プレビュー ---")
+    print(json.dumps(generated.model_dump(), ensure_ascii=False, indent=2))
