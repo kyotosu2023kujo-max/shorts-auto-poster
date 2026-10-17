@@ -26,6 +26,7 @@ from scenario import DetailedScript, Scene, generate_script
 # --- 定数・パス設定 ---
 CONFIG_FILE = "video_style_config.json"
 PEXELS_API_KEY = os.environ.get("PEXELS_API_KEY", "")
+PIXABAY_API_KEY = os.environ.get("PIXABAY_API_KEY", "")
 OUTPUT_VIDEO_PATH = "output_shorts.mp4"
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
@@ -35,6 +36,15 @@ ICON_PATH = "youtubeicon.png"
 AVAILABLE_VOICES = [
     "ja-JP-KeitaNeural",   # 落ち着いた男性（解説・暴露向き）
     "ja-JP-NanamiNeural",  # 明瞭な女性アナウンサー声
+]
+
+# 抽象フォールバック用キーワード群（テーマがマニアックすぎて全滅したときの保険）
+FALLBACK_QUERIES = [
+    "dark abstract background",
+    "space galaxy mystery",
+    "science laboratory motion",
+    "microscope cells biology",
+    "dramatic cinematic light",
 ]
 
 # --- 演出設定の読み込み（デフォルト値フォールバック付き） ---
@@ -102,58 +112,100 @@ def get_available_font(size: int = 72) -> ImageFont.FreeTypeFont:
     return ImageFont.load_default()
 
 
-def download_pexels_video(queries: list[str], output_path: str, min_duration: float = 3.0) -> bool:
-    """Pexels APIから高画質な縦型動画をダウンロード"""
+# --- 素材動画取得（Pexels & Pixabay ハイブリッド多重フォールバック） ---
+def fetch_pexels_video(query: str, orientation: str, min_duration: float = 3.0) -> str:
+    """Pexels APIから指定の向きで動画URLを取得"""
     if not PEXELS_API_KEY:
-        print("⚠️ PEXELS_API_KEY が設定されていません。")
-        return False
+        return ""
+    try:
+        url = (
+            f"https://api.pexels.com/videos/search?"
+            f"query={urllib.parse.quote(query)}&orientation={orientation}&per_page=6"
+        )
+        req = urllib.request.Request(
+            url,
+            headers={
+                "Authorization": PEXELS_API_KEY,
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "application/json",
+            },
+        )
+        with urllib.request.urlopen(req, timeout=8) as res:
+            data = json.loads(res.read().decode("utf-8"))
 
-    api_headers = {
-        "Authorization": PEXELS_API_KEY,
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Accept": "application/json",
-    }
+        for v in data.get("videos", []):
+            if v.get("duration", 0) < min_duration:
+                continue
+            video_files = v.get("video_files", [])
+            for vf in sorted(video_files, key=lambda x: x.get("width", 0) * x.get("height", 0), reverse=True):
+                link = vf.get("link")
+                if link:
+                    return link
+    except Exception as e:
+        print(f"⚠️ Pexels取得スキップ ({query}, {orientation}): {e}")
+    return ""
 
-    for query in queries:
-        try:
-            url = (
-                f"https://api.pexels.com/videos/search?"
-                f"query={urllib.parse.quote(query)}&orientation=portrait&per_page=8"
-            )
-            req = urllib.request.Request(url, headers=api_headers)
-            with urllib.request.urlopen(req, timeout=12) as res:
-                data = json.loads(res.read().decode("utf-8"))
 
-            videos = data.get("videos", [])
-            for v in videos:
-                if v.get("duration", 0) < min_duration:
-                    continue
+def fetch_pixabay_video(query: str, min_duration: float = 3.0) -> str:
+    """Pixabay APIからHD動画URLを取得"""
+    if not PIXABAY_API_KEY:
+        return ""
+    try:
+        url = (
+            f"https://pixabay.com/api/videos/?"
+            f"key={PIXABAY_API_KEY}&q={urllib.parse.quote(query)}&per_page=6"
+        )
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=8) as res:
+            data = json.loads(res.read().decode("utf-8"))
 
-                video_files = v.get("video_files", [])
-                target_file = None
+        for hit in data.get("hits", []):
+            if hit.get("duration", 0) < min_duration:
+                continue
+            videos = hit.get("videos", {})
+            for quality in ["large", "medium", "small"]:
+                link = videos.get(quality, {}).get("url")
+                if link:
+                    return link
+    except Exception as e:
+        print(f"⚠️ Pixabay取得スキップ ({query}): {e}")
+    return ""
 
-                for vf in video_files:
-                    w = vf.get("width", 0)
-                    h = vf.get("height", 0)
-                    if h > w and h >= 1280:
-                        target_file = vf
-                        break
 
-                if not target_file and video_files:
-                    target_file = video_files[0]
+def download_best_video(queries: list[str], output_path: str, min_duration: float = 3.0) -> bool:
+    """
+    4段階の多重フォールバックで素材切れを防止:
+    1. Pexels (縦型)
+    2. Pexels (横型・縦クロップ用)
+    3. Pixabay (HD動画)
+    4. 抽象キーワードによる再検索
+    """
+    extended_queries = queries + [random.choice(FALLBACK_QUERIES)]
 
-                if target_file and target_file.get("link"):
-                    d_req = urllib.request.Request(
-                        target_file["link"],
-                        headers={"User-Agent": api_headers["User-Agent"]},
-                    )
-                    with urllib.request.urlopen(d_req, timeout=30) as d_res, open(output_path, "wb") as f_out:
-                        f_out.write(d_res.read())
-                    print(f"🎬 Pexels取得成功: '{query}' (長さ: {v.get('duration')}s)")
-                    return True
+    for q in extended_queries:
+        # 1. Pexels 縦型
+        link = fetch_pexels_video(q, orientation="portrait", min_duration=min_duration)
+        source = "Pexels (縦型)"
 
-        except Exception as e:
-            print(f"⚠️ Pexels取得スキップ (クエリ: '{query}'): {e}")
+        # 2. Pexels 横型
+        if not link:
+            link = fetch_pexels_video(q, orientation="landscape", min_duration=min_duration)
+            source = "Pexels (横型クロップ)"
+
+        # 3. Pixabay
+        if not link:
+            link = fetch_pixabay_video(q, min_duration=min_duration)
+            source = "Pixabay (HD)"
+
+        if link:
+            try:
+                d_req = urllib.request.Request(link, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(d_req, timeout=30) as d_res, open(output_path, "wb") as f_out:
+                    f_out.write(d_res.read())
+                print(f"🎬 動画素材取得成功 [{source}]: '{q}'")
+                return True
+            except Exception as e:
+                print(f"⚠️ ダウンロード失敗 ({link}): {e}")
 
     return False
 
@@ -350,7 +402,7 @@ def apply_camera_motion(clip: VideoFileClip, motion_type: str, zoom_ratio: float
 
 
 def build_single_scene(scene: Scene, index: int, voice_name: str, config: dict) -> VideoFileClip:
-    """1シーンの合成処理（設定パラメータ適用）"""
+    """1シーンの合成処理（設定パラメータ適用・ハイブリッド素材取得）"""
     print(f"\n--- シーン {index + 1} 構築中 (ボイス: {voice_name}) ---")
     audio_path = f"temp_voice_{index}.mp3"
     raw_video_path = f"temp_raw_{index}.mp4"
@@ -364,14 +416,14 @@ def build_single_scene(scene: Scene, index: int, voice_name: str, config: dict) 
         voice_rate=config.get("voice_rate", "+38%"),
     )
 
-    # 2. 素材動画ダウンロード
-    downloaded = download_pexels_video(
+    # 2. 素材動画ダウンロード（Pexels & Pixabay ハイブリッド取得）
+    downloaded = download_best_video(
         scene.visual_search_queries, raw_video_path, min_duration=scene_duration
     )
     if not downloaded:
         create_solid_fallback_video(scene_duration, raw_video_path)
 
-    # 3. 縦型リサイズ＆クロップ
+    # 3. 縦型リサイズ＆クロップ（横型素材も中央9:16に自動クロップ）
     base_clip = VideoFileClip(raw_video_path)
     if base_clip.duration < scene_duration:
         base_clip = vfx.loop(base_clip, duration=scene_duration)
