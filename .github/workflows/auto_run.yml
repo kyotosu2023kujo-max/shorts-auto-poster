@@ -29,14 +29,14 @@ jobs:
           pip install -r requirements.txt
           pip install edge-tts requests google-api-python-client google-auth-oauthlib google-auth-httplib2 google-auth
 
-      - name: YouTube実績集計とプロンプト自動最適化（生成前実行）
-        continue-on-error: true
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          python feedback_loop.py
+#      - name: YouTube実績集計とプロンプト自動最適化（生成前実行）
+#        continue-on-error: true
+#        env:
+#          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+#          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+#          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+#        run: |
+#          python feedback_loop.py
 
       - name: AIスクリプトの実行と動画生成
         run: python build_video.py
@@ -54,13 +54,13 @@ jobs:
         run: |
           python upload_youtube.py
 
-      - name: Googleドライブへのバックアップ保存
-        continue-on-error: true
-        env:
-          GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
-          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-        run: |
-          python upload_drive.py
+#       - name: Googleドライブへのバックアップ保存
+#        continue-on-error: true
+#        env:
+#          GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
+#          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+#        run: |
+#          python upload_drive.py
 
       - name: 成果物を保存（ダウンロード用）
         uses: actions/upload-artifact@v4
