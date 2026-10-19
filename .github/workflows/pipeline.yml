@@ -1,47 +1,46 @@
 name: Shorts Production Pipeline with Human Review
 
 on:
-  # 定期実行：毎朝・毎晩に台本を作ってDiscordへ通知
-  schedule:
-    - cron: '0 22 * * *'  # JST 7:00
-    - cron: '0 10 * * *'  # JST 19:00
-  # 手動実行用ボタン（スマホのGitHubアプリやブラウザから押せる）
   workflow_dispatch:
     inputs:
       action:
-        description: '実行モード'
+        description: '実行する処理を選択してください'
         required: true
         default: 'generate'
         type: choice
         options:
-          - generate   # 台本生成 & Discord通知まで
-          - build_and_upload  # 人間が確認・修正した後の動画構築 & 投稿
+          - generate
+          - build_and_upload
+  schedule:
+    # 毎日決まった時間に自動で台本生成を行いたい場合に有効化 (UTC基準: 毎朝9時JSTなら0:00 UTC)
+    - cron: '0 0 * * *'
 
 jobs:
   process:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # --- 1. ffmpeg のインストール (動画・音声合成に必須) ---
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      # --- 2. 依存ライブラリのインストール ---
       - name: Install Dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # --- ステップ1: 台本生成 & 人間へ通知 ---
-      - name: Generate Script & Notify
-        if: "${{ github.event.inputs.action == 'generate' || github.event_name == 'schedule' }}"
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          python generate_and_notify.py
-
-# --- ステップ1: 台本生成 & 人間へ通知 ---
+      # --- 3. 【フェーズ1】台本生成 & Discord通知 & 成果物コミット ---
       - name: Generate Script & Notify
         if: "${{ github.event.inputs.action == 'generate' || github.event_name == 'schedule' }}"
         env:
@@ -50,21 +49,22 @@ jobs:
         run: |
           python generate_and_notify.py
           
-          # 生成された pending_scenario.json を自動コミット＆プッシュ
+          # 生成された pending_scenario.json をリポジトリに自動保存
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add pending_scenario.json
           git commit -m "Auto: Update pending_scenario.json" || exit 0
           git push
 
-      # --- ステップ2: 人間の承認後に動画生成 & 投稿 ---
+      # --- 4. 【フェーズ2】動画構築 & YouTube自動投稿 ---
       - name: Build Video & Upload
         if: "${{ github.event.inputs.action == 'build_and_upload' }}"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           YOUTUBE_CLIENT_SECRET_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRET_JSON }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
         run: |
-          # 動画構築とYouTube投稿スクリプトを呼び出し
           python build_video.py
           python upload_youtube.py
