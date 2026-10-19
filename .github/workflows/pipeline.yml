@@ -39,7 +39,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          python generate_and_notify.py
+          python /shorts/generate_and_notify.py
 
       # 台本（pending_scenario.json）を成果物として保存（後から手動修正できるようにする）
       - name: Upload Pending Scenario Artifact
