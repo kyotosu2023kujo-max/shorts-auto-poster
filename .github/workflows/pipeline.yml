@@ -1,0 +1,62 @@
+name: Shorts Production Pipeline with Human Review
+
+on:
+  # 定期実行：毎朝・毎晩に台本を作ってDiscordへ通知
+  schedule:
+    - cron: '0 22 * * *'  # JST 7:00
+    - cron: '0 10 * * *'  # JST 19:00
+  # 手動実行用ボタン（スマホのGitHubアプリやブラウザから押せる）
+  workflow_dispatch:
+    inputs:
+      action:
+        description: '実行モード'
+        required: true
+        default: 'generate'
+        type: choice
+        options:
+          - generate   # 台本生成 & Discord通知まで
+          - build_and_upload  # 人間が確認・修正した後の動画構築 & 投稿
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # --- ステップ1: 台本生成 & 人間へ通知 ---
+      - name: Generate Script & Notify
+        if: "${{ github.event.inputs.action == 'generate' || github.event_name == 'schedule' }}"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python generate_and_notify.py
+
+      # 台本（pending_scenario.json）を成果物として保存（後から手動修正できるようにする）
+      - name: Upload Pending Scenario Artifact
+        if: "${{ github.event.inputs.action == 'generate' || github.event_name == 'schedule' }}"
+        uses: actions/upload-artifact@v4
+        with:
+          name: pending-scenario
+          path: pending_scenario.json
+
+      # --- ステップ2: 人間の承認後に動画生成 & 投稿 ---
+      - name: Build Video & Upload
+        if: "${{ github.event.inputs.action == 'build_and_upload' }}"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          YOUTUBE_CLIENT_SECRET_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRET_JSON }}
+        run: |
+          # 動画構築とYouTube投稿スクリプトを呼び出し
+          python build_video.py
+          python upload_youtube.py
