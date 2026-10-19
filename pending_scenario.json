@@ -1,0 +1,59 @@
+{
+  "title": "【全文明が完全沈黙】自白を誘う心理尋問の防衛バグ #Shorts",
+  "theme": "沈黙を恐れる人間心理を逆手に取った尋問テクニック",
+  "angle": "巨大疑惑を残して謎の急死を遂げた国家要人と沈黙尋問の心理侵食",
+  "scenes": [
+    {
+      "narration": "密室で人は、沈黙を埋めるためだけに自らの破滅を告白する。",
+      "visual_search_queries": [
+        "dark interrogation room shadow",
+        "creepy silhouette prisoner"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "人は沈黙に耐えられない",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "変死した要人の取調記録。尋問官は一切質問せず、ただ無言で睨み続けた。",
+      "visual_search_queries": [
+        "confidential vintage file",
+        "tense man sweating interrogation"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "尋問官は一言も発さない",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "脳は沈黙を『排除の恐怖』と誤認し、空白を埋めるため秘密を自発的に吐き出す。",
+      "visual_search_queries": [
+        "human brain scan glowing",
+        "psychological torture abstract dark"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "脳の防衛バグが自白を呼ぶ",
+      "subtitle_color": "cyan",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "殴打すら不要の完全尋問。抗えない無音の圧迫は今もあなたを追い詰める。",
+      "visual_search_queries": [
+        "empty cold prison cell",
+        "creepy eye staring darkness"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "無音の罠は今も作動する",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    }
+  ],
+  "reference_book": {
+    "book_title": "『CIA尋問マニュアル』",
+    "hook_comment": "暴力を使わずに被疑者の精神を崩壊させ自白に追い込む冷酷な沈黙技術の記録はこちら"
+  }
+}
