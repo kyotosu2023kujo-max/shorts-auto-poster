@@ -1,59 +1,71 @@
 {
-  "title": "【全文明が完全沈黙】自白を誘う心理尋問の防衛バグ #Shorts",
-  "theme": "沈黙を恐れる人間心理を逆手に取った尋問テクニック",
-  "angle": "巨大疑惑を残して謎の急死を遂げた国家要人と沈黙尋問の心理侵食",
+  "title": "【全文明が完全沈黙】太陽風が仕掛ける国家反逆の罠 #Shorts",
+  "theme": "太陽フレアによる地球規模の全電力喪失",
+  "angle": "死刑執行寸前の物理学者による不可避の破滅予告（極限サスペンス型）",
   "scenes": [
     {
-      "narration": "密室で人は、沈黙を埋めるためだけに自らの破滅を告白する。",
+      "narration": "「押しても無駄だ」。執行の瞬間、死刑囚は静かに冷笑した。",
       "visual_search_queries": [
-        "dark interrogation room shadow",
-        "creepy silhouette prisoner"
+        "dark prison electric chair",
+        "cinematic prison corridor"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "人は沈黙に耐えられない",
+      "subtitle_text": "押しても無駄だ",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "変死した要人の取調記録。尋問官は一切質問せず、ただ無言で睨み続けた。",
+      "narration": "電圧レバーは倒された。だが火花は散らず、突如として全都市の照明が消えた。",
       "visual_search_queries": [
-        "confidential vintage file",
-        "tense man sweating interrogation"
+        "city blackout aerial night",
+        "power grid shutdown dark"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "尋問官は一言も発さない",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "全都市が完全暗転",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "脳は沈黙を『排除の恐怖』と誤認し、空白を埋めるため秘密を自発的に吐き出す。",
+      "narration": "故障ではない。太陽表面で発生した超巨大フレアが、地球の磁気圏を貫通したのだ。",
       "visual_search_queries": [
-        "human brain scan glowing",
-        "psychological torture abstract dark"
+        "solar flare eruption space",
+        "sun coronal mass ejection"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "脳が沈黙を埋めるために自白を読んでしまう",
+      "subtitle_text": "超巨大太陽フレア",
       "subtitle_color": "cyan",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "超高圧の誘導電流が送電網を逆流。変圧器は爆発し、全インフラが焼き切れた。",
+      "visual_search_queries": [
+        "electrical transformer explosion",
+        "high voltage spark fire"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "電力網の完全崩壊",
+      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "殴打すら尋問にはいらない。抗えない無音の圧迫で人は追い詰められる。",
+      "narration": "男は元国家物理学者。八分前に放たれた太陽風が、全文明を完全沈黙させる。",
       "visual_search_queries": [
-        "empty cold prison cell",
-        "creepy eye staring darkness"
+        "dark earth from space",
+        "solar storm approaching earth"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "無音の罠は今も作動する",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "文明の完全沈黙",
+      "subtitle_color": "white",
+      "subtitle_position": "center",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "『CIA尋問マニュアル』",
-    "hook_comment": "暴力を使わずに被疑者の精神を崩壊させ自白に追い込む冷酷な沈黙技術の記録はこちら"
+    "book_title": "『太陽大爆発―太陽フレアが地球を襲う日』柴田一成（PHP新書）",
+    "hook_comment": "現代文明を8分で石器時代へ戻す巨大太陽嵐の全メカニズムを暴いた一冊。"
   }
 }
