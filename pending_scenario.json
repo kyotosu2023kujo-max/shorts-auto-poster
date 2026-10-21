@@ -1,71 +1,59 @@
 {
-  "title": "【全文明が完全沈黙】太陽風が仕掛ける国家反逆の罠 #Shorts",
-  "theme": "太陽フレアによる地球規模の全電力喪失",
-  "angle": "死刑執行寸前の物理学者による不可避の破滅予告（極限サスペンス型）",
+  "title": "【全文明が完全沈黙】自転停止の暴風と墓場の罠 #Shorts",
+  "theme": "地球上で最も孤独な海域『ポイント・ネモ』に沈む人工衛星",
+  "angle": "地球自転停止による超音速の暴風と宇宙墓場への不可避な投棄",
   "scenes": [
     {
-      "narration": "「押しても無駄だ」。執行の瞬間、死刑囚は静かに冷笑した。",
+      "narration": "もし地球の自転が今止まれば、地表の全文明は音速の暴風で沈黙する。",
       "visual_search_queries": [
-        "dark prison electric chair",
-        "cinematic prison corridor"
+        "planet earth rotation dark space",
+        "cataclysm storm destruction apocalypse"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "押しても無駄だ",
+      "subtitle_text": "全文明が暴風で完全沈黙",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "電圧レバーは倒された。だが火花は散らず、突如として全都市の照明が消えた。",
+      "narration": "時速千七百キロの慣性衝突。大気だけが置き去りにされ、都市も人体も粉塵へと変わる。",
       "visual_search_queries": [
-        "city blackout aerial night",
-        "power grid shutdown dark"
+        "shockwave destruction city dust",
+        "hypersonic wind devastation abstract"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "時速1700kmの慣性",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "大気圏外へ逃れた人工衛星すら、役目を終えれば地球最果ての墓場ポイント・ネモへと墜落する。",
+      "visual_search_queries": [
+        "space satellite falling atmosphere fire",
+        "deep dark ocean abyss isolated"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "全都市が完全暗転",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "故障ではない。太陽表面で発生した超巨大フレアが、地球の磁気圏を貫通したのだ。",
-      "visual_search_queries": [
-        "solar flare eruption space",
-        "sun coronal mass ejection"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "超巨大太陽フレア",
+      "subtitle_text": "最果ての深海墓場へ墜落",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "超高圧の誘導電流が送電網を逆流。変圧器は爆発し、全インフラが焼き切れた。",
-      "visual_search_queries": [
-        "electrical transformer explosion",
-        "high voltage spark fire"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "電力網の完全崩壊",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "男は元国家物理学者。八分前に放たれた太陽風が、全文明を完全沈黙させる。",
+      "narration": "深海四千米に葬られる宇宙の残骸。物理の鉄則からは誰も逃れられない。もし地球の自転が今止まれば、",
       "visual_search_queries": [
-        "dark earth from space",
-        "solar storm approaching earth"
+        "underwater wreckage deep ocean dark",
+        "spinning earth cosmos void"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "文明の完全沈黙",
-      "subtitle_color": "white",
-      "subtitle_position": "center",
+      "camera_motion": "static",
+      "subtitle_text": "物理の鉄則からは逃げられない",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "『太陽大爆発―太陽フレアが地球を襲う日』柴田一成（PHP新書）",
-    "hook_comment": "現代文明を8分で石器時代へ戻す巨大太陽嵐の全メカニズムを暴いた一冊。"
+    "book_title": "『ホワット・イフ？――荒唐無稽な質問に科学者が本気で答えてみた』",
+    "hook_comment": "自転停止がもたらす超音速の暴風と、衛星すら沈む絶海の墓場ポイント・ネモの物理的現実を解き明かす名著はこちら。"
   }
 }
