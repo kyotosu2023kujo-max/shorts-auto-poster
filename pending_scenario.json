@@ -1,59 +1,59 @@
 {
-  "title": "【全文明が完全沈黙】自転停止の暴風と墓場の罠 #Shorts",
-  "theme": "地球上で最も孤独な海域『ポイント・ネモ』に沈む人工衛星",
-  "angle": "地球自転停止による超音速の暴風と宇宙墓場への不可避な投棄",
+  "title": "【全文明が完全沈黙】禁忌を暴く脳の防衛バグ #Shorts",
+  "theme": "カリギュラ効果：禁止されるほど見たくなる脳のバグ",
+  "angle": "不可逆な契約と認知の致命的エラー：心理侵食型サスペンス",
   "scenes": [
     {
-      "narration": "もし地球の自転が今止まれば、地表の全文明は音速の暴風で沈黙する。",
+      "narration": "「決して開けるな」という宣告こそが、全人類を自滅へ誘導する。",
       "visual_search_queries": [
-        "planet earth rotation dark space",
-        "cataclysm storm destruction apocalypse"
+        "dark mystery room door glowing",
+        "creepy silhouette alone cinematic"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "全文明が暴風で完全沈黙",
+      "subtitle_text": "禁忌が人を破滅へ誘う",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "時速千七百キロの慣性衝突。大気だけが置き去りにされ、都市も人体も粉塵へと変わる。",
+      "narration": "巨額の富と引き換えに禁断の扉の監視を命じられた男。触れるなと禁じられた瞬間、脳内では破滅的な渇望が暴走を始める。",
       "visual_search_queries": [
-        "shockwave destruction city dust",
-        "hypersonic wind devastation abstract"
+        "obsessed man looking at door shadowy",
+        "brain neurons firing red dark"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "時速1700kmの慣性",
+      "subtitle_text": "禁止が渇望を加速させる",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "大気圏外へ逃れた人工衛星すら、役目を終えれば地球最果ての墓場ポイント・ネモへと墜落する。",
+      "narration": "カリギュラ効果。外界の危機を回避するための防衛本能が、情報の遮断を重大な脅威と誤認し、理性を強制停止させる防衛バグである。",
       "visual_search_queries": [
-        "space satellite falling atmosphere fire",
-        "deep dark ocean abyss isolated"
+        "digital glitch brain scan abstract",
+        "creepy laboratory data screen flickering"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "最果ての深海墓場へ墜落",
+      "camera_motion": "static",
+      "subtitle_text": "生存本能が理性を抹消する",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "深海四千米に葬られる宇宙の残骸。物理の鉄則からは誰も逃れられない。もし地球の自転が今止まれば、",
+      "narration": "制止されるほど自ら破滅の鍵を回す人類。あなたの脳も今、警告を無視して禁断の領域へ手を伸ばしている。",
       "visual_search_queries": [
-        "underwater wreckage deep ocean dark",
-        "spinning earth cosmos void"
+        "hand reaching into blinding dark void",
+        "hypnotic endless tunnel loop dark"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "物理の鉄則からは逃げられない",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "不可逆な自滅の罠が作動する",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "『ホワット・イフ？――荒唐無稽な質問に科学者が本気で答えてみた』",
-    "hook_comment": "自転停止がもたらす超音速の暴風と、衛星すら沈む絶海の墓場ポイント・ネモの物理的現実を解き明かす名著はこちら。"
+    "book_title": "『白クマのことだけは考えるな！ 自我と抑圧の知られざる心理学』（ダニエル・ウェグナー著）",
+    "hook_comment": "禁忌を意識した瞬間に自制心が自壊する『思考抑制の皮肉プロセス』。その冷酷な脳科学的証明を記した記録はこちら。"
   }
 }
