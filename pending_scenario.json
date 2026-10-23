@@ -1,59 +1,76 @@
 {
-  "title": "【全文明が完全沈黙】禁忌を暴く脳の防衛バグ #Shorts",
-  "theme": "カリギュラ効果：禁止されるほど見たくなる脳のバグ",
-  "angle": "不可逆な契約と認知の致命的エラー：心理侵食型サスペンス",
+  "title": "【住民が完全消滅】孤立空間を生む国家反逆の罠 #Shorts",
+  "theme": "歴史から抹消された古代王国の突然の消滅",
+  "angle": "ある朝起きたら世界から人間が自分以外消滅していた場合の生存確率と古代の抹消記録",
   "scenes": [
     {
-      "narration": "「決して開けるな」という宣告こそが、全人類を自滅へ誘導する。",
+      "narration": "ある朝目覚めると、世界から自分以外の全人類が完全消滅していた。",
       "visual_search_queries": [
-        "dark mystery room door glowing",
-        "creepy silhouette alone cinematic"
+        "empty city street morning",
+        "abandoned metropolis fog",
+        "lonely man walking deserted road"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "禁忌が人を破滅へ誘う",
+      "subtitle_text": "全人類が消えた朝",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "巨額の富と引き換えに禁断の扉の監視を命じられた男。触れるなと禁じられた瞬間、脳内では破滅的な渇望が暴走を始める。",
+      "narration": "水道と電力は即座に停止。孤立した個人の生存確率は一年以内にゼロへ暴落する。",
       "visual_search_queries": [
-        "obsessed man looking at door shadowy",
-        "brain neurons firing red dark"
+        "dark empty room window",
+        "flickering light silhouette",
+        "ruined apartment dusty"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "禁止が渇望を加速させる",
+      "camera_motion": "static",
+      "subtitle_text": "生存確率は1年でゼロ",
       "subtitle_color": "white",
-      "subtitle_position": "bottom",
+      "subtitle_position": "center",
       "screen_effect": "none"
     },
     {
-      "narration": "カリギュラ効果。外界の危機を回避するための防衛本能が、情報の遮断を重大な脅威と誤認し、理性を強制停止させる防衛バグである。",
+      "narration": "この絶望は古代の実例だ。数万人の都市が一夜で空虚と化し、記録ごと地図から削滅された。",
       "visual_search_queries": [
-        "digital glitch brain scan abstract",
-        "creepy laboratory data screen flickering"
+        "ancient ruins desert",
+        "aerial archeological site",
+        "crumbling stone walls sand"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "生存本能が理性を抹消する",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "一夜で消滅した古代都市",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "制止されるほど自ら破滅の鍵を回す人類。あなたの脳も今、警告を無視して禁断の領域へ手を伸ばしている。",
+      "narration": "原因は国家反逆の隠蔽。体制崩壊の混乱を恐れた中枢が、住民ごと存在を消去したのだ。",
       "visual_search_queries": [
-        "hand reaching into blinding dark void",
-        "hypnotic endless tunnel loop dark"
+        "fire burning ancient document",
+        "shadowy ominous figures",
+        "mysterious dark stone corridor"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "不可逆な自滅の罠が作動する",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "国家反逆の完全隠蔽",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
+    },
+    {
+      "narration": "消去命令は現代も稼働している。あなたが今いるその場所でも、ある朝目覚めると。",
+      "visual_search_queries": [
+        "empty subway station cold light",
+        "surveillance camera looking down",
+        "foggy urban dawn silent"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "次はあなたが消される番",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "『白クマのことだけは考えるな！ 自我と抑圧の知られざる心理学』（ダニエル・ウェグナー著）",
-    "hook_comment": "禁忌を意識した瞬間に自制心が自壊する『思考抑制の皮肉プロセス』。その冷酷な脳科学的証明を記した記録はこちら。"
+    "book_title": "『文明崩壊 滅亡と存続の命運』ジャレド・ダイアモンド著",
+    "hook_comment": "繁栄を誇った巨大都市が一夜にして歴史から完全消滅した冷酷な力学を解明した名著はこちら。"
   }
 }
