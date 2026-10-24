@@ -1,76 +1,63 @@
 {
-  "title": "【住民が完全消滅】孤立空間を生む国家反逆の罠 #Shorts",
-  "theme": "歴史から抹消された古代王国の突然の消滅",
-  "angle": "ある朝起きたら世界から人間が自分以外消滅していた場合の生存確率と古代の抹消記録",
+  "title": "【全文明が完全沈黙】深海宇宙墓場と国家反逆の罠 #Shorts",
+  "theme": "地球上で最も孤独な海域『ポイント・ネモ』に沈む人工衛星と宇宙インフラの冷酷な隠滅機構",
+  "angle": "巨大テック企業が無償で世界中に衛星回線を提供する裏で、極秘ログを積んだ人工衛星を深海墓場へ沈め抹消する極限サスペンス",
   "scenes": [
     {
-      "narration": "ある朝目覚めると、世界から自分以外の全人類が完全消滅していた。",
+      "narration": "全文明が完全沈黙する絶対の孤立海域。それが地球の墓場ポイント・ネモだ。",
       "visual_search_queries": [
-        "empty city street morning",
-        "abandoned metropolis fog",
-        "lonely man walking deserted road"
+        "dark deep ocean aerial view",
+        "isolated stormy sea",
+        "satellite floating in space"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "全人類が消えた朝",
+      "subtitle_text": "全文明が沈黙する深海墓場",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "水道と電力は即座に停止。孤立した個人の生存確率は一年以内にゼロへ暴落する。",
+      "narration": "大企業が無償提供する宇宙通信網。だが端末が拾う全通信は自動で極秘衛星に集積される。",
       "visual_search_queries": [
-        "dark empty room window",
-        "flickering light silhouette",
-        "ruined apartment dusty"
+        "cyber security server room dark",
+        "satellite constellation earth orbit",
+        "code screen surveillance"
       ],
       "camera_motion": "static",
-      "subtitle_text": "生存確率は1年でゼロ",
+      "subtitle_text": "無償通信の裏に潜む全監視",
       "subtitle_color": "white",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "この絶望は古代の実例だ。数万人の都市が一夜で空虚と化し、記録ごと地図から削滅された。",
+      "narration": "巨額赤字など問題ではない。国家の極秘データごと衛星は減速し、誰も到達できぬ水深四千メートルの闇へ投棄される。",
       "visual_search_queries": [
-        "ancient ruins desert",
-        "aerial archeological site",
-        "crumbling stone walls sand"
+        "satellite re-entry burning atmosphere",
+        "underwater abyss dark ocean trench",
+        "sunken ship wreck deep sea"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "一夜で消滅した古代都市",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "深海4000mへ証拠完全消滅",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "原因は国家反逆の隠蔽。体制崩壊の混乱を恐れた中枢が、住民ごと存在を消去したのだ。",
+      "narration": "回収不可能な完全消滅。世界を支配する情報の残骸は、今この瞬間も深海へと堕ち続けている。",
       "visual_search_queries": [
-        "fire burning ancient document",
-        "shadowy ominous figures",
-        "mysterious dark stone corridor"
+        "deep dark ocean particles",
+        "spinning earth night satellite",
+        "vast quiet empty ocean"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "国家反逆の完全隠蔽",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "今も残骸は堕ち続ける",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
-    },
-    {
-      "narration": "消去命令は現代も稼働している。あなたが今いるその場所でも、ある朝目覚めると。",
-      "visual_search_queries": [
-        "empty subway station cold light",
-        "surveillance camera looking down",
-        "foggy urban dawn silent"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "次はあなたが消される番",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "『文明崩壊 滅亡と存続の命運』ジャレド・ダイアモンド著",
-    "hook_comment": "繁栄を誇った巨大都市が一夜にして歴史から完全消滅した冷酷な力学を解明した名著はこちら。"
+    "book_title": "宇宙の地政学",
+    "hook_comment": "宇宙空間の利権争奪と深海投棄の冷酷な実態を克明に告発した必読書はこちら"
   }
 }
