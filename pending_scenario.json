@@ -1,63 +1,63 @@
 {
-  "title": "【全文明が完全沈黙】深海宇宙墓場と国家反逆の罠 #Shorts",
-  "theme": "地球上で最も孤独な海域『ポイント・ネモ』に沈む人工衛星と宇宙インフラの冷酷な隠滅機構",
-  "angle": "巨大テック企業が無償で世界中に衛星回線を提供する裏で、極秘ログを積んだ人工衛星を深海墓場へ沈め抹消する極限サスペンス",
+  "title": "【住民が全消滅】エニグマ解読と国家反逆の罠 #Shorts",
+  "theme": "暗号解読機エニグマを巡る欺瞞と犠牲の選択",
+  "angle": "極限サスペンス型（自国民の生存が敗北を招く、倫理と重力が反転した冷酷な数学的選択）",
   "scenes": [
     {
-      "narration": "全文明が完全沈黙する絶対の孤立海域。それが地球の墓場ポイント・ネモだ。",
+      "narration": "もし自国民を救う行為が、国家反逆罪になるとしたら。",
       "visual_search_queries": [
-        "dark deep ocean aerial view",
-        "isolated stormy sea",
-        "satellite floating in space"
+        "vintage cipher machine",
+        "dark military bunker",
+        "radar screen WW2"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "全文明が沈黙する深海墓場",
+      "subtitle_text": "国民救出が国家反逆になる罠",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "大企業が無償提供する宇宙通信網。だが端末が拾う全通信は自動で極秘衛星に集積される。",
+      "narration": "暗号解読班の手元には、今夜爆撃される都市の名がある。だが警告は下せない。",
       "visual_search_queries": [
-        "cyber security server room dark",
-        "satellite constellation earth orbit",
-        "code screen surveillance"
+        "enigma code typewriter",
+        "typewriter paper classified",
+        "sweating soldier hands"
       ],
       "camera_motion": "static",
-      "subtitle_text": "無償通信の裏に潜む全監視",
+      "subtitle_text": "今夜壊滅する都市の暗号",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "巨額赤字など問題ではない。国家の極秘データごと衛星は減速し、誰も到達できぬ水深四千メートルの闇へ投棄される。",
+      "narration": "難攻不落のエニグマを破った事実を秘匿するため、住民は完全沈黙のうちに焼き尽くされた。",
       "visual_search_queries": [
-        "satellite re-entry burning atmosphere",
-        "underwater abyss dark ocean trench",
-        "sunken ship wreck deep sea"
+        "bombing city fire night",
+        "burning buildings archival",
+        "mathematics blackboard calculations"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "深海4000mへ証拠完全消滅",
+      "subtitle_text": "解読秘匿のため住民を見殺し",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
+      "screen_effect": "flash"
     },
     {
-      "narration": "回収不可能な完全消滅。世界を支配する情報の残骸は、今この瞬間も深海へと堕ち続けている。",
+      "narration": "救えば暗号を変えられ、戦争に敗北する。数式が人の命を冷酷に切り捨てる時、",
       "visual_search_queries": [
-        "deep dark ocean particles",
-        "spinning earth night satellite",
-        "vast quiet empty ocean"
+        "calculating machine gears",
+        "dark empty city street",
+        "mysterious shadows fog"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "今も残骸は堕ち続ける",
+      "subtitle_text": "数式が人の命を切り捨てる",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "宇宙の地政学",
-    "hook_comment": "宇宙空間の利権争奪と深海投棄の冷酷な実態を克明に告発した必読書はこちら"
+    "book_title": "『エニグマ アラン・チューリング伝』アンドルー・ホッジズ著",
+    "hook_comment": "解読の歓喜と引き換えに数千人の同胞を見殺しにした、冷徹な欺瞞工作の全真相はこちら。"
   }
 }
