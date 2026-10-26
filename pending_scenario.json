@@ -1,63 +1,59 @@
 {
-  "title": "【住民が全消滅】エニグマ解読と国家反逆の罠 #Shorts",
-  "theme": "暗号解読機エニグマを巡る欺瞞と犠牲の選択",
-  "angle": "極限サスペンス型（自国民の生存が敗北を招く、倫理と重力が反転した冷酷な数学的選択）",
+  "title": "【全文明が完全消滅】自己増殖が招くグレイグーの罠 #Shorts",
+  "theme": "ナノマシンの暴走とグレイ・グー仮説",
+  "angle": "世界滅亡のカウントダウンを告げる冷徹なナレーション",
   "scenes": [
     {
-      "narration": "もし自国民を救う行為が、国家反逆罪になるとしたら。",
+      "narration": "地球上の全有機物は、残り七十二時間で完全消滅する。",
       "visual_search_queries": [
-        "vintage cipher machine",
-        "dark military bunker",
-        "radar screen WW2"
+        "dark microscopic particles floating",
+        "futuristic laboratory disaster"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "国民救出が国家反逆になる罠",
+      "subtitle_text": "残り72時間で全消滅",
       "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
+      "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "暗号解読班の手元には、今夜爆撃される都市の名がある。だが警告は下せない。",
+      "narration": "発端は肉眼で見えぬ医療用ナノマシン。自律増殖を止める遮断コードが、実験室で一文字だけ破損した。",
       "visual_search_queries": [
-        "enigma code typewriter",
-        "typewriter paper classified",
-        "sweating soldier hands"
+        "nanotechnology robot cell division",
+        "microscope bacteria multiplying"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "今夜壊滅する都市の暗号",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "遮断コード1文字の破損",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "難攻不落のエニグマを破った事実を秘匿するため、住民は完全沈黙のうちに焼き尽くされた。",
+      "narration": "増殖は指数関数的。炭素と有機物を貪り尽くし、あらゆる都市と生態系を均質な灰色の粉末へ変貌させる。",
       "visual_search_queries": [
-        "bombing city fire night",
-        "burning buildings archival",
-        "mathematics blackboard calculations"
+        "gray dust spreading over city",
+        "decaying matter macro lens"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "解読秘匿のため住民を見殺し",
+      "camera_motion": "static",
+      "subtitle_text": "全都市が灰色の粉へ",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": "flash"
+      "screen_effect": "none"
     },
     {
-      "narration": "救えば暗号を変えられ、戦争に敗北する。数式が人の命を冷酷に切り捨てる時、",
+      "narration": "人類にこれを止める物理的手段は存在しない。空気を満たす無数の複製機が、今あなたの肺へと侵入する。そして、",
       "visual_search_queries": [
-        "calculating machine gears",
-        "dark empty city street",
-        "mysterious shadows fog"
+        "airborne glowing dust particles",
+        "dark apocalyptic atmosphere"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "数式が人の命を切り捨てる",
+      "subtitle_text": "肺へ侵入する自己複製機",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "『エニグマ アラン・チューリング伝』アンドルー・ホッジズ著",
-    "hook_comment": "解読の歓喜と引き換えに数千人の同胞を見殺しにした、冷徹な欺瞞工作の全真相はこちら。"
+    "book_title": "『エンジンの創造 ナノテクノロジーと人工知能がひらく未来』K・エリック・ドレクスラー",
+    "hook_comment": "グレイ・グー仮説を提唱し、自己増殖機械による物質文明の完全終焉を数学的に告発した戦慄の原典はこちら"
   }
 }
