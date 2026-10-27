@@ -172,4 +172,47 @@ def fetch_pixabay_video(query: str, min_duration: float = 3.0) -> str:
     return ""
 
 
+def download_file(url: str, output_path: str) -> bool:
+    """URLからファイルをダウンロードする"""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as res:
+            with open(output_path, "wb") as f:
+                f.write(res.read())
+        return os.path.exists(output_path) and os.path.getsize(output_path) > 0
+    except Exception as e:
+        print(f"⚠️ ダウンロード失敗 ({url}): {e}")
+        return False
+
+
 def download_best_video(queries: list[str], output_path: str, min_duration: float = 3.0) -> bool:
+    """複数のクエリと多重フォールバック（Pexels縦・横、Pixabay）を試して動画をダウンロードする"""
+    # 1. 縦長動画を優先してPexelsで検索
+    for q in queries:
+        link = fetch_pexels_video(q, "portrait", min_duration)
+        if link:
+            if download_file(link, output_path):
+                return True
+
+    # 2. 横長動画をPexelsで検索
+    for q in queries:
+        link = fetch_pexels_video(q, "landscape", min_duration)
+        if link:
+            if download_file(link, output_path):
+                return True
+
+    # 3. Pixabayで検索
+    for q in queries:
+        link = fetch_pixabay_video(q, min_duration)
+        if link:
+            if download_file(link, output_path):
+                return True
+
+    # 4. 全滅した場合はフォールバック用キーワードで再試行
+    for q in FALLBACK_QUERIES:
+        link = fetch_pexels_video(q, "portrait", min_duration)
+        if link:
+            if download_file(link, output_path):
+                return True
+
+    return False
