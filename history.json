@@ -395,5 +395,26 @@
     "likes": null,
     "comments": null,
     "retention": null
+  },
+  {
+    "title": "唐辛子が人類を快楽漬けにして世界征服した仕組み #Shorts",
+    "theme": "唐辛子のカプサイシンと脳の報酬系",
+    "angle": "心理的報酬",
+    "tone": "実用・学び",
+    "opening_line": "緊急速報です。なぜ人類は、我々トウガラシが放つ激痛警報を喜んで食べるのでしょうか？",
+    "style": {
+      "語り口": "ニュース速報風",
+      "構成": "問いかけ始まり",
+      "視点": "モノや動物の視点",
+      "結末": "オチ（笑い・驚き）",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

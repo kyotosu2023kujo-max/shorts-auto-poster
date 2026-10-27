@@ -1,59 +1,73 @@
 {
-  "title": "【住民が全消滅】漂着する足首と過剰知性の罠 #Shorts",
-  "theme": "身元不明の遺体が漂着する『足首だけの靴』の怪異",
-  "angle": "知性ゆえに陰謀を過剰構築してしまう認知防衛の罠",
+  "title": "唐辛子が人類を快楽漬けにして世界征服した仕組み #Shorts",
+  "theme": "唐辛子のカプサイシンと脳の報酬系",
+  "angle": "心理的報酬",
+  "opening_line": "緊急速報です。なぜ人類は、我々トウガラシが放つ激痛警報を喜んで食べるのでしょうか？",
   "scenes": [
     {
-      "narration": "海岸に打ち上げられたのは靴を履いた人間の足首だけだ。",
+      "narration": "緊急速報です。なぜ人類は、我々トウガラシが放つ激痛警報を喜んで食べるのでしょうか？",
       "visual_search_queries": [
-        "creepy beach washed ashore running shoe",
-        "dark foggy shoreline ocean waves"
+        "breaking news television studio red chili pepper",
+        "red chili pepper macro heat concept"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "靴だけが漂着する海岸",
+      "subtitle_text": "なぜ激痛を喜ぶのか？",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "知性ある捜査官ほど猟奇殺人鬼の組織的犯行を疑い底なしの闇に迷い込む。",
+      "narration": "現場のカプサイシンです。我々は本来、哺乳類に噛み砕かれないよう猛烈な痛覚トラップを開発しました。",
       "visual_search_queries": [
-        "detective crime scene board investigation",
-        "nervous stressed man looking at documents"
+        "microscopic spicy molecule pepper capsaicin",
+        "chili pepper defensive spices nature"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "暴走する高度な推理",
+      "camera_motion": "static",
+      "subtitle_text": "撃退用の猛毒トラップ",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "真実は冷酷だ。現代のスニーカー素材が腐敗ガスで浮力を得て自然切断された関節のみを浮上させたに過ぎない。",
+      "narration": "しかし最新の報告によると、脳はこの激痛から身を守るため、快感物質エンドルフィンを大量分泌している模様です。",
       "visual_search_queries": [
-        "underwater dark ocean depths sinking",
-        "running shoe underwater floating slow motion"
+        "human brain neural activity dopamine endorphin glow",
+        "eating spicy food brain scan reaction"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "物理現象が招いた錯覚",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "脳内麻薬がドバドバ",
       "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "flash"
+      "subtitle_position": "center",
+      "screen_effect": "none"
     },
     {
-      "narration": "だが高度な脳ほど無意味な偶然を拒絶し虚構の怪異を捏造する。今も海を漂うのは靴か人間の錯覚か。",
+      "narration": "つまり人類は痛みの後に訪れる強烈な幸福感を味わうため、自ら進んで火を噴いていたことが判明しました。",
       "visual_search_queries": [
-        "dark vast ocean endless waves horizon",
-        "mysterious sea mist empty beach lonely"
+        "person enjoying eating spicy hot noodles sweat smile",
+        "sweating eating hot sauce happy face"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "脳が捏造する怪異",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "快感のために火を吹く",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
+    },
+    {
+      "narration": "撃退するつもりが、快楽漬けにされた人類によって世界中で畑を増やされ、我々は今、絶賛大繁栄中です。",
+      "visual_search_queries": [
+        "vast chili pepper farm plantation harvest global",
+        "red peppers drying field sun agriculture"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "結果、世界中で大繁栄",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
+      "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "なぜ人はニセ科学を信じるのか",
-    "hook_comment": "無作為な事象に恐るべき陰謀を見出してしまう脳のバグ、その全貌を解明した名著はこちら。"
-  }
+    "book_title": "トウガラシの世界史（山本紀夫 著、中公新書）",
+    "hook_comment": "辛いものを食べた後に妙なスッキリ感を味わったことはありますか？あなたの好きな激辛料理も教えてください！"
+  },
+  "uncertain_facts": []
 }
