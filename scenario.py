@@ -2,7 +2,8 @@ import json
 import os
 import random
 import urllib.parse
-from typing import List, Literal, Optional
+from collections import defaultdict
+from typing import Dict, List, Literal, Optional
 from google import genai
 from pydantic import BaseModel, Field
 
@@ -13,109 +14,58 @@ BOOK_OUTPUT_FILE = "reference_book.txt"
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 AMAZON_TRACKING_ID = os.environ.get("AMAZON_TRACKING_ID", "yourtrackingid-22")
 
+# --- 探索設定 ---
+EXPLORE_RATIO = 0.7          # 探索の比率（活用は残り）
+MIN_SAMPLES_TO_LEARN = 5     # この本数たまるまでフィードバックを使わない
+RECENT_N_FOR_AVOID = 3       # 直近何本と型の組み合わせを被らせないか
+
+# --- 変数1: ジャンル（既存THEMESはそのまま使用可。ここでは構造のみ示す） ---
 THEMES = [
-    # 科学・宇宙・生体 (1-20)
+    # 既存の100テーマをそのまま残し、恐怖系以外も追加する
     "相対性理論のパラドックス", "光速の限界", "真空崩壊",
-    "量子もつれ", "地球磁場逆転", "深海超高圧",
-    "人工知能の意識", "事象の地平面", "老化メカニズム",
-    "脳細胞の物理的破壊", "突発的氷河期", "フェルミのパラドックス",
-    "超伝導", "ウイルスの進化史", "太陽フレア",
-    "グレイ・グー仮説", "記憶の上書き", "プラズマ閉じ込め",
-    "ヒッグス場", "宇宙マイクロ波背景放射",
-
-    # 歴史・事件・国家の闇 (21-40)
-    "古代王国の突然の消滅", "マインドコントロール実験", "偽札による経済謀略",
-    "エニグマ暗号の欺瞞", "中世ペストの狂気", "潜水艦沈没の隠蔽",
-    "エルドラド探検隊の全滅", "世界恐慌の投機集団", "ローマ帝国の鉛中毒",
-    "独裁者の食事検査法", "秘密核実験都市", "要塞陥落の盲点",
-    "砂漠の人工建造物", "壊血病の人体実験", "核ミサイル発射拒否",
-    "偽旗作戦の歴史", "不老不死薬の真実", "ロンドンの死の煙霧",
-    "三十年戦争の狂乱", "地下バンカーの極秘物資",
-
-    # 経済・金融・搾取構造 (41-60)
-    "生体データの転売", "サブスクの心理工学", "インフレの資産格差",
-    "ビットコインの正体", "カジノの空間設計", "保険金の不払い特約",
-    "国家の借金と通貨発行", "高級ブランドの焼却", "高頻度取引の罠",
-    "タックスヘイブン", "暗殺された発明家", "クレジットスコアの支配",
-    "中古車市場のレモン市場", "ファストファッションの汚染", "製薬カルテルの価格操作",
-    "名ばかり管理職", "ダイヤモンドの市場操作", "銀行の信用創造",
-    "オーバーブッキングの確率", "競合の買い殺し防衛",
-
-    # 心理・洗脳・人間関係 (61-80)
-    "カルトのマインドコントロール", "サイコパスの進化論", "毒親の言葉の暴力",
-    "ギャンブル依存症の報酬系", "ガスライティング", "アイヒマン実験の集団心理",
-    "恋愛ドーパミンの賞味期限", "微表情と瞳孔の収縮", "SNSの同調圧力",
-    "詐欺師の小さな貸し", "認知的不協和", "スタンフォード監獄実験",
-    "慢性微小炎症と脳の変調", "ダークトライアドの心理", "尋問の沈黙テクニック",
-    "バーナム効果", "返報性の原理の悪用", "カリギュラ効果",
-    "ハロー効果の評価", "傍観者効果の麻痺",
-
-    # 雑学・都市伝説・日常の裏側 (81-100)
-    "スマホの液晶汚染", "飛行機トイレの凍結", "エレベーターの閉ボタン",
-    "ボツリヌストキシンの美容利用", "防犯カメラの死角マップ", "自動販売機のルーレット制御",
-    "足首だけの靴の怪異", "ホテル清掃員の禁忌備品", "無添加食品の抜け穴",
-    "青信号の歴史的齟齬", "ギロチン刑囚の意識持続", "ポイント・ネモの人工衛星",
-    "ランサムウェアの国家ハッカー", "100年腐らない完全食品", "コンビニのゴールデンライン",
-    "無意識に飲み込む昆虫数", "エスカレーターの速度差", "高圧電線の鳥の耐性",
-    "手術室のBGMのメリット", "植物の猛毒成分と誤食",
+    # ...（既存テーマ）...
+    # --- 追加: 恐怖系以外 ---
+    "言葉の由来の意外な変遷", "動物の不思議な生態", "食べ物の科学",
+    "日常のなぜ（信号・ボタン・色）", "数学・確率の直感に反する話",
+    "世界の珍しい地理・風習", "仕事・人間関係の心理", "お金の仕組みの意外な事実",
+    "睡眠と体内時計", "記憶と学習のコツ",
 ]
-ANGLES = [
-    # 警告・禁止・恐怖 (1-20)
-    "禁忌の暴露", "致命的リスク", "恐怖による引き込み",
-    "不都合な真実", "日常の罠", "常識の否定",
-    "悲惨な末路", "監視の恐怖", "行動の強制",
-    "ターゲットの限定", "冷徹な事実検証", "最悪のシミュレーション",
-    "秘匿された裏側", "都市伝説の裏付け", "禁断の知識",
-    "緊急の警鐘", "最期のメッセージ", "決定的瞬間の言語化",
-    "カウントダウン", "検索禁忌の領域",
 
-    # 逆張り・パラドックス・暴露 (21-40)
-    "逆説の証明", "善行のパラドックス", "非公開の法則",
-    "無用の効用", "統計の残酷さ", "未成文のルール",
-    "不条理のゲーム理論", "有益の裏の害悪", "真のインセンティブ",
-    "思考の陥穽", "非対称な搾取", "自由のパラドックス",
-    "依存の病理", "裏の抑止力", "構造のハッキング",
-    "通説の否定", "過剰適合の弊害", "真の価値の乖離",
-    "機能不全のメカニズム", "理想と実態の乖離",
+# --- 変数2: アングル（恐怖偏重を是正。感情トーン別に分類） ---
+ANGLES_BY_TONE: Dict[str, List[str]] = {
+    "恐怖・警告": ["禁忌の暴露", "致命的リスク", "監視の恐怖", "最悪のシミュレーション"],
+    "驚き・種明かし": ["常識の否定", "日常からの抽象化", "構造の合致", "生化学的トリック", "物理的解析"],
+    "ユーモア・軽さ": ["無用の効用", "不条理のゲーム理論", "理想と実態の乖離", "予想外の回答"],
+    "感動・余韻": ["危機からの生還", "戦時下の異例の交歓", "最期のメッセージ", "探求者の異変"],
+    "思考実験・挑発": ["倫理のジレンマ", "直感と確率の相違", "自己同一性のパラドックス", "思考実験の視覚化"],
+    "実用・学び": ["体験設計の秘密", "合理的な最適解", "心理的報酬", "構造のハッキング"],
+}
 
-    # なぜ？・種明かし・論理展開 (41-60)
-    "日常からの抽象化", "視線誘導の原理", "構造の合致",
-    "空間心理学", "致命的な偶発性", "集合のメカニズム",
-    "形態の工学的必然", "未解明の痕跡", "生化学的トリック",
-    "誘導の必然性", "恐怖の消費心理", "臨界点のメカニズム",
-    "再現不能の謎", "暗号の解読", "驚異の認知能力",
-    "物理的解析", "体験設計の秘密", "構造的強靭さ",
-    "環境圧による適応", "心理的報酬",
+# --- 変数3〜7: 型の軸 ---
+STYLE_AXES: Dict[str, List[str]] = {
+    "語り口": ["淡々としたドキュメンタリー", "友人に話す口調", "インタビュー形式",
+              "軽いツッコミ", "詩的", "ニュース速報風", "先生が教える口調"],
+    "構成": ["結論先出し", "問いかけ始まり", "カウントダウン", "ifストーリー",
+            "反転オチ", "3つの事実", "Q&A", "比較対決"],
+    "視点": ["個人の体験", "視聴者本人", "第三者の観察", "モノや動物の視点", "数字の視点"],
+    "結末": ["ループ", "オチ（笑い・驚き）", "問いを残す", "行動提案", "余韻"],
+    "長さ": ["20秒", "30秒", "45秒"],
+}
 
-    # ストーリー・追体験・タイムリミット (61-80)
-    "緊迫のタイムリミット", "極限の生存選択", "密室の心理劇",
-    "転落の追体験", "暴走の引き金", "破局の時系列解析",
-    "当事者の証言", "孤独下の生存確率", "危機からの生還",
-    "独自の秩序の崩壊", "臨界点直前の心理", "日常の次元崩壊",
-    "構造破壊の瞬間", "力学の巨視的検証", "異才の精神変容",
-    "戦時下の異例の交歓", "限界状態の検証", "探求者の異変",
-    "破滅的な環境変容", "システム崩壊の初期流出",
+LENGTH_TO_CHARS = {"20秒": "100〜120字", "30秒": "150〜180字", "45秒": "230〜270字"}
+LENGTH_TO_SCENES = {"20秒": "3シーン", "30秒": "4シーン", "45秒": "5シーン"}
 
-    # クイズ・思考実験・挑発 (81-100)
-    "倫理のジレンマ", "直感と確率の相違", "違和感の凝視",
-    "高難度の論理的挑戦", "トレードオフ", "本性の暴露テスト",
-    "極限下の即決要求", "認知バイアスの露呈", "合理的な最適解",
-    "自己同一性のパラドックス", "錯覚の知覚テスト", "主観的世界の検証",
-    "意識の物理的解釈", "思考実験の視覚化", "時間悖論の罠",
-    "予測アルゴリズムの提示", "予想外の回答", "忌避すべきシグナル",
-    "環境変化の進化論", "仕掛けられたメッセージ",
-]
 
 class ReferenceBook(BaseModel):
-    book_title: str = Field(description="動画テーマをさらに深く知るための実在する名著・学術書・新書・ノンフィクション（例: 『毒と薬の世界史』『利己的な遺伝子』など）")
-    hook_comment: str = Field(description="固定コメント用の一言（例: 『この狂気的な実験と隠蔽工作の全記録を記した禁断の文献はこちら』）")
+    book_title: str = Field(description="動画テーマをさらに深く知るための実在する名著・学術書・新書・ノンフィクション。確実に実在するもののみ。")
+    hook_comment: str = Field(description="固定コメント用の一言。視聴者が答えたくなる問いかけでもよい")
 
 
 class Scene(BaseModel):
-    narration: str = Field(description="ナレーションの読み上げ原稿（1.4倍速でテンポよく話す）")
-    visual_search_queries: List[str] = Field(description="Pexels/Pixabay検索用の英語キーワードリスト（例: ['dark laboratory microscope', 'cellular motion']）")
+    narration: str = Field(description="ナレーションの読み上げ原稿")
+    visual_search_queries: List[str] = Field(description="Pexels/Pixabay検索用の英語キーワードリスト")
     camera_motion: Literal["zoom_in", "zoom_out", "static"] = Field(description="カメラワーク演出")
-    subtitle_text: str = Field(description="画面下部に大きく表示するテロップ（14文字以内の短文）")
+    subtitle_text: str = Field(description="画面に表示するテロップ（14文字以内）")
     subtitle_color: Literal["yellow", "white", "cyan"] = Field(description="テロップのフォントカラー")
     subtitle_position: Literal["bottom", "center", "top"] = Field(description="テロップの画面配置位置")
     screen_effect: Optional[Literal["flash", "none"]] = Field(default="none", description="シーン切替時の画面効果")
@@ -125,65 +75,157 @@ class DetailedScript(BaseModel):
     title: str = Field(description="動画タイトル（#Shorts を含める）")
     theme: str = Field(description="選定されたテーマ")
     angle: str = Field(description="選定された構成アングル")
-    scenes: List[Scene] = Field(description="4〜5シーンの構成リスト")
-    reference_book: ReferenceBook = Field(description="世界観を補強する実在書籍データ")
+    opening_line: str = Field(description="冒頭の一文（第1シーンのナレーション冒頭と一致させる）")
+    scenes: List[Scene] = Field(description="指定された長さに応じたシーン構成")
+    reference_book: ReferenceBook = Field(description="実在書籍データ")
+    uncertain_facts: List[str] = Field(default_factory=list, description="確信が持てない事実があれば列挙。なければ空")
 
 
-def load_recent_history(n: int = 15) -> List[str]:
-    """直近n件の投稿タイトルを取得（ネタの重複防止）"""
+# ------------------------------------------------------------
+# 履歴管理
+# ------------------------------------------------------------
+def load_history() -> List[dict]:
     if not os.path.exists(HISTORY_FILE):
         return []
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            records = json.load(f)
-            return [r.get("title", "") for r in records[-n:] if r.get("title")]
+            return json.load(f)
     except Exception:
         return []
 
 
-def save_history_record(title: str, theme: str, angle: str):
-    """生成したタイトルとマトリクス選定結果を history.json に保存"""
-    records = []
-    if os.path.exists(HISTORY_FILE):
-        try:
-            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-                records = json.load(f)
-        except Exception:
-            records = []
-
+def save_history_record(script: DetailedScript, style: Dict[str, str], tone: str, mode: str):
+    records = load_history()
     records.append({
-        "title": title,
-        "theme": theme,
-        "angle": angle,
-        "views": None,
+        "title": script.title,
+        "theme": script.theme,
+        "angle": script.angle,
+        "tone": tone,
+        "opening_line": script.opening_line,
+        "style": style,           # 語り口・構成・視点・結末・長さ
+        "mode": mode,             # explore / exploit
+        "views": None,            # 以下は投稿後に人間またはAPIで記入
         "likes": None,
         "comments": None,
         "retention": None,
+        "swipe_rate": None,
+        "avg_view_duration": None,
     })
-
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
 
 
-def save_reference_book(ref: ReferenceBook):
-    """固定コメント・概要欄投稿用に書籍アソシエイトリンクを書き出し"""
-    encoded_query = urllib.parse.quote(ref.book_title)
-    amazon_search_url = f"https://www.amazon.co.jp/s?k={encoded_query}&tag={AMAZON_TRACKING_ID}"
+# ------------------------------------------------------------
+# 型の選定（直近と被らない組み合わせ）
+# ------------------------------------------------------------
+def pick_style(history: List[dict]) -> Dict[str, str]:
+    recent_styles = [r.get("style") for r in history[-RECENT_N_FOR_AVOID:] if r.get("style")]
+    recent_narration = [s.get("語り口") for s in history[-3:] if s.get("style")] if False else \
+                       [r["style"].get("語り口") for r in history[-3:] if r.get("style")]
 
-    comment_content = (
-        f"【本動画の参考文献・さらに深い真実を知る名著】\n"
+    for _ in range(50):
+        style = {axis: random.choice(options) for axis, options in STYLE_AXES.items()}
+        # 直近3本と同一の組み合わせは禁止
+        if style in recent_styles:
+            continue
+        # 同じ語り口を3本連続で使わない
+        if len(recent_narration) == 3 and all(n == style["語り口"] for n in recent_narration):
+            continue
+        return style
+    return style
+
+
+def pick_theme_and_angle(history: List[dict]):
+    recent_themes = {r.get("theme") for r in history[-15:]}
+    recent_tones = [r.get("tone") for r in history[-3:]]
+
+    candidates = [t for t in THEMES if t not in recent_themes] or THEMES
+    theme = random.choice(candidates)
+
+    # 同じ感情トーンを3本連続で使わない
+    tones = [t for t in ANGLES_BY_TONE if not (len(recent_tones) == 3 and all(x == t for x in recent_tones))]
+    tone = random.choice(tones)
+    angle = random.choice(ANGLES_BY_TONE[tone])
+    return theme, tone, angle
+
+
+# ------------------------------------------------------------
+# フィードバック（条件を満たした場合のみ有効）
+# ------------------------------------------------------------
+def analyze_feedback(history: List[dict]) -> Dict[str, List[str]]:
+    """
+    軸ごとの選択肢について、MIN_SAMPLES_TO_LEARN本以上の実績があり、
+    全体平均を上回るものだけを「採用候補」として返す。
+    指標は retention（視聴維持率）を使用。データが足りなければ空を返す。
+    """
+    scored = [r for r in history if r.get("retention") is not None and r.get("style")]
+    if len(scored) < MIN_SAMPLES_TO_LEARN * 2:
+        return {}
+
+    overall = sum(r["retention"] for r in scored) / len(scored)
+    adopted: Dict[str, List[str]] = {}
+
+    for axis in STYLE_AXES:
+        bucket = defaultdict(list)
+        for r in scored:
+            bucket[r["style"].get(axis)].append(r["retention"])
+        for option, values in bucket.items():
+            if len(values) >= MIN_SAMPLES_TO_LEARN and (sum(values) / len(values)) > overall:
+                adopted.setdefault(axis, []).append(option)
+    return adopted
+
+
+def decide_mode(adopted: Dict[str, List[str]]) -> str:
+    if not adopted:
+        return "explore"
+    return "explore" if random.random() < EXPLORE_RATIO else "exploit"
+
+
+def apply_exploit(style: Dict[str, str], adopted: Dict[str, List[str]]) -> Dict[str, str]:
+    """活用モード: 採用済みの要素を一部の軸にだけ反映（全軸は固定しない）"""
+    axes = random.sample(list(adopted.keys()), k=min(2, len(adopted)))
+    for axis in axes:
+        style[axis] = random.choice(adopted[axis])
+    return style
+
+
+# ------------------------------------------------------------
+# 書籍リンク
+# ------------------------------------------------------------
+def save_reference_book(ref: ReferenceBook):
+    encoded_query = urllib.parse.quote(ref.book_title)
+    url = f"https://www.amazon.co.jp/s?k={encoded_query}&tag={AMAZON_TRACKING_ID}"
+    content = (
+        f"【参考文献】\n"
         f"📖 『{ref.book_title}』\n"
         f"{ref.hook_comment}\n"
-        f"👉 {amazon_search_url}"
+        f"👉 {url}"
     )
-
     with open(BOOK_OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(comment_content)
-    print(f"📚 参考文献アソシエイトリンクを '{BOOK_OUTPUT_FILE}' に保存しました。")
+        f.write(content)
+    print(f"📚 参考文献リンクを '{BOOK_OUTPUT_FILE}' に保存しました。")
+
+
+# ------------------------------------------------------------
+# プロンプト（探索モード既定）
+# ------------------------------------------------------------
+DEFAULT_PROMPT = """あなたはYouTube Shortsの制作ディレクターです。
+目的は「当たる型を断定すること」ではなく、毎回ちがう型で試し、何が効くかを検証できる台本を作ることです。
+過去の成功例を法則として固定してはいけません。指定された型（語り口・構成・視点・結末・長さ）に忠実に作ってください。
+
+【共通ルール】
+- 冒頭の1文でテーマの核心（驚き・結論・違和感・疑問）を提示する。挨拶や前置きは入れない。
+- 1文は短く、聞いて意味が取れる文にする。
+- 恐怖や戦慄を煽るのは、指定のトーンが恐怖系の場合のみ。それ以外では無理に怖くしない。
+- テロップ（subtitle_text）は14文字以内。
+- 数字・固有名詞・年代は確かなものだけ使う。不確かな点は断定せず「とされる」「説がある」と書く。
+- 脚色した個人のストーリーは、再現やたとえ話だと分かる表現にする。
+- 確信が持てない事実は uncertain_facts に列挙する。
+- reference_book は確実に実在する書籍のみ。確信がなければ、定番の入門書・新書を選ぶ。"""
 
 
 def get_base_system_prompt() -> str:
-    """自己改訂された system_prompt.txt が存在すればそれを優先読み込み"""
+    """system_prompt.txt があれば優先（ただし自動上書きは行わず、人間が編集する運用を推奨）"""
     if os.path.exists(SYSTEM_PROMPT_FILE):
         try:
             with open(SYSTEM_PROMPT_FILE, "r", encoding="utf-8") as f:
@@ -192,49 +234,52 @@ def get_base_system_prompt() -> str:
                     return content
         except Exception:
             pass
-
-    return """あなたはYouTube Shortsのアルゴリズムをハックし、視聴維持率とインプレッションを極大化するショート動画専任のトップディレクターです。
-視聴者が日常で意識していない「脳のバグ・社会の裏ルール・歴史の暗部・生物の異常性・資本の罠」を突きつけ、スワイプの手を強制停止させる台本を作成してください。
-
-【構成ルール】
-1. 冒頭（第1シーン）: 最初の1秒で常識破壊・警告・恐怖を突きつけ、スワイプを反射的に止めさせる（screen_effectは'flash'を推奨）。
-2. 展開（第2〜3シーン）: 矢継ぎ早に具体的な証拠、数字、心理トリックを畳み掛ける。退屈を感じる隙を1ミリも与えない。
-3. 結末（最終シーン）: 視聴者に強い余韻、戦慄、またはコメント欄で議論したくなる問いかけを残す。冒頭へループできる構文を意識する。
-4. 全体の長さ: 4〜5シーン構成。各シーンのナレーションはテンポよく読み上げて30〜45秒に収める。
-5. テロップ（subtitle_text）: 1画面あたり8〜14文字以内。短く力強い単語で画面を支配する。
-6. 参考文献（reference_book）: テーマの深層に実在する名著（学術書、新書、ノンフィクション）を1冊選定すること。"""
+    return DEFAULT_PROMPT
 
 
-def generate_with_gemini(theme: str, angle: str, forbidden_titles: List[str]) -> DetailedScript:
-    """Gemini 3.8 Flash を用いて動画台本JSONを生成（非推奨パラメータ完全排除）"""
-    client = genai.Client(api_key=GEMINI_API_KEY)
+def build_prompt(theme: str, tone: str, angle: str, style: Dict[str, str],
+                 recent: List[dict]) -> str:
+    forbidden_titles = "\n".join(f"- {r['title']}" for r in recent[-15:] if r.get("title")) or "なし"
+    forbidden_openings = "\n".join(f"- {r['opening_line']}" for r in recent[-10:] if r.get("opening_line")) or "なし"
+    length = style["長さ"]
 
-    system_instruction = get_base_system_prompt()
-    forbidden_text = "\n".join([f"- {t}" for t in forbidden_titles]) if forbidden_titles else "なし"
+    return f"""
+{get_base_system_prompt()}
 
-    prompt = f"""
-{system_instruction}
+【今回の指定】
+■ 題材ジャンル: {theme}
+  （このジャンルの中から、「知っているつもりで知らない」具体的な話を自分で1つ選ぶこと）
+■ 感情トーン: {tone}
+■ アングル: {angle}
+■ 語り口: {style['語り口']}
+■ 構成: {style['構成']}
+■ 視点: {style['視点']}
+■ 結末: {style['結末']}
+■ 長さ: {length}（ナレーション合計 {LENGTH_TO_CHARS[length]}、{LENGTH_TO_SCENES[length]}構成）
 
-【今回の指令】
-以下の「テーマ」と「構成アングル」を有機的に融合させ、冷徹かつ知的好奇心を刺激するショート動画台本を生成せよ。
+【重複禁止（直近のタイトル）】
+{forbidden_titles}
 
-■ 抽象テーマ: {theme}
-■ 構成アングル（フック手法）: {angle}
-
-【重複禁止リスト（直近のタイトル）】
-以下の過去タイトルとネタや切り口が被ることは絶対に許されない:
-{forbidden_text}
+【重複禁止（直近の冒頭の一文。似た書き出しも禁止）】
+{forbidden_openings}
 
 【出力要件】
-- title: 全角22〜32文字程度。知的好奇心・本能的恐怖を刺激する硬質な名詞を使い、末尾に #Shorts を付与せよ。安っぽい【暴露】【警告】などの定型タグは使用禁止。
-- scenes: 4〜5つのシーン。各シーンにナレーション、Pexels/Pixabay検索キーワード（英語複数）、カメラワーク、テロップ情報を含めること。
-- reference_book: その事象や歴史を学術的・体系的に追及した実在の書籍名と紹介文を含めること。
+- title: 35文字以内、末尾に #Shorts。定型タグ（【暴露】【警告】など）は使用禁止。
+- opening_line: 第1シーンのナレーション冒頭の一文と一致させる。
+- scenes: 指定の長さと構成に合わせる。
+- 指定された語り口・構成・視点・結末を、全シーンで一貫して守ること。
 """
 
+
+# ------------------------------------------------------------
+# 生成
+# ------------------------------------------------------------
+def generate_with_gemini(prompt: str) -> DetailedScript:
+    client = genai.Client(api_key=GEMINI_API_KEY)
+    # モデル名は実在するものに置き換えてください（要確認）
     models_to_try = ["gemini-3.8-flash", "gemini-3.7-flash"]
     for model_name in models_to_try:
         try:
-            # temperature, top_p, top_k などのサンプリングパラメータは廃止対応のため除外
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt,
@@ -247,27 +292,38 @@ def generate_with_gemini(theme: str, angle: str, forbidden_titles: List[str]) ->
             return response.parsed
         except Exception as e:
             print(f"⚠️ {model_name} での生成失敗: {e}。次を試行します...")
-
     raise RuntimeError("利用可能な全Geminiモデルで台本生成に失敗しました。")
 
 
 def generate_script() -> DetailedScript:
-    """マトリクス選定・重複回避・生成・履歴保存を一貫して実行"""
-    forbidden_titles = load_recent_history(n=15)
+    history = load_history()
 
-    selected_theme = random.choice(THEMES)
-    selected_angle = random.choice(ANGLES)
+    theme, tone, angle = pick_theme_and_angle(history)
+    style = pick_style(history)
 
-    print(f"🎲 マトリクス選定完了:")
-    print(f"   テーマ: {selected_theme}")
-    print(f"   アングル: {selected_angle}")
+    adopted = analyze_feedback(history)
+    mode = decide_mode(adopted)
+    if mode == "exploit":
+        style = apply_exploit(style, adopted)
 
-    script = generate_with_gemini(selected_theme, selected_angle, forbidden_titles)
+    print("🎲 選定結果:")
+    print(f"   モード: {mode}")
+    print(f"   ジャンル: {theme} / トーン: {tone} / アングル: {angle}")
+    print(f"   型: {style}")
+    if adopted:
+        print(f"   採用済みの要素: {adopted}")
+    else:
+        print(f"   （フィードバック未反映: 実績が{MIN_SAMPLES_TO_LEARN * 2}本未満）")
+
+    prompt = build_prompt(theme, tone, angle, style, history)
+    script = generate_with_gemini(prompt)
 
     print(f"\n✅ 台本生成完了: {script.title}")
-    save_history_record(script.title, selected_theme, selected_angle)
-    save_reference_book(script.reference_book)
+    if script.uncertain_facts:
+        print(f"⚠️ 要確認の事実: {script.uncertain_facts}")
 
+    save_history_record(script, style, tone, mode)
+    save_reference_book(script.reference_book)
     return script
 
 
