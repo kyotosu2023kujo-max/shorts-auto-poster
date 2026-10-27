@@ -1,59 +1,59 @@
 {
-  "title": "【全文明が完全消滅】自己増殖が招くグレイグーの罠 #Shorts",
-  "theme": "ナノマシンの暴走とグレイ・グー仮説",
-  "angle": "世界滅亡のカウントダウンを告げる冷徹なナレーション",
+  "title": "【住民が全消滅】漂着する足首と過剰知性の罠 #Shorts",
+  "theme": "身元不明の遺体が漂着する『足首だけの靴』の怪異",
+  "angle": "知性ゆえに陰謀を過剰構築してしまう認知防衛の罠",
   "scenes": [
     {
-      "narration": "地球上の全有機物は、残り七十二時間で完全消滅する。",
+      "narration": "海岸に打ち上げられたのは靴を履いた人間の足首だけだ。",
       "visual_search_queries": [
-        "dark microscopic particles floating",
-        "futuristic laboratory disaster"
+        "creepy beach washed ashore running shoe",
+        "dark foggy shoreline ocean waves"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "残り72時間で全消滅",
+      "subtitle_text": "靴だけが漂着する海岸",
       "subtitle_color": "yellow",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "発端は肉眼で見えぬ医療用ナノマシン。自律増殖を止める遮断コードが、実験室で一文字だけ破損した。",
+      "narration": "知性ある捜査官ほど猟奇殺人鬼の組織的犯行を疑い底なしの闇に迷い込む。",
       "visual_search_queries": [
-        "nanotechnology robot cell division",
-        "microscope bacteria multiplying"
+        "detective crime scene board investigation",
+        "nervous stressed man looking at documents"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "遮断コード1文字の破損",
+      "subtitle_text": "暴走する高度な推理",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "増殖は指数関数的。炭素と有機物を貪り尽くし、あらゆる都市と生態系を均質な灰色の粉末へ変貌させる。",
+      "narration": "真実は冷酷だ。現代のスニーカー素材が腐敗ガスで浮力を得て自然切断された関節のみを浮上させたに過ぎない。",
       "visual_search_queries": [
-        "gray dust spreading over city",
-        "decaying matter macro lens"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "全都市が灰色の粉へ",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "人類にこれを止める物理的手段は存在しない。空気を満たす無数の複製機が、今あなたの肺へと侵入する。そして、",
-      "visual_search_queries": [
-        "airborne glowing dust particles",
-        "dark apocalyptic atmosphere"
+        "underwater dark ocean depths sinking",
+        "running shoe underwater floating slow motion"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "肺へ侵入する自己複製機",
+      "subtitle_text": "物理現象が招いた錯覚",
+      "subtitle_color": "cyan",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "だが高度な脳ほど無意味な偶然を拒絶し虚構の怪異を捏造する。今も海を漂うのは靴か人間の錯覚か。",
+      "visual_search_queries": [
+        "dark vast ocean endless waves horizon",
+        "mysterious sea mist empty beach lonely"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "脳が捏造する怪異",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "『エンジンの創造 ナノテクノロジーと人工知能がひらく未来』K・エリック・ドレクスラー",
-    "hook_comment": "グレイ・グー仮説を提唱し、自己増殖機械による物質文明の完全終焉を数学的に告発した戦慄の原典はこちら"
+    "book_title": "なぜ人はニセ科学を信じるのか",
+    "hook_comment": "無作為な事象に恐るべき陰謀を見出してしまう脳のバグ、その全貌を解明した名著はこちら。"
   }
 }
