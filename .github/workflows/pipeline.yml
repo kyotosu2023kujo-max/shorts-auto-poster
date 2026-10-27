@@ -28,11 +28,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      # --- 1. ffmpeg のインストール (動画・音声合成に必須) ---
-      - name: Install ffmpeg
+      # --- 1. ffmpeg および日本語フォントのインストール ---
+      - name: Install ffmpeg and Fonts
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
 
       # --- 2. 依存ライブラリのインストール ---
       - name: Install Dependencies
