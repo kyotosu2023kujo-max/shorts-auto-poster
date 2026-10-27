@@ -172,4 +172,4 @@ def fetch_pixabay_video(query: str, min_duration: float = 3.0) -> str:
     return ""
 
 
-def download_best_video(queries: list[str], output_path: str, min_duration: float = 3.0) -> bool
+def download_best_video(queries: list[str], output_path: str, min_duration: float = 3.0) -> bool:
