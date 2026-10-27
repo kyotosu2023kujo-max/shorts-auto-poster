@@ -187,28 +187,24 @@ def download_file(url: str, output_path: str) -> bool:
 
 def download_best_video(queries: list[str], output_path: str, min_duration: float = 3.0) -> bool:
     """複数のクエリと多重フォールバック（Pexels縦・横、Pixabay）を試して動画をダウンロードする"""
-    # 1. 縦長動画を優先してPexelsで検索
     for q in queries:
         link = fetch_pexels_video(q, "portrait", min_duration)
         if link:
             if download_file(link, output_path):
                 return True
 
-    # 2. 横長動画をPexelsで検索
     for q in queries:
         link = fetch_pexels_video(q, "landscape", min_duration)
         if link:
             if download_file(link, output_path):
                 return True
 
-    # 3. Pixabayで検索
     for q in queries:
         link = fetch_pixabay_video(q, min_duration)
         if link:
             if download_file(link, output_path):
                 return True
 
-    # 4. 全滅した場合はフォールバック用キーワードで再試行
     for q in FALLBACK_QUERIES:
         link = fetch_pexels_video(q, "portrait", min_duration)
         if link:
@@ -216,3 +212,201 @@ def download_best_video(queries: list[str], output_path: str, min_duration: floa
                 return True
 
     return False
+
+
+async def generate_voice(text: str, output_path: str, voice: str) -> float:
+    """Edge TTSを使用して音声を生成し、音声の長さを秒数で返す"""
+    communicate = edge_tts.Communicate(text, voice, rate=CONFIG["voice_rate"])
+    await communicate.save(output_path)
+    
+    # librosaで音声の長さを正確に取得
+    y, sr = librosa.load(output_path, sr=None)
+    duration = librosa.get_duration(y=y, sr=sr)
+    return duration
+
+
+def create_text_image(text: str, font: ImageFont.FreeTypeFont, text_color="yellow", bg_box=True) -> Image.Image:
+    """字幕用のテキスト画像を生成する"""
+    # 簡易的な描画サイズ計算
+    padding_x = 30
+    padding_y = 20
+    
+    # ダミー画像で文字サイズ測定
+    dummy_img = Image.new("RGBA", (1080, 300), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(dummy_img)
+    
+    # 複数行対応
+    lines = text.split("\n")
+    max_w = 0
+    total_h = 0
+    line_heights = []
+    
+    for line in lines:
+        bbox = draw.textbbox((0, 0), line, font=font)
+        w = bbox[2] - bbox[0]
+        h = bbox[3] - bbox[1]
+        max_w = max(max_w, w)
+        line_heights.append(h)
+        total_h += h + 10
+
+    img_w = max_w + padding_x * 2
+    img_h = total_h + padding_y * 2
+    
+    img = Image.new("RGBA", (img_w, img_h), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    
+    if bg_box:
+        # 背景の黒半透明ボックス
+        opacity = CONFIG["subtitle_bg_opacity"]
+        draw.rounded_rectangle(
+            [(0, 0), (img_w, img_h)],
+            radius=15,
+            fill=(0, 0, 0, opacity)
+        )
+        
+    y_text = padding_y
+    for i, line in enumerate(lines):
+        bbox = draw.textbbox((0, 0), line, font=font)
+        w = bbox[2] - bbox[0]
+        x_text = (img_w - w) // 2
+        
+        # 縁取り（黒）
+        for adj_x in [-3, 0, 3]:
+            for adj_y in [-3, 0, 3]:
+                draw.text((x_text + adj_x, y_text + adj_y), line, font=font, fill=(0, 0, 0, 255))
+        
+        # メイン文字
+        draw.text((x_text, y_text), line, font=font, fill=text_color)
+        y_text += line_heights[i] + 10
+        
+    return img
+
+
+async def build_main():
+    print("🎬 ショート動画の自動生成を開始します...")
+    
+    # 1. シナリオ生成
+    script: DetailedScript = generate_script()
+    print(f"📝 タイトル: {script.title}")
+    print(f"📝 シーン数: {len(script.scenes)}")
+    
+    selected_voice = random.choice(AVAILABLE_VOICES)
+    print(f"🗣️ 使用音声: {selected_voice}")
+    
+    # 2. 各シーンの音声と素材動画の準備
+    scene_clips = []
+    audio_clips = []
+    
+    temp_files = []
+    
+    try:
+        for i, scene in enumerate(script.scenes):
+            print(f"--- シーン {i+1}/{len(script.scenes)} 処理中 ---")
+            
+            # 音声生成
+            audio_path = f"temp_audio_{i}.mp3"
+            temp_files.append(audio_path)
+            duration = await generate_voice(scene.narration, audio_path, selected_voice)
+            
+            # 素材動画取得
+            video_path = f"temp_video_{i}.mp4"
+            temp_files.append(video_path)
+            
+            queries = scene.visual_queries if scene.visual_queries else [script.title]
+            success = download_best_video(queries, video_path, min_duration=2.0)
+            
+            if not success or not os.path.exists(video_path):
+                print(f"⚠️ シーン {i+1} の素材取得に失敗。単色背景にフォールバックします。")
+                # 単色背景クリップの作成
+                bg_clip = ColorClip(size=(VIDEO_WIDTH, VIDEO_HEIGHT), color=(20, 20, 30), duration=duration)
+            else:
+                # 動画クリップの加工
+                v_clip = VideoFileClip(video_path)
+                # ループまたはトリミング処理
+                if v_clip.duration < duration:
+                    # ループさせて長さを合わせる
+                    n_loops = math.ceil(duration / v_clip.duration)
+                    v_clip = v_clip.fx(vfx.loop, n=n_loops)
+                
+                v_clip = v_clip.subclip(0, duration)
+                
+                # リサイズ・クロップして1080x1920に合わせる（縦長フィット）
+                w, h = v_clip.size
+                target_aspect = VIDEO_WIDTH / VIDEO_HEIGHT
+                current_aspect = w / h
+                
+                if current_aspect > target_aspect:
+                    # 横長すぎる場合は高さを合わせ、幅をクロップ
+                    new_h = VIDEO_HEIGHT
+                    new_w = int(new_h * current_aspect)
+                    v_clip = v_clip.resize(height=new_h)
+                    x_center = new_w // 2
+                    v_clip = v_clip.crop(x1=x_center - VIDEO_WIDTH//2, y1=0, x2=x_center + VIDEO_WIDTH//2, y2=VIDEO_HEIGHT)
+                else:
+                    # 縦長すぎる場合は幅を合わせ、高さをクロップ
+                    new_w = VIDEO_WIDTH
+                    new_h = int(new_w / current_aspect)
+                    v_clip = v_clip.resize(width=new_w)
+                    y_center = new_h // 2
+                    v_clip = v_clip.crop(x1=0, y1=y_center - VIDEO_HEIGHT//2, x2=VIDEO_WIDTH, y2=y_center + VIDEO_HEIGHT//2)
+                
+                bg_clip = v_clip
+            
+            # 音声クリップ設定
+            a_clip = AudioFileClip(audio_path)
+            
+            # 字幕追加（ImageClipとして重ねる）
+            font = get_available_font(CONFIG["font_size"])
+            text_img = create_text_image(scene.subtitle_text, font, text_color=CONFIG["default_subtitle_color"], bg_box=CONFIG["subtitle_bg_box"])
+            
+            img_path = f"temp_sub_{i}.png"
+            temp_files.append(img_path)
+            text_img.save(img_path)
+            
+            txt_clip = ImageClip(img_path).set_duration(duration)
+            # 画面下部に配置
+            txt_clip = txt_clip.set_position(("center", CONFIG["subtitle_y_offset"]))
+            
+            # シーンの合成
+            video_with_text = CompositeVideoClip([bg_clip, txt_clip]).set_duration(duration)
+            scene_clips.append(video_with_text)
+            audio_clips.append(a_clip)
+            
+        print("🔗 すべてのシーンを結合中...")
+        final_video = concatenate_videoclips(scene_clips, method="compose")
+        
+        # 音声の結合
+        from moviepy.editor import concatenate_audioclips
+        final_audio = concatenate_audioclips(audio_clips)
+        
+        final_video = final_video.set_audio(final_audio)
+        
+        print(f"💾 動画を書き出し中: {OUTPUT_VIDEO_PATH}")
+        final_video.write_videofile(
+            OUTPUT_VIDEO_PATH,
+            fps=30,
+            codec="libx264",
+            audio_codec="aac",
+            bitrate="4M",
+            preset="medium",
+            threads=4
+        )
+        
+        print("✨ 動画生成が正常に完了しました！")
+        
+    finally:
+        # 一時ファイルのクリーンアップ
+        for f in temp_files:
+            if os.path.exists(f):
+                try:
+                    os.remove(f)
+                except Exception:
+                    pass
+
+
+if __name__ == "__main__":
+    asyncio.run(build_main())
+    
+    if not os.path.exists(OUTPUT_VIDEO_PATH) or os.path.getsize(OUTPUT_VIDEO_PATH) == 0:
+        print("❌ エラー: 動画の生成に失敗しました ('output_shorts.mp4' が存在しません)。")
+        exit(1)
