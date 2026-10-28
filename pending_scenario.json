@@ -1,73 +1,73 @@
 {
-  "title": "唐辛子が人類を快楽漬けにして世界征服した仕組み #Shorts",
-  "theme": "唐辛子のカプサイシンと脳の報酬系",
-  "angle": "心理的報酬",
-  "opening_line": "緊急速報です。なぜ人類は、我々トウガラシが放つ激痛警報を喜んで食べるのでしょうか？",
+  "title": "パイナップルを食べる時あなたも食べられている科学 #Shorts",
+  "theme": "パイナップルのブロメラインによるタンパク質分解作用",
+  "angle": "生化学的トリック",
+  "opening_line": "私が昔、パイナップルを夢中で頬張っていたら、急に舌が激しく痛み、血の味が広がったことがあります。",
   "scenes": [
     {
-      "narration": "緊急速報です。なぜ人類は、我々トウガラシが放つ激痛警報を喜んで食べるのでしょうか？",
+      "narration": "私が昔、パイナップルを夢中で頬張っていたら、急に舌が激しく痛み、血の味が広がったことがあります。",
       "visual_search_queries": [
-        "breaking news television studio red chili pepper",
-        "red chili pepper macro heat concept"
+        "eating pineapple close up",
+        "person holding painful mouth"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "なぜ激痛を喜ぶのか？",
+      "subtitle_text": "舌が急に血の味に…",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
-      "screen_effect": "flash"
+      "screen_effect": null
     },
     {
-      "narration": "現場のカプサイシンです。我々は本来、哺乳類に噛み砕かれないよう猛烈な痛覚トラップを開発しました。",
+      "narration": "腐っていたわけではありませんよ。実はこれ、果実が自らを守るために仕掛けた生化学的罠なのです。",
       "visual_search_queries": [
-        "microscopic spicy molecule pepper capsaicin",
-        "chili pepper defensive spices nature"
+        "fresh sliced pineapple",
+        "science laboratory test"
       ],
       "camera_motion": "static",
-      "subtitle_text": "撃退用の猛毒トラップ",
+      "subtitle_text": "果物が仕掛けた罠",
       "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "しかし最新の報告によると、脳はこの激痛から身を守るため、快感物質エンドルフィンを大量分泌している模様です。",
-      "visual_search_queries": [
-        "human brain neural activity dopamine endorphin glow",
-        "eating spicy food brain scan reaction"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "脳内麻薬がドバドバ",
-      "subtitle_color": "cyan",
-      "subtitle_position": "center",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "つまり人類は痛みの後に訪れる強烈な幸福感を味わうため、自ら進んで火を噴いていたことが判明しました。",
-      "visual_search_queries": [
-        "person enjoying eating spicy hot noodles sweat smile",
-        "sweating eating hot sauce happy face"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "快感のために火を吹く",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "撃退するつもりが、快楽漬けにされた人類によって世界中で畑を増やされ、我々は今、絶賛大繁栄中です。",
-      "visual_search_queries": [
-        "vast chili pepper farm plantation harvest global",
-        "red peppers drying field sun agriculture"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "結果、世界中で大繁栄",
-      "subtitle_color": "yellow",
       "subtitle_position": "center",
       "screen_effect": "flash"
+    },
+    {
+      "narration": "パイナップルにはブロメラインという、肉の組織を強力に溶かすタンパク質分解酵素が潜んでいます。",
+      "visual_search_queries": [
+        "enzymes molecular structure 3d",
+        "raw meat tenderizer"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "肉を溶かす強力酵素",
+      "subtitle_color": "cyan",
+      "subtitle_position": "bottom",
+      "screen_effect": null
+    },
+    {
+      "narration": "つまりあなたが果肉を味わっている瞬間、向こうもあなたの舌や口内の粘膜をせっせと消化しているのです。",
+      "visual_search_queries": [
+        "microscopic cells dissolving",
+        "eating fruit macro shot"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "舌の粘膜が消化される",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
+      "screen_effect": null
+    },
+    {
+      "narration": "美味しい果実を貪っていたつもりが、実は溶かされ食べられていたのは、人間の方だったのかもしれませんね。",
+      "visual_search_queries": [
+        "whole pineapple on dark background",
+        "thoughtful scientist in lab"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "食べられていたのは人間",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": null
     }
   ],
   "reference_book": {
-    "book_title": "トウガラシの世界史（山本紀夫 著、中公新書）",
-    "hook_comment": "辛いものを食べた後に妙なスッキリ感を味わったことはありますか？あなたの好きな激辛料理も教えてください！"
+    "book_title": "面白くて眠れなくなる植物学（稲垣栄洋 著）",
+    "hook_comment": "パイナップルを食べすぎて舌がピリピリした経験、あなたにもありませんか？"
   },
   "uncertain_facts": []
 }
