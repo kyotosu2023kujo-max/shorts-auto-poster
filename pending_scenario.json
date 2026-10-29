@@ -1,73 +1,61 @@
 {
-  "title": "パイナップルを食べる時あなたも食べられている科学 #Shorts",
-  "theme": "パイナップルのブロメラインによるタンパク質分解作用",
-  "angle": "生化学的トリック",
-  "opening_line": "私が昔、パイナップルを夢中で頬張っていたら、急に舌が激しく痛み、血の味が広がったことがあります。",
+  "title": "朝スッキリ起きられない体内時計の罠 #Shorts",
+  "theme": "主時計と末梢時計のズレによる午前中の不調",
+  "angle": "体験設計の秘密",
+  "opening_line": "なぜ朝に光を浴びても、午前中のだるさが抜けないのでしょうか。",
   "scenes": [
     {
-      "narration": "私が昔、パイナップルを夢中で頬張っていたら、急に舌が激しく痛み、血の味が広がったことがあります。",
+      "narration": "なぜ朝に光を浴びても、午前中のだるさが抜けないのでしょうか。",
       "visual_search_queries": [
-        "eating pineapple close up",
-        "person holding painful mouth"
+        "tired person morning bed sunlight",
+        "clock morning exhaustion bedroom"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "舌が急に血の味に…",
-      "subtitle_color": "yellow",
+      "subtitle_text": "朝光を浴びてもだるい理由",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": null
+      "screen_effect": "none"
     },
     {
-      "narration": "腐っていたわけではありませんよ。実はこれ、果実が自らを守るために仕掛けた生化学的罠なのです。",
+      "narration": "あなたの脳にある主時計は光で動きますが、内臓にある末梢時計は食事の刺激でしか動きません。",
       "visual_search_queries": [
-        "fresh sliced pineapple",
-        "science laboratory test"
+        "circadian rhythm biological clock animation",
+        "human body stomach digestive system"
       ],
       "camera_motion": "static",
-      "subtitle_text": "果物が仕掛けた罠",
+      "subtitle_text": "脳と内臓で違う体内時計",
       "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "光だけで朝食を抜くと、頭と胃腸の時刻が数時間もズレる社会的時差ボケが生じます。",
+      "visual_search_queries": [
+        "clocks ticking out of sync concept",
+        "fatigued commuter morning train office"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "内臓の時差ボケが起きる",
+      "subtitle_color": "yellow",
       "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "パイナップルにはブロメラインという、肉の組織を強力に溶かすタンパク質分解酵素が潜んでいます。",
+      "narration": "明日の朝は光を浴びたら、一口でも固形物を噛んで胃腸のリセットボタンを押してみてください。",
       "visual_search_queries": [
-        "enzymes molecular structure 3d",
-        "raw meat tenderizer"
+        "person eating breakfast morning sun",
+        "energetic person morning routine kitchen"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "肉を溶かす強力酵素",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": null
-    },
-    {
-      "narration": "つまりあなたが果肉を味わっている瞬間、向こうもあなたの舌や口内の粘膜をせっせと消化しているのです。",
-      "visual_search_queries": [
-        "microscopic cells dissolving",
-        "eating fruit macro shot"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "舌の粘膜が消化される",
-      "subtitle_color": "yellow",
-      "subtitle_position": "center",
-      "screen_effect": null
-    },
-    {
-      "narration": "美味しい果実を貪っていたつもりが、実は溶かされ食べられていたのは、人間の方だったのかもしれませんね。",
-      "visual_search_queries": [
-        "whole pineapple on dark background",
-        "thoughtful scientist in lab"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "食べられていたのは人間",
+      "subtitle_text": "朝に一口噛んでリセット",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
-      "screen_effect": null
+      "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "面白くて眠れなくなる植物学（稲垣栄洋 著）",
-    "hook_comment": "パイナップルを食べすぎて舌がピリピリした経験、あなたにもありませんか？"
+    "book_title": "体内時計の科学",
+    "hook_comment": "朝食はしっかり食べる派ですか？それとも飲み物だけで済ませる派ですか？"
   },
   "uncertain_facts": []
 }
