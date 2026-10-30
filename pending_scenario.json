@@ -1,61 +1,75 @@
 {
-  "title": "朝スッキリ起きられない体内時計の罠 #Shorts",
-  "theme": "主時計と末梢時計のズレによる午前中の不調",
-  "angle": "体験設計の秘密",
-  "opening_line": "なぜ朝に光を浴びても、午前中のだるさが抜けないのでしょうか。",
+  "title": "宇宙の設計が解ける真空崩壊の静寂 #Shorts",
+  "theme": "量子力学と真空崩壊（偽の真空の崩壊）",
+  "angle": "宇宙の物理法則という体験設計の秘密",
+  "opening_line": "もし今夜、あなたが立つこの宇宙の確かな土台が偽りだとしたら、何が起きるでしょうか。",
   "scenes": [
     {
-      "narration": "なぜ朝に光を浴びても、午前中のだるさが抜けないのでしょうか。",
+      "narration": "もし今夜、あなたが立つこの宇宙の確かな土台が偽りだとしたら、何が起きるでしょうか。",
       "visual_search_queries": [
-        "tired person morning bed sunlight",
-        "clock morning exhaustion bedroom"
+        "deep space stars",
+        "lone silhouette night sky"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "朝光を浴びてもだるい理由",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "あなたの脳にある主時計は光で動きますが、内臓にある末梢時計は食事の刺激でしか動きません。",
-      "visual_search_queries": [
-        "circadian rhythm biological clock animation",
-        "human body stomach digestive system"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "脳と内臓で違う体内時計",
+      "subtitle_text": "宇宙の土台が偽りだとしたら",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
+      "screen_effect": null
     },
     {
-      "narration": "光だけで朝食を抜くと、頭と胃腸の時刻が数時間もズレる社会的時差ボケが生じます。",
+      "narration": "答えは静寂です。私たちの宇宙は、安定に見えて「偽の真空」という仮初めの平穏に浮かんでいるに過ぎません。",
       "visual_search_queries": [
-        "clocks ticking out of sync concept",
-        "fatigued commuter morning train office"
+        "abstract quantum physics",
+        "soap bubble surface macro"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "宇宙は仮初めの平穏にある",
+      "subtitle_color": "cyan",
+      "subtitle_position": "center",
+      "screen_effect": null
+    },
+    {
+      "narration": "もしどこかで真の真空の泡が生まれれば、それは光速で広がり、触れるすべての素粒子をほどいていきます。",
+      "visual_search_queries": [
+        "cosmic energy expanding sphere",
+        "abstract particles dissolving"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "内臓の時差ボケが起きる",
+      "subtitle_text": "光速でほどける素粒子",
       "subtitle_color": "yellow",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "明日の朝は光を浴びたら、一口でも固形物を噛んで胃腸のリセットボタンを押してみてください。",
+      "narration": "痛みも、訪れを告げる影もありません。光と同じ速度の波は、あなたが認識する暇さえ与えずに世界を塗り替えます。",
       "visual_search_queries": [
-        "person eating breakfast morning sun",
-        "energetic person morning routine kitchen"
+        "speed of light stars warp",
+        "infinite dark void space"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "朝に一口噛んでリセット",
+      "subtitle_text": "認識する暇なく世界が消える",
       "subtitle_color": "white",
+      "subtitle_position": "center",
+      "screen_effect": null
+    },
+    {
+      "narration": "この美しい世界の理は、薄氷の上に設計された奇跡。今夜の星空も、静かに息を潜めています。",
+      "visual_search_queries": [
+        "beautiful milky way night",
+        "quiet starry sky horizon"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "薄氷の上に佇む星空の奇跡",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
+      "screen_effect": null
     }
   ],
   "reference_book": {
-    "book_title": "体内時計の科学",
-    "hook_comment": "朝食はしっかり食べる派ですか？それとも飲み物だけで済ませる派ですか？"
+    "book_title": "宇宙の終焉（ケイティ・マック 著）",
+    "hook_comment": "宇宙そのものが光速で書き換わる瞬間、あなたは最後に何を想うと思いますか？"
   },
-  "uncertain_facts": []
+  "uncertain_facts": [
+    "現在のヒッグス粒子およびトップクォークの質量測定値からは宇宙がメタスタブル（準安定）領域にある可能性が高いとされるが、標準模型を超える新物理により真空が絶対安定である可能性も否定されていない。"
+  ]
 }
