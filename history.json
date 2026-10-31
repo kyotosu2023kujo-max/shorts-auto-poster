@@ -479,5 +479,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "猛烈な眠気を生み出す体温冷却の物理学 #Shorts",
+    "theme": "深部体温の低下と入眠メカニズム",
+    "angle": "物理的解析",
+    "tone": "驚き・種明かし",
+    "opening_line": "あなたが今猛烈に眠いのは、脳の充電切れじゃないですよ。",
+    "style": {
+      "語り口": "軽いツッコミ",
+      "構成": "3つの事実",
+      "視点": "視聴者本人",
+      "結末": "ループ",
+      "長さ": "20秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
