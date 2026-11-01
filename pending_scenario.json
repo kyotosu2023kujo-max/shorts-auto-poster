@@ -1,49 +1,65 @@
 {
-  "title": "猛烈な眠気を生み出す体温冷却の物理学 #Shorts",
-  "theme": "深部体温の低下と入眠メカニズム",
-  "angle": "物理的解析",
-  "opening_line": "あなたが今猛烈に眠いのは、脳の充電切れじゃないですよ。",
+  "title": "銀行から引き出した1万円は誰の金なのか #Shorts",
+  "theme": "預金契約におけるお金の所有権と自己同一性",
+  "angle": "自己同一性のパラドックス",
+  "opening_line": "もしあなたが銀行に預けた1万円を翌日引き出したら、それは本当に「あなたのお金」でしょうか。",
   "scenes": [
     {
-      "narration": "あなたが今猛烈に眠いのは、脳の充電切れじゃないですよ。実は体が熱を外へ捨てている物理現象なんです。",
+      "narration": "もしあなたが銀行に預けた1万円を翌日引き出したら、それは本当に「あなたのお金」でしょうか。",
       "visual_search_queries": [
-        "tired person yawning bedroom",
-        "thermal camera human body heat"
+        "atm cash withdrawal japanese yen",
+        "holding money hands closeup",
+        "person using automated teller machine"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "眠気は充電切れじゃない",
+      "subtitle_text": "引き出した1万円は誰のお金？",
       "subtitle_color": "yellow",
       "subtitle_position": "center",
       "screen_effect": "none"
     },
     {
-      "narration": "深部体温が約1度急降下しないと、人は物理的に眠れない仕組みになっています。",
+      "narration": "実は法的には預けた瞬間に所有権が銀行へ移り、あなたに残るのは単なる「返せ」という権利だけです。",
       "visual_search_queries": [
-        "thermometer temperature cold blue",
-        "human body 3d thermal cooling"
+        "bank vault interior heavy door",
+        "signing financial document contract",
+        "bank building facade"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "預けた瞬間銀行の所有物になる",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "引き出した紙幣は誰かが使った別物で、元のお札は今頃どこかの誰かの財布の中にいます。",
+      "visual_search_queries": [
+        "passing cash hands payment",
+        "wallet full of banknotes",
+        "busy street crowd movement"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "深部体温が1度下がる",
+      "subtitle_text": "財布に戻ったのは他人の紙幣",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "だから手足がポカポカ放熱を始めた瞬間、ほら、また…",
+      "narration": "あなたのお金は最初から存在せず、口座の数字を見て喜んでいるただの錯覚なんですね。",
       "visual_search_queries": [
-        "warm hands cozy blanket bed",
-        "sleepy eyes closing peaceful"
+        "smartphone banking app screen digits",
+        "digital numbers glitch abstract",
+        "confused person looking at phone"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "放熱が始まった瞬間…",
-      "subtitle_color": "white",
+      "subtitle_text": "口座の数字を信じるただの錯覚",
+      "subtitle_color": "yellow",
       "subtitle_position": "center",
       "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "スタンフォード式 最高の睡眠（西野精治）",
-    "hook_comment": "眠くなると手足が温かくなる感覚、自覚したことありますか？"
+    "book_title": "貨幣論（岩井克人）",
+    "hook_comment": "自分のお金が実は『誰のものでもない数字』だとしたら、あなたは何を信じて働きますか？"
   },
   "uncertain_facts": []
 }

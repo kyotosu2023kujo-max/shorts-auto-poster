@@ -500,5 +500,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "銀行から引き出した1万円は誰の金なのか #Shorts",
+    "theme": "預金契約におけるお金の所有権と自己同一性",
+    "angle": "自己同一性のパラドックス",
+    "tone": "思考実験・挑発",
+    "opening_line": "もしあなたが銀行に預けた1万円を翌日引き出したら、それは本当に「あなたのお金」でしょうか。",
+    "style": {
+      "語り口": "軽いツッコミ",
+      "構成": "ifストーリー",
+      "視点": "視聴者本人",
+      "結末": "オチ（笑い・驚き）",
+      "長さ": "30秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
