@@ -521,5 +521,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "信号の押しボタンが人間を操る心理ゲーム #Shorts",
+    "theme": "横断歩道のプラセボ押しボタン",
+    "angle": "不条理のゲーム理論",
+    "tone": "ユーモア・軽さ",
+    "opening_line": "私は横断歩道の押しボタンですが、実は誰とも線がつながっていません。",
+    "style": {
+      "語り口": "淡々としたドキュメンタリー",
+      "構成": "反転オチ",
+      "視点": "モノや動物の視点",
+      "結末": "ループ",
+      "長さ": "20秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

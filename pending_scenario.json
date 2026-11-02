@@ -1,65 +1,52 @@
 {
-  "title": "銀行から引き出した1万円は誰の金なのか #Shorts",
-  "theme": "預金契約におけるお金の所有権と自己同一性",
-  "angle": "自己同一性のパラドックス",
-  "opening_line": "もしあなたが銀行に預けた1万円を翌日引き出したら、それは本当に「あなたのお金」でしょうか。",
+  "title": "信号の押しボタンが人間を操る心理ゲーム #Shorts",
+  "theme": "横断歩道のプラセボ押しボタン",
+  "angle": "不条理のゲーム理論",
+  "opening_line": "私は横断歩道の押しボタンですが、実は誰とも線がつながっていません。",
   "scenes": [
     {
-      "narration": "もしあなたが銀行に預けた1万円を翌日引き出したら、それは本当に「あなたのお金」でしょうか。",
+      "narration": "私は横断歩道の押しボタンですが、実は誰とも線がつながっていません。",
       "visual_search_queries": [
-        "atm cash withdrawal japanese yen",
-        "holding money hands closeup",
-        "person using automated teller machine"
+        "pedestrian crosswalk button",
+        "traffic signal street city",
+        "crosswalk push button close up"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "引き出した1万円は誰のお金？",
+      "subtitle_text": "線がつながっていない",
       "subtitle_color": "yellow",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "実は法的には預けた瞬間に所有権が銀行へ移り、あなたに残るのは単なる「返せ」という権利だけです。",
+      "narration": "人間は私を強く連打することで、信号を早く変えた気になり苛立ちを鎮めます。",
       "visual_search_queries": [
-        "bank vault interior heavy door",
-        "signing financial document contract",
-        "bank building facade"
+        "impatient person waiting traffic",
+        "finger pressing pedestrian button",
+        "crowd waiting at crosswalk"
       ],
       "camera_motion": "static",
-      "subtitle_text": "預けた瞬間銀行の所有物になる",
+      "subtitle_text": "押すだけで落ち着く人間",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "引き出した紙幣は誰かが使った別物で、元のお札は今頃どこかの誰かの財布の中にいます。",
+      "narration": "完全に騙されているのに満足げな彼らを見届けると、また別の人間が私を押すのです。",
       "visual_search_queries": [
-        "passing cash hands payment",
-        "wallet full of banknotes",
-        "busy street crowd movement"
+        "pedestrians crossing street",
+        "city crosswalk top view",
+        "person reaching for crosswalk button"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "財布に戻ったのは他人の紙幣",
+      "subtitle_text": "また誰かが私を押す",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
-    },
-    {
-      "narration": "あなたのお金は最初から存在せず、口座の数字を見て喜んでいるただの錯覚なんですね。",
-      "visual_search_queries": [
-        "smartphone banking app screen digits",
-        "digital numbers glitch abstract",
-        "confused person looking at phone"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "口座の数字を信じるただの錯覚",
-      "subtitle_color": "yellow",
-      "subtitle_position": "center",
-      "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "貨幣論（岩井克人）",
-    "hook_comment": "自分のお金が実は『誰のものでもない数字』だとしたら、あなたは何を信じて働きますか？"
+    "book_title": "誰のためのデザイン？ 増補・改訂版（ドナルド・A・ノーマン著）",
+    "hook_comment": "信号のボタン、早く変わりそうな気がして連打したことありますか？"
   },
   "uncertain_facts": []
 }
