@@ -542,5 +542,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "戦場の夜に敵兵と語り合った真空崩壊の静寂 #Shorts",
+    "theme": "戦時下の物理学者同士の邂逅と真空崩壊",
+    "angle": "戦時下の異例の交歓",
+    "tone": "感動・余韻",
+    "opening_line": "あの夜、敵兵と肩を並べて見上げた満天の星は、偽りの安定の上にありました。",
+    "style": {
+      "語り口": "淡々としたドキュメンタリー",
+      "構成": "結論先出し",
+      "視点": "個人の体験",
+      "結末": "ループ",
+      "長さ": "30秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

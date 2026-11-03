@@ -1,52 +1,65 @@
 {
-  "title": "信号の押しボタンが人間を操る心理ゲーム #Shorts",
-  "theme": "横断歩道のプラセボ押しボタン",
-  "angle": "不条理のゲーム理論",
-  "opening_line": "私は横断歩道の押しボタンですが、実は誰とも線がつながっていません。",
+  "title": "戦場の夜に敵兵と語り合った真空崩壊の静寂 #Shorts",
+  "theme": "戦時下の物理学者同士の邂逅と真空崩壊",
+  "angle": "戦時下の異例の交歓",
+  "opening_line": "あの夜、敵兵と肩を並べて見上げた満天の星は、偽りの安定の上にありました。",
   "scenes": [
     {
-      "narration": "私は横断歩道の押しボタンですが、実は誰とも線がつながっていません。",
+      "narration": "あの夜、敵兵と肩を並べて見上げた満天の星は、偽りの安定の上にありました。",
       "visual_search_queries": [
-        "pedestrian crosswalk button",
-        "traffic signal street city",
-        "crosswalk push button close up"
+        "starry night sky milky way dark",
+        "soldier silhouette looking at stars",
+        "trench night winter"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "線がつながっていない",
-      "subtitle_color": "yellow",
+      "subtitle_text": "偽りの安定の上の星空",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "人間は私を強く連打することで、信号を早く変えた気になり苛立ちを鎮めます。",
+      "narration": "凍てつく塹壕で火を分けた敵の青年は、かつて素粒子を研究していた物理学者でした。",
       "visual_search_queries": [
-        "impatient person waiting traffic",
-        "finger pressing pedestrian button",
-        "crowd waiting at crosswalk"
+        "campfire hands sharing flame winter",
+        "two soldiers resting night cold",
+        "vintage scientist writing formula"
       ],
       "camera_motion": "static",
-      "subtitle_text": "押すだけで落ち着く人間",
+      "subtitle_text": "塹壕で出会った敵の学者",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "完全に騙されているのに満足げな彼らを見届けると、また別の人間が私を押すのです。",
+      "narration": "彼は、この宇宙はより安定した真の真空へいつか崩壊する仮初めの世界だと語りました。",
       "visual_search_queries": [
-        "pedestrians crossing street",
-        "city crosswalk top view",
-        "person reaching for crosswalk button"
+        "quantum physics universe bubble expanding",
+        "deep space cosmic void explosion",
+        "abstract glowing sphere decaying"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "また誰かが私を押す",
-      "subtitle_color": "cyan",
+      "subtitle_text": "宇宙は仮初めの泡に過ぎない",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "戦火の愚かしさを呑み込む虚無の美しさを共有した私たちは、夜明け前に別れを告げ、あの夜、敵兵と肩を並べて見上げた満天の星は、",
+      "visual_search_queries": [
+        "sunrise mist battlefield empty",
+        "starry sky fading into dawn",
+        "soldier walking away into mist"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "戦火を呑み込む星の静けさ",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "誰のためのデザイン？ 増補・改訂版（ドナルド・A・ノーマン著）",
-    "hook_comment": "信号のボタン、早く変わりそうな気がして連打したことありますか？"
+    "book_title": "宇宙の終わりに何が起こるのか（ケイティ・マック著）",
+    "hook_comment": "明日命を落とすかもしれない極限状態で、宇宙全体の消滅について語り合う心情をどう感じますか？"
   },
   "uncertain_facts": []
 }
