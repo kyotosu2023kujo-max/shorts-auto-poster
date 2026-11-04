@@ -1,65 +1,61 @@
 {
-  "title": "戦場の夜に敵兵と語り合った真空崩壊の静寂 #Shorts",
-  "theme": "戦時下の物理学者同士の邂逅と真空崩壊",
+  "title": "極限の戦場で敵味方の体内時計が重なった奇跡 #Shorts",
+  "theme": "戦時下の睡眠圧とサーカディアンリズムの同調",
   "angle": "戦時下の異例の交歓",
-  "opening_line": "あの夜、敵兵と肩を並べて見上げた満天の星は、偽りの安定の上にありました。",
+  "opening_line": "深夜、過酷な塹壕で凍えるあなたが敵と同時に襲われたのは、意志を超えた猛烈な睡眠圧でした。",
   "scenes": [
     {
-      "narration": "あの夜、敵兵と肩を並べて見上げた満天の星は、偽りの安定の上にありました。",
+      "narration": "深夜、過酷な塹壕で凍えるあなたが敵と同時に襲われたのは、意志を超えた猛烈な睡眠圧でした。",
       "visual_search_queries": [
-        "starry night sky milky way dark",
-        "soldier silhouette looking at stars",
-        "trench night winter"
+        "ww1 trench cold night soldiers",
+        "dark winter battlefield trench"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "偽りの安定の上の星空",
+      "subtitle_text": "極限の戦場を襲う睡眠圧",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "事実として、漆黒の闇で敵味方のメラトニンが同時に頂点に達し、銃声が止まりました。",
+      "visual_search_queries": [
+        "soldier silhouette looking at night sky",
+        "quiet battlefield mist"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "敵味方同時に訪れた静寂",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "凍てつく塹壕で火を分けた敵の青年は、かつて素粒子を研究していた物理学者でした。",
+      "narration": "さらに同じ体内時計の静寂に導かれ、兵士たちは塹壕を出て言葉を交わしたのです。",
       "visual_search_queries": [
-        "campfire hands sharing flame winter",
-        "two soldiers resting night cold",
-        "vintage scientist writing formula"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "塹壕で出会った敵の学者",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "彼は、この宇宙はより安定した真の真空へいつか崩壊する仮初めの世界だと語りました。",
-      "visual_search_queries": [
-        "quantum physics universe bubble expanding",
-        "deep space cosmic void explosion",
-        "abstract glowing sphere decaying"
+        "soldiers meeting no mans land snow",
+        "historic handshake candle night"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "宇宙は仮初めの泡に過ぎない",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
+      "subtitle_text": "闇の中で交わされた交歓",
+      "subtitle_color": "white",
+      "subtitle_position": "center",
       "screen_effect": "none"
     },
     {
-      "narration": "戦火の愚かしさを呑み込む虚無の美しさを共有した私たちは、夜明け前に別れを告げ、あの夜、敵兵と肩を並べて見上げた満天の星は、",
+      "narration": "憎しみを超えて同じ夜を刻む体が、敵ではなく人としての絆を思い起こさせたのですね。",
       "visual_search_queries": [
-        "sunrise mist battlefield empty",
-        "starry sky fading into dawn",
-        "soldier walking away into mist"
+        "starry night over calm trench",
+        "single candle glow in darkness"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "戦火を呑み込む星の静けさ",
-      "subtitle_color": "white",
+      "subtitle_text": "同じ夜を刻む命の記憶",
+      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "宇宙の終わりに何が起こるのか（ケイティ・マック著）",
-    "hook_comment": "明日命を落とすかもしれない極限状態で、宇宙全体の消滅について語り合う心情をどう感じますか？"
+    "book_title": "睡眠の科学（櫻井武 著 / 講談社ブルーバックス）",
+    "hook_comment": "命を奪い合う過酷な戦場ですら、夜の生体リズムは敵味方を同じ人間へと引き戻したのかもしれません。あなたはこの奇跡をどう思いますか？"
   },
   "uncertain_facts": []
 }
