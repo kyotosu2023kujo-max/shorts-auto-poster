@@ -1,61 +1,61 @@
 {
-  "title": "極限の戦場で敵味方の体内時計が重なった奇跡 #Shorts",
-  "theme": "戦時下の睡眠圧とサーカディアンリズムの同調",
-  "angle": "戦時下の異例の交歓",
-  "opening_line": "深夜、過酷な塹壕で凍えるあなたが敵と同時に襲われたのは、意志を超えた猛烈な睡眠圧でした。",
+  "title": "至高の味「醍醐味」が隠した濃縮トリック #Shorts",
+  "theme": "言葉の由来（醍醐味）の生化学的変遷",
+  "angle": "生化学的トリック",
+  "opening_line": "私は1パーセント。なぜ人間は、物事の本質や最高の喜びを「醍醐味」と呼ぶのでしょうか。",
   "scenes": [
     {
-      "narration": "深夜、過酷な塹壕で凍えるあなたが敵と同時に襲われたのは、意志を超えた猛烈な睡眠圧でした。",
+      "narration": "私は1パーセント。なぜ人間は、物事の本質や最高の喜びを「醍醐味」と呼ぶのでしょうか。",
       "visual_search_queries": [
-        "ww1 trench cold night soldiers",
-        "dark winter battlefield trench"
+        "macro milk drop falling dark background",
+        "abstract scientific numbers floating"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "極限の戦場を襲う睡眠圧",
+      "subtitle_text": "私はわずか1％の存在",
       "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "答えは濃縮率です。牛乳の水分を99パーセント蒸発させ、脂質とタンパク質を極限まで発酵させた物質が起源だからです。",
+      "visual_search_queries": [
+        "boiling milk laboratory evaporation",
+        "fermentation chemical process microscopic"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "水分99％を削ぎ落とす",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "事実として、漆黒の闇で敵味方のメラトニンが同時に頂点に達し、銃声が止まりました。",
+      "narration": "凝縮された旨味の分子が脳を刺激し、至高の味覚として定着しました。",
       "visual_search_queries": [
-        "soldier silhouette looking at night sky",
-        "quiet battlefield mist"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "敵味方同時に訪れた静寂",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "さらに同じ体内時計の静寂に導かれ、兵士たちは塹壕を出て言葉を交わしたのです。",
-      "visual_search_queries": [
-        "soldiers meeting no mans land snow",
-        "historic handshake candle night"
+        "synapse firing brain dopamine abstract",
+        "golden cheese texture macro shot"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "闇の中で交わされた交歓",
-      "subtitle_color": "white",
+      "subtitle_text": "脳を痺れさせた旨味分子",
+      "subtitle_color": "cyan",
       "subtitle_position": "center",
       "screen_effect": "none"
     },
     {
-      "narration": "憎しみを超えて同じ夜を刻む体が、敵ではなく人としての絆を思い起こさせたのですね。",
+      "narration": "だから人は今も、本質に触れるたび、この問いへと還ってくるのです。",
       "visual_search_queries": [
-        "starry night over calm trench",
-        "single candle glow in darkness"
+        "infinite loop tunnel time concept",
+        "pure white milk vortex spinning"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "同じ夜を刻む命の記憶",
+      "subtitle_text": "本質を求める問いのループ",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "睡眠の科学（櫻井武 著 / 講談社ブルーバックス）",
-    "hook_comment": "命を奪い合う過酷な戦場ですら、夜の生体リズムは敵味方を同じ人間へと引き戻したのかもしれません。あなたはこの奇跡をどう思いますか？"
+    "book_title": "日本の乳文化（平田昌弘 著、八坂書房）",
+    "hook_comment": "古代人が脳を痺れさせた幻の「醍醐」、一度味わってみたいですか？"
   },
   "uncertain_facts": []
 }
