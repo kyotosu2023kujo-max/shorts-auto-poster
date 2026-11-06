@@ -1,61 +1,78 @@
 {
-  "title": "至高の味「醍醐味」が隠した濃縮トリック #Shorts",
-  "theme": "言葉の由来（醍醐味）の生化学的変遷",
-  "angle": "生化学的トリック",
-  "opening_line": "私は1パーセント。なぜ人間は、物事の本質や最高の喜びを「醍醐味」と呼ぶのでしょうか。",
+  "title": "国境線が家を真っ二つに裂く町の珍ルール #Shorts",
+  "theme": "ベルギーとオランダが複雑に入り乱れる町バールレの飛び地",
+  "angle": "思考実験の視覚化",
+  "opening_line": "数字の22である私が、ひとつの町をオランダとベルギーにズタズタに切り裂いてる張本人だよ。",
   "scenes": [
     {
-      "narration": "私は1パーセント。なぜ人間は、物事の本質や最高の喜びを「醍醐味」と呼ぶのでしょうか。",
+      "narration": "数字の22である私が、ひとつの町をオランダとベルギーにズタズタに切り裂いてる張本人だよ。バールレという町には、私が作った飛び地が22個も散らばってるんだ。",
       "visual_search_queries": [
-        "macro milk drop falling dark background",
-        "abstract scientific numbers floating"
+        "border line pavement europe",
+        "map aerial view borders",
+        "Baarle Nassau border"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "私はわずか1％の存在",
+      "subtitle_text": "22の飛び地が裂く町",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "答えは濃縮率です。牛乳の水分を99パーセント蒸発させ、脂質とタンパク質を極限まで発酵させた物質が起源だからです。",
+      "narration": "もしカフェでお茶してて、テーブルの真ん中に私が引いた国境線があったらどうなると思う？",
       "visual_search_queries": [
-        "boiling milk laboratory evaporation",
-        "fermentation chemical process microscopic"
+        "cafe table top view outdoor",
+        "coffee cup on white line",
+        "european street cafe"
       ],
       "camera_motion": "static",
-      "subtitle_text": "水分99％を削ぎ落とす",
+      "subtitle_text": "テーブルの上が国境線？",
       "subtitle_color": "white",
-      "subtitle_position": "bottom",
+      "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "凝縮された旨味の分子が脳を刺激し、至高の味覚として定着しました。",
+      "narration": "実は法律上、カップを動かすだけで関税や法律が変わる異常事態が、日常茶飯事なんだよね。",
       "visual_search_queries": [
-        "synapse firing brain dopamine abstract",
-        "golden cheese texture macro shot"
+        "moving coffee cup hand",
+        "legal document stamps",
+        "confused person drinking coffee"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "脳を痺れさせた旨味分子",
+      "subtitle_text": "コップ1つで法律激変",
       "subtitle_color": "cyan",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "だから人は今も、本質に触れるたび、この問いへと還ってくるのです。",
+      "narration": "家の真ん中に線が通ったらどっちの国に住むか迷うけど、玄関のドアがある国に従うルールになってる。",
       "visual_search_queries": [
-        "infinite loop tunnel time concept",
-        "pure white milk vortex spinning"
+        "house front door street view",
+        "white line marked on doorstep",
+        "two nationality flags on house"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "本質を求める問いのループ",
-      "subtitle_color": "yellow",
+      "subtitle_text": "所属国は玄関で決まる",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
+    },
+    {
+      "narration": "だから住民はどうしたと思う？税金が安い国へドアを移設して、私を出し抜いて笑ってるんだ。",
+      "visual_search_queries": [
+        "renovating front door house",
+        "laughing person european town",
+        "aerial shot european border town"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "税金対策でドアを移動！",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
+      "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "日本の乳文化（平田昌弘 著、八坂書房）",
-    "hook_comment": "古代人が脳を痺れさせた幻の「醍醐」、一度味わってみたいですか？"
+    "book_title": "国境の謎がわかる本（歴史の謎を探究する会、河出書房新社）",
+    "hook_comment": "もし自分の部屋に国境線が引かれたら、どこに玄関ドアを付け替えますか？"
   },
   "uncertain_facts": []
 }
