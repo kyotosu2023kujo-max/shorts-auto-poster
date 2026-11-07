@@ -1,78 +1,61 @@
 {
-  "title": "国境線が家を真っ二つに裂く町の珍ルール #Shorts",
-  "theme": "ベルギーとオランダが複雑に入り乱れる町バールレの飛び地",
-  "angle": "思考実験の視覚化",
-  "opening_line": "数字の22である私が、ひとつの町をオランダとベルギーにズタズタに切り裂いてる張本人だよ。",
+  "title": "知ると死ぬ確率が上がる死刑囚のパラドックス #Shorts",
+  "theme": "3人の死刑囚問題（確率論のパラドックス）",
+  "angle": "知ることで有利になるという直感と、他者の確率だけが跳ね上がる非対称のジレンマ",
+  "opening_line": "死刑囚が看守から得た一つの情報が、二人の運命を引き裂きます。",
   "scenes": [
     {
-      "narration": "数字の22である私が、ひとつの町をオランダとベルギーにズタズタに切り裂いてる張本人だよ。バールレという町には、私が作った飛び地が22個も散らばってるんだ。",
+      "narration": "死刑囚が看守から得た一つの情報が、二人の運命を引き裂きます。恩赦で助かるのは一人だけでした。",
       "visual_search_queries": [
-        "border line pavement europe",
-        "map aerial view borders",
-        "Baarle Nassau border"
+        "dark prison corridor moody lighting",
+        "silhouette behind prison bars mystery"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "22の飛び地が裂く町",
-      "subtitle_color": "yellow",
+      "subtitle_text": "運命を引き裂く密告",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "もしカフェでお茶してて、テーブルの真ん中に私が引いた国境線があったらどうなると思う？",
+      "narration": "仲間一人の処刑を知った男は、自らの生存率が二分の一に上がったと歓喜します。",
       "visual_search_queries": [
-        "cafe table top view outdoor",
-        "coffee cup on white line",
-        "european street cafe"
+        "prisoner face dramatic shadow hope",
+        "whispering secret in dark room"
       ],
       "camera_motion": "static",
-      "subtitle_text": "テーブルの上が国境線？",
-      "subtitle_color": "white",
+      "subtitle_text": "生存率は２分の１か",
+      "subtitle_color": "yellow",
       "subtitle_position": "center",
-      "screen_effect": "flash"
+      "screen_effect": "none"
     },
     {
-      "narration": "実は法律上、カップを動かすだけで関税や法律が変わる異常事態が、日常茶飯事なんだよね。",
+      "narration": "だが数学は、動いた男を三分の一のまま見放し、沈黙した男の生存率を三分の二へ跳ね上げました。",
       "visual_search_queries": [
-        "moving coffee cup hand",
-        "legal document stamps",
-        "confused person drinking coffee"
+        "probability math formula floating dark",
+        "scale of justice tilting dramatic"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "コップ1つで法律激変",
+      "subtitle_text": "沈黙した男が生き残る",
       "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "家の真ん中に線が通ったらどっちの国に住むか迷うけど、玄関のドアがある国に従うルールになってる。",
-      "visual_search_queries": [
-        "house front door street view",
-        "white line marked on doorstep",
-        "two nationality flags on house"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "所属国は玄関で決まる",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "だから住民はどうしたと思う？税金が安い国へドアを移設して、私を出し抜いて笑ってるんだ。",
-      "visual_search_queries": [
-        "renovating front door house",
-        "laughing person european town",
-        "aerial shot european border town"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "税金対策でドアを移動！",
-      "subtitle_color": "yellow",
       "subtitle_position": "center",
       "screen_effect": "flash"
+    },
+    {
+      "narration": "知る者が敗れ、知らぬ者が救われる不気味な確率の天秤が、明日も新たな囚人を招き入れます。",
+      "visual_search_queries": [
+        "infinite prison hallway loop mysterious",
+        "iron gate closing cinematic"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "知る者が敗れる確率",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "国境の謎がわかる本（歴史の謎を探究する会、河出書房新社）",
-    "hook_comment": "もし自分の部屋に国境線が引かれたら、どこに玄関ドアを付け替えますか？"
+    "book_title": "直感を裏切る確率（神永正博 / ブルーバックス）",
+    "hook_comment": "もしあなたがこの牢獄にいたら、看守に仲間の運命を尋ねますか？それとも黙っていますか？"
   },
   "uncertain_facts": []
 }

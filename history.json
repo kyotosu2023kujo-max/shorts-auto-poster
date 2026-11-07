@@ -626,5 +626,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "知ると死ぬ確率が上がる死刑囚のパラドックス #Shorts",
+    "theme": "3人の死刑囚問題（確率論のパラドックス）",
+    "angle": "知ることで有利になるという直感と、他者の確率だけが跳ね上がる非対称のジレンマ",
+    "tone": "思考実験・挑発",
+    "opening_line": "死刑囚が看守から得た一つの情報が、二人の運命を引き裂きます。",
+    "style": {
+      "語り口": "淡々としたドキュメンタリー",
+      "構成": "比較対決",
+      "視点": "第三者の観察",
+      "結末": "ループ",
+      "長さ": "30秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
