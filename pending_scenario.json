@@ -1,61 +1,62 @@
 {
-  "title": "知ると死ぬ確率が上がる死刑囚のパラドックス #Shorts",
-  "theme": "3人の死刑囚問題（確率論のパラドックス）",
-  "angle": "知ることで有利になるという直感と、他者の確率だけが跳ね上がる非対称のジレンマ",
-  "opening_line": "死刑囚が看守から得た一つの情報が、二人の運命を引き裂きます。",
+  "title": "生パインと缶詰でゼリー対決させた結果 #Shorts",
+  "theme": "食べ物の科学（パイナップルの酵素とゼラチンの凝固反応）",
+  "angle": "予想外の回答（新鮮な生パインが固まらず敗北する）",
+  "opening_line": "自家製ゼリー作りに挑んだ私は、生のパインと缶詰のパインで固まりやすさを競わせました。",
   "scenes": [
     {
-      "narration": "死刑囚が看守から得た一つの情報が、二人の運命を引き裂きます。恩赦で助かるのは一人だけでした。",
+      "narration": "自家製ゼリー作りに挑んだ私は、生のパインと缶詰のパインで固まりやすさを競わせました。",
       "visual_search_queries": [
-        "dark prison corridor moody lighting",
-        "silhouette behind prison bars mystery"
+        "fresh pineapple slices kitchen",
+        "canned pineapple pieces bowl",
+        "cooking jelly gelatin dessert"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "運命を引き裂く密告",
+      "subtitle_text": "生vs缶詰パイン対決",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "当然、新鮮な生パインが勝つと信じ、私は両方を冷蔵庫に一晩寝かせました。",
+      "visual_search_queries": [
+        "putting glass bowl in refrigerator",
+        "fridge opening chilled desserts"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "新鮮な生が勝つはず",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "仲間一人の処刑を知った男は、自らの生存率が二分の一に上がったと歓喜します。",
+      "narration": "翌朝、缶詰は見事に固まり、生パインはただの冷たいジュースのままでした。",
       "visual_search_queries": [
-        "prisoner face dramatic shadow hope",
-        "whispering secret in dark room"
+        "spoon tapping firm gelatin jelly",
+        "liquid pineapple juice bowl runny"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "生存率は２分の１か",
-      "subtitle_color": "yellow",
-      "subtitle_position": "center",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "だが数学は、動いた男を三分の一のまま見放し、沈黙した男の生存率を三分の二へ跳ね上げました。",
-      "visual_search_queries": [
-        "probability math formula floating dark",
-        "scale of justice tilting dramatic"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "沈黙した男が生き残る",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "生パインは固まらず",
       "subtitle_color": "cyan",
       "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "知る者が敗れ、知らぬ者が救われる不気味な確率の天秤が、明日も新たな囚人を招き入れます。",
+      "narration": "生の酵素がゼラチンを分解した結果です。敗北した生パインを、私は静かに飲み干しました。",
       "visual_search_queries": [
-        "infinite prison hallway loop mysterious",
-        "iron gate closing cinematic"
+        "person drinking glass of juice slowly",
+        "kitchen table morning calm reflection"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "知る者が敗れる確率",
-      "subtitle_color": "yellow",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "酵素の分解と静かな余韻",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "直感を裏切る確率（神永正博 / ブルーバックス）",
-    "hook_comment": "もしあなたがこの牢獄にいたら、看守に仲間の運命を尋ねますか？それとも黙っていますか？"
+    "book_title": "料理の科学大図鑑（スチュアート・ファリモンド著）",
+    "hook_comment": "生フルーツでゼリーを作って固まらなかった失敗、皆さんも経験ありますか？"
   },
   "uncertain_facts": []
 }
