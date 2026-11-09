@@ -668,5 +668,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "ホワイトボードが証言するチーム生還の瞬間 #Shorts",
+    "theme": "心理的安全性と自己開示が生んだ組織崩壊からの生還",
+    "angle": "危機からの生還",
+    "tone": "感動・余韻",
+    "opening_line": "崩壊寸前のチームがどう生還したか、ですか？ 私、会議室のホワイトボードが見ていました。",
+    "style": {
+      "語り口": "インタビュー形式",
+      "構成": "比較対決",
+      "視点": "モノや動物の視点",
+      "結末": "余韻",
+      "長さ": "30秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

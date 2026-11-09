@@ -1,62 +1,61 @@
 {
-  "title": "生パインと缶詰でゼリー対決させた結果 #Shorts",
-  "theme": "食べ物の科学（パイナップルの酵素とゼラチンの凝固反応）",
-  "angle": "予想外の回答（新鮮な生パインが固まらず敗北する）",
-  "opening_line": "自家製ゼリー作りに挑んだ私は、生のパインと缶詰のパインで固まりやすさを競わせました。",
+  "title": "ホワイトボードが証言するチーム生還の瞬間 #Shorts",
+  "theme": "心理的安全性と自己開示が生んだ組織崩壊からの生還",
+  "angle": "危機からの生還",
+  "opening_line": "崩壊寸前のチームがどう生還したか、ですか？ 私、会議室のホワイトボードが見ていました。",
   "scenes": [
     {
-      "narration": "自家製ゼリー作りに挑んだ私は、生のパインと缶詰のパインで固まりやすさを競わせました。",
+      "narration": "崩壊寸前のチームがどう生還したか、ですか？ 私、会議室のホワイトボードが見ていました。",
       "visual_search_queries": [
-        "fresh pineapple slices kitchen",
-        "canned pineapple pieces bowl",
-        "cooking jelly gelatin dessert"
+        "empty conference room whiteboard dramatic light",
+        "close up whiteboard marker modern office"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "生vs缶詰パイン対決",
+      "subtitle_text": "崩壊寸前の会議室",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "当然、新鮮な生パインが勝つと信じ、私は両方を冷蔵庫に一晩寝かせました。",
+      "narration": "互いを責める冷たい正論と、吐き出された弱音。この二つが対決したあの日です。",
       "visual_search_queries": [
-        "putting glass bowl in refrigerator",
-        "fridge opening chilled desserts"
+        "tense business meeting shadow silhouette argument",
+        "frustrated corporate team dark boardroom"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "新鮮な生が勝つはず",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "正論と弱音の対決",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "翌朝、缶詰は見事に固まり、生パインはただの冷たいジュースのままでした。",
-      "visual_search_queries": [
-        "spoon tapping firm gelatin jelly",
-        "liquid pineapple juice bowl runny"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "生パインは固まらず",
-      "subtitle_color": "cyan",
-      "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "生の酵素がゼラチンを分解した結果です。敗北した生パインを、私は静かに飲み干しました。",
+      "narration": "張り詰めた空気を救ったのは、リーダーが震える手で書いた『本当は不安だ』の一言でした。",
       "visual_search_queries": [
-        "person drinking glass of juice slowly",
-        "kitchen table morning calm reflection"
+        "hand writing with black marker on whiteboard slow motion",
+        "relieved business people teamwork hope"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "酵素の分解と静かな余韻",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "本当は不安だの一言",
+      "subtitle_color": "cyan",
+      "subtitle_position": "center",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "正しさで戦うより、弱さを分かち合う方が強い。消された今も、板面の奥に残っています。",
+      "visual_search_queries": [
+        "sunlight streaming into peaceful empty office room",
+        "clean white board sunlight warm atmosphere"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "弱さを分かち合う勇気",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "料理の科学大図鑑（スチュアート・ファリモンド著）",
-    "hook_comment": "生フルーツでゼリーを作って固まらなかった失敗、皆さんも経験ありますか？"
+    "book_title": "恐れのない組織 「心理的安全性」がチーム・働き方・イノベーションを変える（エイミー・C・エドモンドソン）",
+    "hook_comment": "仕事や部活で、誰かの「本当は不安だ」という本音に救われた経験はありますか？"
   },
   "uncertain_facts": []
 }
