@@ -1,61 +1,49 @@
 {
-  "title": "ホワイトボードが証言するチーム生還の瞬間 #Shorts",
-  "theme": "心理的安全性と自己開示が生んだ組織崩壊からの生還",
-  "angle": "危機からの生還",
-  "opening_line": "崩壊寸前のチームがどう生還したか、ですか？ 私、会議室のホワイトボードが見ていました。",
+  "title": "聖なるバチカンの犯罪率が世界一な理由 #Shorts",
+  "theme": "世界の珍しい地理・風習（バチカン市国の犯罪率とスリ被害）",
+  "angle": "理想と実態の乖離",
+  "opening_line": "神聖な祈りの国バチカンですが、実は人口あたりの犯罪率が世界トップクラスです。",
   "scenes": [
     {
-      "narration": "崩壊寸前のチームがどう生還したか、ですか？ 私、会議室のホワイトボードが見ていました。",
+      "narration": "神聖な祈りの国バチカンですが、実は人口あたりの犯罪率が世界トップクラスです。",
       "visual_search_queries": [
-        "empty conference room whiteboard dramatic light",
-        "close up whiteboard marker modern office"
+        "Vatican City St Peters Basilica crowd",
+        "Vatican tourists walking"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "崩壊寸前の会議室",
+      "subtitle_text": "バチカンは犯罪率が世界一",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "互いを責める冷たい正論と、吐き出された弱音。この二つが対決したあの日です。",
+      "narration": "警備担当者に直撃すると、「観光客を狙うスリが多すぎて、毎日被害届の山だよ」と苦笑い。",
       "visual_search_queries": [
-        "tense business meeting shadow silhouette argument",
-        "frustrated corporate team dark boardroom"
+        "police officer interview serious",
+        "pickpocket crowd street close up"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "正論と弱音の対決",
+      "camera_motion": "static",
+      "subtitle_text": "「毎日スリの被害届ばかり」",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "張り詰めた空気を救ったのは、リーダーが震える手で書いた『本当は不安だ』の一言でした。",
-      "visual_search_queries": [
-        "hand writing with black marker on whiteboard slow motion",
-        "relieved business people teamwork hope"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "本当は不安だの一言",
-      "subtitle_color": "cyan",
-      "subtitle_position": "center",
       "screen_effect": "none"
     },
     {
-      "narration": "正しさで戦うより、弱さを分かち合う方が強い。消された今も、板面の奥に残っています。",
+      "narration": "祈りを捧げるその聖なる瞬間も、神様ではなく自分のポケットに全集中しているそうです。",
       "visual_search_queries": [
-        "sunlight streaming into peaceful empty office room",
-        "clean white board sunlight warm atmosphere"
+        "person holding pocket cautiously",
+        "saint statue sunlight dramatic"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "弱さを分かち合う勇気",
-      "subtitle_color": "white",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "祈りより財布に全集中",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "恐れのない組織 「心理的安全性」がチーム・働き方・イノベーションを変える（エイミー・C・エドモンドソン）",
-    "hook_comment": "仕事や部活で、誰かの「本当は不安だ」という本音に救われた経験はありますか？"
+    "book_title": "バチカン近現代史 ローマ教皇たちの「近代」との格闘（中公新書）",
+    "hook_comment": "あなたが海外旅行で一番カバンを抱きしめた国はどこですか？"
   },
   "uncertain_facts": []
 }
