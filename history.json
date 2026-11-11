@@ -710,5 +710,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "ナマケモノが命懸けでトイレに行く致命的理由 #Shorts",
+    "theme": "ナマケモノの命懸けの排泄生態",
+    "angle": "致命的リスク",
+    "tone": "恐怖・警告",
+    "opening_line": "緊急速報です。我々ナマケモノの本部に、ただいま致命的な排泄警報が発令されました。",
+    "style": {
+      "語り口": "ニュース速報風",
+      "構成": "3つの事実",
+      "視点": "モノや動物の視点",
+      "結末": "オチ（笑い・驚き）",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

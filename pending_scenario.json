@@ -1,49 +1,73 @@
 {
-  "title": "聖なるバチカンの犯罪率が世界一な理由 #Shorts",
-  "theme": "世界の珍しい地理・風習（バチカン市国の犯罪率とスリ被害）",
-  "angle": "理想と実態の乖離",
-  "opening_line": "神聖な祈りの国バチカンですが、実は人口あたりの犯罪率が世界トップクラスです。",
+  "title": "ナマケモノが命懸けでトイレに行く致命的理由 #Shorts",
+  "theme": "ナマケモノの命懸けの排泄生態",
+  "angle": "致命的リスク",
+  "opening_line": "緊急速報です。我々ナマケモノの本部に、ただいま致命的な排泄警報が発令されました。",
   "scenes": [
     {
-      "narration": "神聖な祈りの国バチカンですが、実は人口あたりの犯罪率が世界トップクラスです。",
+      "narration": "緊急速報です。我々ナマケモノの本部に、ただいま致命的な排泄警報が発令されました。",
       "visual_search_queries": [
-        "Vatican City St Peters Basilica crowd",
-        "Vatican tourists walking"
+        "sloth hanging in tree close up",
+        "danger emergency red light"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "バチカンは犯罪率が世界一",
+      "subtitle_text": "緊急排泄警報が発令！",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
+      "screen_effect": "flash"
     },
     {
-      "narration": "警備担当者に直撃すると、「観光客を狙うスリが多すぎて、毎日被害届の山だよ」と苦笑い。",
+      "narration": "事実その一。我々のエネルギー効率は極限まで低く、木から地上へ降りるだけで体力の大半を喪失します。",
       "visual_search_queries": [
-        "police officer interview serious",
-        "pickpocket crowd street close up"
+        "sloth climbing down tree trunk slow motion",
+        "jungle tree canopy"
       ],
       "camera_motion": "static",
-      "subtitle_text": "「毎日スリの被害届ばかり」",
+      "subtitle_text": "事実①木を降りると消耗",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "祈りを捧げるその聖なる瞬間も、神様ではなく自分のポケットに全集中しているそうです。",
+      "narration": "事実その二。地上での移動速度は極めて鈍足。天敵に襲われる死因の半分以上が、まさにこのトイレ中です。",
       "visual_search_queries": [
-        "person holding pocket cautiously",
-        "saint statue sunlight dramatic"
+        "jaguar hunting in rainforest",
+        "sloth crawling on ground"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "祈りより財布に全集中",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "事実②死因の半分は排泄中",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "そして事実その三。この命懸けのミッション、実は排泄しないと体に共生する蛾が繁殖できないためです。",
+      "visual_search_queries": [
+        "moth flying close up macro",
+        "sloth fur texture green algae"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "事実③目的は蛾の繁殖？",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "他人のためかと思いきや、蛾が運ぶ栄養で生えた毛のコケが我々の非常食になるという、自給自足のオチでした！",
+      "visual_search_queries": [
+        "funny cute sloth looking at camera",
+        "green moss texture close up"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "全ては非常食のコケのため",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "バチカン近現代史 ローマ教皇たちの「近代」との格闘（中公新書）",
-    "hook_comment": "あなたが海外旅行で一番カバンを抱きしめた国はどこですか？"
+    "book_title": "生き物の死にざま（稲垣栄洋著）",
+    "hook_comment": "トイレのために命を張るナマケモノの執念、どう思いますか？"
   },
   "uncertain_facts": []
 }
