@@ -1,73 +1,73 @@
 {
-  "title": "ナマケモノが命懸けでトイレに行く致命的理由 #Shorts",
-  "theme": "ナマケモノの命懸けの排泄生態",
-  "angle": "致命的リスク",
-  "opening_line": "緊急速報です。我々ナマケモノの本部に、ただいま致命的な排泄警報が発令されました。",
+  "title": "激辛で水を飲む人を救う科学ハック3選 #Shorts",
+  "theme": "食べ物の科学（カプサイシンの受容体結合と分子レベルでの鎮火法）",
+  "angle": "構造のハッキング",
+  "opening_line": "カプサイシンに悶絶して水を一気飲みする人、それ火に油を注いでますよ。",
   "scenes": [
     {
-      "narration": "緊急速報です。我々ナマケモノの本部に、ただいま致命的な排泄警報が発令されました。",
+      "narration": "カプサイシンに悶絶して水を一気飲みする人、それ火に油を注いでますよ。激痛を消す科学ハック第3位、オリーブオイルのうがい。",
       "visual_search_queries": [
-        "sloth hanging in tree close up",
-        "danger emergency red light"
+        "sweating person eating spicy food",
+        "pouring olive oil into spoon"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "緊急排泄警報が発令！",
+      "subtitle_text": "激痛に水は逆効果！",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "脂溶性の辛みを油で溶かす力技ですが、ギトギトで飲みたくはないですよね。続く第2位は、アイスクリーム。",
+      "visual_search_queries": [
+        "eating vanilla ice cream",
+        "macro ice cream texture"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "第2位：アイス",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": null
+    },
+    {
+      "narration": "冷たさで痛覚を麻痺させ、乳脂肪が辛みを包みます。そして圧倒的な第1位は、常温の牛乳です。",
+      "visual_search_queries": [
+        "pouring fresh milk into glass",
+        "glass of milk slow motion"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "第1位：常温の牛乳",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "事実その一。我々のエネルギー効率は極限まで低く、木から地上へ降りるだけで体力の大半を喪失します。",
+      "narration": "牛乳のカゼインという成分が、舌の受容体からカプサイシンを分子レベルで強引に引き剥がしてくれます。",
       "visual_search_queries": [
-        "sloth climbing down tree trunk slow motion",
-        "jungle tree canopy"
+        "science molecular structure 3d animation",
+        "microscope liquid cellular view"
       ],
       "camera_motion": "static",
-      "subtitle_text": "事実①木を降りると消耗",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "事実その二。地上での移動速度は極めて鈍足。天敵に襲われる死因の半分以上が、まさにこのトイレ中です。",
-      "visual_search_queries": [
-        "jaguar hunting in rainforest",
-        "sloth crawling on ground"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "事実②死因の半分は排泄中",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "そして事実その三。この命懸けのミッション、実は排泄しないと体に共生する蛾が繁殖できないためです。",
-      "visual_search_queries": [
-        "moth flying close up macro",
-        "sloth fur texture green algae"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "事実③目的は蛾の繁殖？",
+      "subtitle_text": "カゼインが辛みを剥がす",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
+      "screen_effect": null
     },
     {
-      "narration": "他人のためかと思いきや、蛾が運ぶ栄養で生えた毛のコケが我々の非常食になるという、自給自足のオチでした！",
+      "narration": "水で地獄を広げていた過去の自分にツッコミたくなりませんか？ あなたなら激辛の後、何を口に入れますか？",
       "visual_search_queries": [
-        "funny cute sloth looking at camera",
-        "green moss texture close up"
+        "spicy ramen chili peppers",
+        "thoughtful person portrait looking at camera"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "全ては非常食のコケのため",
+      "subtitle_text": "あなたなら何を飲む？",
       "subtitle_color": "yellow",
-      "subtitle_position": "center",
-      "screen_effect": "none"
+      "subtitle_position": "bottom",
+      "screen_effect": null
     }
   ],
   "reference_book": {
-    "book_title": "生き物の死にざま（稲垣栄洋著）",
-    "hook_comment": "トイレのために命を張るナマケモノの執念、どう思いますか？"
+    "book_title": "料理の科学 大図鑑（スチュアート・ファリモンド著）",
+    "hook_comment": "激辛を食べた時、いつも何でしのいでいましたか？ 牛乳試したことある人は教えてください！"
   },
   "uncertain_facts": []
 }
