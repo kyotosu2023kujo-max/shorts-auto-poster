@@ -1,73 +1,61 @@
 {
-  "title": "激辛で水を飲む人を救う科学ハック3選 #Shorts",
-  "theme": "食べ物の科学（カプサイシンの受容体結合と分子レベルでの鎮火法）",
-  "angle": "構造のハッキング",
-  "opening_line": "カプサイシンに悶絶して水を一気飲みする人、それ火に油を注いでますよ。",
+  "title": "超高速で走れば車庫に収まるはしごの罠 #Shorts",
+  "theme": "相対性理論のはしご（ガレージ）のパラドックス",
+  "angle": "理想と実態の乖離",
+  "opening_line": "10メートルもある長いはしごを、半分の狭い車庫に丸ごと収納できると思いますか？",
   "scenes": [
     {
-      "narration": "カプサイシンに悶絶して水を一気飲みする人、それ火に油を注いでますよ。激痛を消す科学ハック第3位、オリーブオイルのうがい。",
+      "narration": "10メートルもある長いはしごを、半分の狭い車庫に丸ごと収納できると思いますか？",
       "visual_search_queries": [
-        "sweating person eating spicy food",
-        "pouring olive oil into spoon"
+        "ladder inside garage",
+        "small warehouse garage"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "激痛に水は逆効果！",
+      "subtitle_text": "長いはしごが車庫に入る？",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "脂溶性の辛みを油で溶かす力技ですが、ギトギトで飲みたくはないですよね。続く第2位は、アイスクリーム。",
+      "narration": "理想の物理法則では、光速近くで走ればはしごが縮んで見事に収まるはずなんです。",
       "visual_search_queries": [
-        "eating vanilla ice cream",
-        "macro ice cream texture"
+        "speed of light physics",
+        "runner fast motion blur"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "第2位：アイス",
-      "subtitle_color": "white",
+      "subtitle_text": "光速なら縮んで収まる？",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
-      "screen_effect": null
+      "screen_effect": "flash"
     },
     {
-      "narration": "冷たさで痛覚を麻痺させ、乳脂肪が辛みを包みます。そして圧倒的な第1位は、常温の牛乳です。",
+      "narration": "ところが走る側の視点では、逆に車庫が縮んで絶対に収まらない大惨事になります。",
       "visual_search_queries": [
-        "pouring fresh milk into glass",
-        "glass of milk slow motion"
+        "funny car crash wall",
+        "comic failure disaster"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "第1位：常温の牛乳",
+      "subtitle_text": "走る側から見ると大惨事",
       "subtitle_color": "yellow",
       "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "牛乳のカゼインという成分が、舌の受容体からカプサイシンを分子レベルで強引に引き剥がしてくれます。",
+      "narration": "観察者によって同時がずれる世界ですが、そもそも10メートルもある長いはしごを…",
       "visual_search_queries": [
-        "science molecular structure 3d animation",
-        "microscope liquid cellular view"
+        "physics chalkboard teacher",
+        "confused scientist"
       ],
       "camera_motion": "static",
-      "subtitle_text": "カゼインが辛みを剥がす",
-      "subtitle_color": "cyan",
+      "subtitle_text": "同時性の不一致ループ",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
-      "screen_effect": null
-    },
-    {
-      "narration": "水で地獄を広げていた過去の自分にツッコミたくなりませんか？ あなたなら激辛の後、何を口に入れますか？",
-      "visual_search_queries": [
-        "spicy ramen chili peppers",
-        "thoughtful person portrait looking at camera"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "あなたなら何を飲む？",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
-      "screen_effect": null
+      "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "料理の科学 大図鑑（スチュアート・ファリモンド著）",
-    "hook_comment": "激辛を食べた時、いつも何でしのいでいましたか？ 牛乳試したことある人は教えてください！"
+    "book_title": "相対性理論の考え方（著：ジョン・ホイーラー）",
+    "hook_comment": "光速で走るはしご、あなたならどうやって車庫に入れますか？"
   },
   "uncertain_facts": []
 }

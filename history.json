@@ -752,5 +752,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "超高速で走れば車庫に収まるはしごの罠 #Shorts",
+    "theme": "相対性理論のはしご（ガレージ）のパラドックス",
+    "angle": "理想と実態の乖離",
+    "tone": "ユーモア・軽さ",
+    "opening_line": "10メートルもある長いはしごを、半分の狭い車庫に丸ごと収納できると思いますか？",
+    "style": {
+      "語り口": "先生が教える口調",
+      "構成": "問いかけ始まり",
+      "視点": "第三者の観察",
+      "結末": "ループ",
+      "長さ": "30秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
