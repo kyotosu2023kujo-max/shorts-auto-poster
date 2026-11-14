@@ -1,61 +1,49 @@
 {
-  "title": "超高速で走れば車庫に収まるはしごの罠 #Shorts",
-  "theme": "相対性理論のはしご（ガレージ）のパラドックス",
-  "angle": "理想と実態の乖離",
-  "opening_line": "10メートルもある長いはしごを、半分の狭い車庫に丸ごと収納できると思いますか？",
+  "title": "迷子のあなたを数学が必ず生還させる奇跡 #Shorts",
+  "theme": "ポリアの定理（2次元ランダムウォークの再帰性）",
+  "angle": "危機からの生還",
+  "opening_line": "絶望的な闇の荒野で彷徨うあなたを救うのは、無作為という名の数学の慈悲です。",
   "scenes": [
     {
-      "narration": "10メートルもある長いはしごを、半分の狭い車庫に丸ごと収納できると思いますか？",
+      "narration": "絶望的な闇の荒野で彷徨うあなたを救うのは、無作為という名の数学の慈悲です。",
       "visual_search_queries": [
-        "ladder inside garage",
-        "small warehouse garage"
+        "dark misty forest silhouette lone traveler",
+        "lost person walking in darkness cinematic"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "長いはしごが車庫に入る？",
+      "subtitle_text": "数学があなたを救う",
+      "subtitle_color": "white",
+      "subtitle_position": "center",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "あてもなく歩き続けても、平面の森なら確率百パーセントで、愛する原点へと帰還できます。",
+      "visual_search_queries": [
+        "aerial shot glowing footprints maze",
+        "golden compass shining dark woods"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "確率100%の奇跡",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "理想の物理法則では、光速近くで走ればはしごが縮んで見事に収まるはずなんです。",
+      "narration": "その足跡が巡り、たとえ再び迷いへと誘うとしても。",
       "visual_search_queries": [
-        "speed of light physics",
-        "runner fast motion blur"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "光速なら縮んで収まる？",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "ところが走る側の視点では、逆に車庫が縮んで絶対に収まらない大惨事になります。",
-      "visual_search_queries": [
-        "funny car crash wall",
-        "comic failure disaster"
+        "endless circular path glowing horizon",
+        "cinematic loop dark misty landscape"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "走る側から見ると大惨事",
-      "subtitle_color": "yellow",
-      "subtitle_position": "center",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "観察者によって同時がずれる世界ですが、そもそも10メートルもある長いはしごを…",
-      "visual_search_queries": [
-        "physics chalkboard teacher",
-        "confused scientist"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "同時性の不一致ループ",
-      "subtitle_color": "white",
+      "subtitle_text": "迷いと生還の輪廻",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "相対性理論の考え方（著：ジョン・ホイーラー）",
-    "hook_comment": "光速で走るはしご、あなたならどうやって車庫に入れますか？"
+    "book_title": "直感を裏切る数学（神永正博・著、ブルーバックス）",
+    "hook_comment": "もし完全に道に迷ったら、自分の直感とサイコロの目のどちらを信じて歩きますか？"
   },
   "uncertain_facts": []
 }

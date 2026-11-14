@@ -773,5 +773,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "迷子のあなたを数学が必ず生還させる奇跡 #Shorts",
+    "theme": "ポリアの定理（2次元ランダムウォークの再帰性）",
+    "angle": "危機からの生還",
+    "tone": "感動・余韻",
+    "opening_line": "絶望的な闇の荒野で彷徨うあなたを救うのは、無作為という名の数学の慈悲です。",
+    "style": {
+      "語り口": "詩的",
+      "構成": "結論先出し",
+      "視点": "視聴者本人",
+      "結末": "ループ",
+      "長さ": "20秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
