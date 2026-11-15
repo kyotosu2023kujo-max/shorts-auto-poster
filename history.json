@@ -794,5 +794,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "社用キーボードが暴露する悪口削除の罠 #Shorts",
+    "theme": "社用PC監視における入力ログの記録と隠蔽の心理的油断",
+    "angle": "禁忌の暴露",
+    "tone": "恐怖・警告",
+    "opening_line": "社用PCのキーボードだけど、君がさっき慌てて消した上司の悪口、全部バレてるよ。",
+    "style": {
+      "語り口": "友人に話す口調",
+      "構成": "結論先出し",
+      "視点": "モノや動物の視点",
+      "結末": "オチ（笑い・驚き）",
+      "長さ": "30秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

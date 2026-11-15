@@ -1,49 +1,61 @@
 {
-  "title": "迷子のあなたを数学が必ず生還させる奇跡 #Shorts",
-  "theme": "ポリアの定理（2次元ランダムウォークの再帰性）",
-  "angle": "危機からの生還",
-  "opening_line": "絶望的な闇の荒野で彷徨うあなたを救うのは、無作為という名の数学の慈悲です。",
+  "title": "社用キーボードが暴露する悪口削除の罠 #Shorts",
+  "theme": "社用PC監視における入力ログの記録と隠蔽の心理的油断",
+  "angle": "禁忌の暴露",
+  "opening_line": "社用PCのキーボードだけど、君がさっき慌てて消した上司の悪口、全部バレてるよ。",
   "scenes": [
     {
-      "narration": "絶望的な闇の荒野で彷徨うあなたを救うのは、無作為という名の数学の慈悲です。",
+      "narration": "社用PCのキーボードだけど、君がさっき慌てて消した上司の悪口、全部バレてるよ。",
       "visual_search_queries": [
-        "dark misty forest silhouette lone traveler",
-        "lost person walking in darkness cinematic"
+        "office computer keyboard typing closeup",
+        "stressed office worker typing keyboard dark"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "数学があなたを救う",
-      "subtitle_color": "white",
+      "subtitle_text": "消した悪口全部バレてます",
+      "subtitle_color": "yellow",
       "subtitle_position": "center",
-      "screen_effect": "none"
+      "screen_effect": "flash"
     },
     {
-      "narration": "あてもなく歩き続けても、平面の森なら確率百パーセントで、愛する原点へと帰還できます。",
+      "narration": "人間って『送信ボタンを押さなきゃセーフ』って錯覚するけど、会社のログはキーを叩いた瞬間に記録してるんだ。",
       "visual_search_queries": [
-        "aerial shot glowing footprints maze",
-        "golden compass shining dark woods"
+        "cyber security surveillance log screen code",
+        "corporate data monitoring system glowing display"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "確率100%の奇跡",
-      "subtitle_color": "yellow",
+      "camera_motion": "static",
+      "subtitle_text": "入力した瞬間に記録される",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "その足跡が巡り、たとえ再び迷いへと誘うとしても。",
+      "narration": "消して安心するのは心理学的な錯覚で、監視側の情シスには君の焦る指の震えまで丸見えなんだよ。",
       "visual_search_queries": [
-        "endless circular path glowing horizon",
-        "cinematic loop dark misty landscape"
+        "worried employee looking computer monitor",
+        "it administrator monitoring multiple screens"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "迷いと生還の輪廻",
+      "subtitle_text": "消して安心する心理の罠",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
+    },
+    {
+      "narration": "…あ、今情シスのPCから『俺もその上司嫌い』って通知が届いたよ。",
+      "visual_search_queries": [
+        "office worker smiling subtle screen reflection",
+        "keyboard key press dramatic cinematic"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "情シス「俺も上司嫌い」",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
+      "screen_effect": "flash"
     }
   ],
   "reference_book": {
-    "book_title": "直感を裏切る数学（神永正博・著、ブルーバックス）",
-    "hook_comment": "もし完全に道に迷ったら、自分の直感とサイコロの目のどちらを信じて歩きますか？"
+    "book_title": "職場の人間関係 心理学でスッキリ解決（榎本博明 著）",
+    "hook_comment": "社用チャットやメールで、送信直前に思いとどまって消した経験はありますか？"
   },
   "uncertain_facts": []
 }
