@@ -1,61 +1,61 @@
 {
-  "title": "社用キーボードが暴露する悪口削除の罠 #Shorts",
-  "theme": "社用PC監視における入力ログの記録と隠蔽の心理的油断",
-  "angle": "禁忌の暴露",
-  "opening_line": "社用PCのキーボードだけど、君がさっき慌てて消した上司の悪口、全部バレてるよ。",
+  "title": "1円玉が水に浮く物理と製造コストの謎 #Shorts",
+  "theme": "1円硬貨の物理特性と製造コストの逆転現象",
+  "angle": "物理的解析",
+  "opening_line": "私、数字の1です。実は1円玉は1枚作るだけで約3円かかる赤字の塊なのですよ。",
   "scenes": [
     {
-      "narration": "社用PCのキーボードだけど、君がさっき慌てて消した上司の悪口、全部バレてるよ。",
+      "narration": "私、数字の1です。実は1円玉は1枚作るだけで約3円かかる赤字の塊なのですよ。",
       "visual_search_queries": [
-        "office computer keyboard typing closeup",
-        "stressed office worker typing keyboard dark"
+        "japanese one yen coin macro",
+        "counting coins mint"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "消した悪口全部バレてます",
+      "subtitle_text": "1円玉は作るだけで大赤字",
       "subtitle_color": "yellow",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "重さ1グラムの純アルミニウム製で、水面に置くと表面張力で浮くほど精密なのです。",
+      "visual_search_queries": [
+        "coin floating on water surface",
+        "scientific laboratory precision scale"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "水に浮くほど精密な1g",
+      "subtitle_color": "cyan",
+      "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "人間って『送信ボタンを押さなきゃセーフ』って錯覚するけど、会社のログはキーを叩いた瞬間に記録してるんだ。",
+      "narration": "地金代と加工エネルギーを物理計算すると、完全に額面以上の価値を持っています。",
       "visual_search_queries": [
-        "cyber security surveillance log screen code",
-        "corporate data monitoring system glowing display"
+        "aluminum smelting factory metal",
+        "coin stamping machine manufacturing"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "入力した瞬間に記録される",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "原料と加工費が額面超え",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "消して安心するのは心理学的な錯覚で、監視側の情シスには君の焦る指の震えまで丸見えなんだよ。",
+      "narration": "今日はお財布の1円玉を取り出し、水に浮かべてその精密さを確かめてごらんなさい。",
       "visual_search_queries": [
-        "worried employee looking computer monitor",
-        "it administrator monitoring multiple screens"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "消して安心する心理の罠",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "…あ、今情シスのPCから『俺もその上司嫌い』って通知が届いたよ。",
-      "visual_search_queries": [
-        "office worker smiling subtle screen reflection",
-        "keyboard key press dramatic cinematic"
+        "wallet taking out coin close up",
+        "water glass science experiment"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "情シス「俺も上司嫌い」",
+      "subtitle_text": "水に浮かべて確かめてみて",
       "subtitle_color": "yellow",
       "subtitle_position": "center",
-      "screen_effect": "flash"
+      "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "職場の人間関係 心理学でスッキリ解決（榎本博明 著）",
-    "hook_comment": "社用チャットやメールで、送信直前に思いとどまって消した経験はありますか？"
+    "book_title": "貨幣論（岩井克人著、ちくま学芸文庫）",
+    "hook_comment": "1円玉を水に浮かべたことありますか？成功したことがある人はコメントで教えてくださいね！"
   },
   "uncertain_facts": []
 }
