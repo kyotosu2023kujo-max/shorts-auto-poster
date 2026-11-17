@@ -1,61 +1,49 @@
 {
-  "title": "1円玉が水に浮く物理と製造コストの謎 #Shorts",
-  "theme": "1円硬貨の物理特性と製造コストの逆転現象",
-  "angle": "物理的解析",
-  "opening_line": "私、数字の1です。実は1円玉は1枚作るだけで約3円かかる赤字の塊なのですよ。",
+  "title": "光速の数字が告げる真空崩壊の最期 #Shorts",
+  "theme": "真空崩壊と光速の到達による宇宙の最期",
+  "angle": "最期のメッセージ",
+  "opening_line": "秒速30万キロの数字ですが、宇宙が終わるのに誰も逃げてないの何で？",
   "scenes": [
     {
-      "narration": "私、数字の1です。実は1円玉は1枚作るだけで約3円かかる赤字の塊なのですよ。",
+      "narration": "秒速30万キロの数字ですが、宇宙が終わるのに誰も逃げてないの何で？",
       "visual_search_queries": [
-        "japanese one yen coin macro",
-        "counting coins mint"
+        "deep space stars",
+        "speed of light cosmos"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "1円玉は作るだけで大赤字",
+      "subtitle_text": "宇宙が終わるのに逃げないの何で",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "重さ1グラムの純アルミニウム製で、水面に置くと表面張力で浮くほど精密なのです。",
+      "narration": "真空崩壊は光速で迫るから、観測も絶望もできずに世界ごと消えるんです。",
       "visual_search_queries": [
-        "coin floating on water surface",
-        "scientific laboratory precision scale"
+        "cosmic energy explosion",
+        "quantum void destruction"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "水に浮くほど精密な1g",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "絶望すらできない光速の消滅",
       "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
+      "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "地金代と加工エネルギーを物理計算すると、完全に額面以上の価値を持っています。",
+      "narration": "痛みすら残さない宇宙の愛にツッコミを入れつつ、私はまた走り出します。",
       "visual_search_queries": [
-        "aluminum smelting factory metal",
-        "coin stamping machine manufacturing"
+        "beautiful nebula space",
+        "starlight travel background"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "原料と加工費が額面超え",
+      "subtitle_text": "痛みすら残さない宇宙の最期",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "今日はお財布の1円玉を取り出し、水に浮かべてその精密さを確かめてごらんなさい。",
-      "visual_search_queries": [
-        "wallet taking out coin close up",
-        "water glass science experiment"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "水に浮かべて確かめてみて",
-      "subtitle_color": "yellow",
-      "subtitle_position": "center",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "貨幣論（岩井克人著、ちくま学芸文庫）",
-    "hook_comment": "1円玉を水に浮かべたことありますか？成功したことがある人はコメントで教えてくださいね！"
+    "book_title": "宇宙の終わりに何が起こるのか（ケイティ・マック著）",
+    "hook_comment": "何の前触れもなく一瞬で宇宙が消えるとしたら、あなたは最期の瞬間に何をしていたいですか？"
   },
   "uncertain_facts": []
 }

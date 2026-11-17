@@ -836,5 +836,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "光速の数字が告げる真空崩壊の最期 #Shorts",
+    "theme": "真空崩壊と光速の到達による宇宙の最期",
+    "angle": "最期のメッセージ",
+    "tone": "感動・余韻",
+    "opening_line": "秒速30万キロの数字ですが、宇宙が終わるのに誰も逃げてないの何で？",
+    "style": {
+      "語り口": "軽いツッコミ",
+      "構成": "反転オチ",
+      "視点": "数字の視点",
+      "結末": "ループ",
+      "長さ": "20秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
