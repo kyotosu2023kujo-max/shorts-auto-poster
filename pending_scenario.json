@@ -1,49 +1,73 @@
 {
-  "title": "光速の数字が告げる真空崩壊の最期 #Shorts",
-  "theme": "真空崩壊と光速の到達による宇宙の最期",
-  "angle": "最期のメッセージ",
-  "opening_line": "秒速30万キロの数字ですが、宇宙が終わるのに誰も逃げてないの何で？",
+  "title": "100円を3千円で競り落とした私のゲーム理論 #Shorts",
+  "theme": "ドル・オークションのパラドックス（お金の仕組み・ゲーム理論）",
+  "angle": "不条理のゲーム理論",
+  "opening_line": "Q「なぜ100円玉を落札するのに3千円払ったんですか？」A「始まりは3位、90円で利益が出ると思った瞬間です」",
   "scenes": [
     {
-      "narration": "秒速30万キロの数字ですが、宇宙が終わるのに誰も逃げてないの何で？",
+      "narration": "Q「なぜ100円玉を落札するのに3千円払ったんですか？」A「始まりは3位、90円で利益が出ると思った瞬間です」",
       "visual_search_queries": [
-        "deep space stars",
-        "speed of light cosmos"
+        "interview microphone man talking",
+        "coin auction table close up"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "宇宙が終わるのに逃げないの何で",
+      "subtitle_text": "なぜ100円に3千円払った？",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "Q「それでお得だったのでは？」A「2位、対戦相手が100円を入札。2位も支払い義務があるルールを思い出しました」",
+      "visual_search_queries": [
+        "two people bidding auction nervous",
+        "money exchange hesitation"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "2位も全額支払う恐怖ルール",
+      "subtitle_color": "white",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "Q「降りればよかったのに？」A「1位、110円を出せば損失が10円で済むという悪魔の計算に囚われたんです」",
+      "visual_search_queries": [
+        "stressed businessman math calculation",
+        "wallet empty frustrated"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "損を減らす悪魔の計算",
+      "subtitle_color": "cyan",
+      "subtitle_position": "center",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "Q「そこからどうやって3千円に？」A「お互いに損失を減らそうと競い合い、気づけば泥沼の札束ビンタでした」",
+      "visual_search_queries": [
+        "falling money burn fire cash",
+        "dramatic auction bidding war"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "泥沼の札束ビンタ合戦",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "真空崩壊は光速で迫るから、観測も絶望もできずに世界ごと消えるんです。",
+      "narration": "Q「後悔してますか？」A「もちろんです。でも、もし今あなたの目の前で100円競売が始まったら、本当に降りられますか？」",
       "visual_search_queries": [
-        "cosmic energy explosion",
-        "quantum void destruction"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "絶望すらできない光速の消滅",
-      "subtitle_color": "cyan",
-      "subtitle_position": "center",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "痛みすら残さない宇宙の愛にツッコミを入れつつ、私はまた走り出します。",
-      "visual_search_queries": [
-        "beautiful nebula space",
-        "starlight travel background"
+        "interview close up looking at camera",
+        "shiny single coin on black background"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "痛みすら残さない宇宙の最期",
+      "subtitle_text": "あなたなら降りられますか？",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "宇宙の終わりに何が起こるのか（ケイティ・マック著）",
-    "hook_comment": "何の前触れもなく一瞬で宇宙が消えるとしたら、あなたは最期の瞬間に何をしていたいですか？"
+    "book_title": "戦略的思考とは何か エール大学式「ゲーム理論」実践法（アビナッシュ・ディキシット / バリー・ネイルバフ 著）",
+    "hook_comment": "「負けた側も入札額を支払うオークション」、あなたなら最初の10円で参加しますか？それとも絶対見送りますか？"
   },
   "uncertain_facts": []
 }

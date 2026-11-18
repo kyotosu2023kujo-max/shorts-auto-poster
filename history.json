@@ -857,5 +857,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "100円を3千円で競り落とした私のゲーム理論 #Shorts",
+    "theme": "ドル・オークションのパラドックス（お金の仕組み・ゲーム理論）",
+    "angle": "不条理のゲーム理論",
+    "tone": "ユーモア・軽さ",
+    "opening_line": "Q「なぜ100円玉を落札するのに3千円払ったんですか？」A「始まりは3位、90円で利益が出ると思った瞬間です」",
+    "style": {
+      "語り口": "インタビュー形式",
+      "構成": "カウントダウン",
+      "視点": "個人の体験",
+      "結末": "問いを残す",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
