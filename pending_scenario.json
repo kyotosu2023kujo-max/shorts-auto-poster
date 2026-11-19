@@ -1,73 +1,73 @@
 {
-  "title": "100円を3千円で競り落とした私のゲーム理論 #Shorts",
-  "theme": "ドル・オークションのパラドックス（お金の仕組み・ゲーム理論）",
-  "angle": "不条理のゲーム理論",
-  "opening_line": "Q「なぜ100円玉を落札するのに3千円払ったんですか？」A「始まりは3位、90円で利益が出ると思った瞬間です」",
+  "title": "光速で走る2隻の宇宙船を繋ぐワイヤーの悲劇 #Shorts",
+  "theme": "相対性理論のパラドックス（ベルの宇宙船パラドックス）",
+  "angle": "合理的な最適解",
+  "opening_line": "Q:なぜ同じ加速で引きちぎられたのか、ですか？ロケットを繋ぐワイヤーが3位から証言します。",
   "scenes": [
     {
-      "narration": "Q「なぜ100円玉を落札するのに3千円払ったんですか？」A「始まりは3位、90円で利益が出ると思った瞬間です」",
+      "narration": "Q:なぜ同じ加速で引きちぎられたのか、ですか？ロケットを繋ぐワイヤーが3位から証言します。第3位、同時性の崩壊。2隻が同時に進む日常の常識は、光速域では崩れます。",
       "visual_search_queries": [
-        "interview microphone man talking",
-        "coin auction table close up"
+        "two spaceships flying parallel speed of light",
+        "deep space glowing rope connecting spacecraft"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "なぜ100円に3千円払った？",
+      "subtitle_text": "同時加速で千切れた理由",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "Q「それでお得だったのでは？」A「2位、対戦相手が100円を入札。2位も支払い義務があるルールを思い出しました」",
+      "narration": "第2位、ローレンツ収縮。速度が上がるほど、私自身の長さは進行方向に縮もうとします。",
       "visual_search_queries": [
-        "two people bidding auction nervous",
-        "money exchange hesitation"
+        "physics simulation contraction wire tension",
+        "futuristic spaceship accelerating glowing particles"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "2位も全額支払う恐怖ルール",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "第2位 収縮の物理法則",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "Q「降りればよかったのに？」A「1位、110円を出せば損失が10円で済むという悪魔の計算に囚われたんです」",
+      "narration": "第1位、車間距離の固定。地上の観測者から見て2隻の間隔が保たれたため、縮めない私は無理やり引き伸ばされたのです。",
       "visual_search_queries": [
-        "stressed businessman math calculation",
-        "wallet empty frustrated"
+        "metal cable snapping under high tension slow motion",
+        "spacecraft cockpit view stars stretching"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "損を減らす悪魔の計算",
+      "subtitle_text": "第1位 伸びる車間距離",
       "subtitle_color": "cyan",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "Q「そこからどうやって3千円に？」A「お互いに損失を減らそうと競い合い、気づけば泥沼の札束ビンタでした」",
+      "narration": "千切れないための最適解は、加速に合わせて前後の距離を徐々に縮めることでした。",
       "visual_search_queries": [
-        "falling money burn fire cash",
-        "dramatic auction bidding war"
+        "futuristic engineering blueprint physics calculation",
+        "spaceships adjusting distance precise formation"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "泥沼の札束ビンタ合戦",
+      "camera_motion": "static",
+      "subtitle_text": "合理的な破損回避策",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "Q「後悔してますか？」A「もちろんです。でも、もし今あなたの目の前で100円競売が始まったら、本当に降りられますか？」",
+      "narration": "ところで、宇宙船内の搭乗員から見たら、一体どちらが伸びて見えたと思いますか？",
       "visual_search_queries": [
-        "interview close up looking at camera",
-        "shiny single coin on black background"
+        "astronaut floating looking through window deep space galaxy",
+        "mysterious cosmic horizon glowing question"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "あなたなら降りられますか？",
+      "subtitle_text": "船内から見ると何が起きた？",
       "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
+      "subtitle_position": "center",
+      "screen_effect": null
     }
   ],
   "reference_book": {
-    "book_title": "戦略的思考とは何か エール大学式「ゲーム理論」実践法（アビナッシュ・ディキシット / バリー・ネイルバフ 著）",
-    "hook_comment": "「負けた側も入札額を支払うオークション」、あなたなら最初の10円で参加しますか？それとも絶対見送りますか？"
+    "book_title": "眠れなくなるほど面白い 図解 相対性理論（大宮信光 著）",
+    "hook_comment": "船の中から見たらロープと宇宙船の間隔、どちらが伸びて見えると思いますか？"
   },
   "uncertain_facts": []
 }

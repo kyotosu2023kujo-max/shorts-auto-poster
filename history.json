@@ -878,5 +878,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "光速で走る2隻の宇宙船を繋ぐワイヤーの悲劇 #Shorts",
+    "theme": "相対性理論のパラドックス（ベルの宇宙船パラドックス）",
+    "angle": "合理的な最適解",
+    "tone": "実用・学び",
+    "opening_line": "Q:なぜ同じ加速で引きちぎられたのか、ですか？ロケットを繋ぐワイヤーが3位から証言します。",
+    "style": {
+      "語り口": "インタビュー形式",
+      "構成": "カウントダウン",
+      "視点": "モノや動物の視点",
+      "結末": "問いを残す",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
