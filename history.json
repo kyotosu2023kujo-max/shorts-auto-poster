@@ -899,5 +899,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "99％陽性の検査でも9割誤診な数学の罠 #Shorts",
+    "theme": "数学・確率の直感に反する話（偽陽性のパラドックス / ベイズ確率）",
+    "angle": "最期のメッセージ",
+    "tone": "感動・余韻",
+    "opening_line": "あなたが涙ながらに書き殴っているその最期の遺書、9割の確率で無駄骨ですよ。",
+    "style": {
+      "語り口": "軽いツッコミ",
+      "構成": "結論先出し",
+      "視点": "視聴者本人",
+      "結末": "オチ（笑い・驚き）",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
