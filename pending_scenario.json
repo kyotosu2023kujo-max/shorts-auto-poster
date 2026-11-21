@@ -1,73 +1,73 @@
 {
-  "title": "99％陽性の検査でも9割誤診な数学の罠 #Shorts",
-  "theme": "数学・確率の直感に反する話（偽陽性のパラドックス / ベイズ確率）",
-  "angle": "最期のメッセージ",
-  "opening_line": "あなたが涙ながらに書き殴っているその最期の遺書、9割の確率で無駄骨ですよ。",
+  "title": "無駄の語源を数字のゼロが語る意外な効用 #Shorts",
+  "theme": "言葉の由来（無駄）の変遷と無用の効用",
+  "angle": "無用の効用",
+  "opening_line": "私、積載量ゼロキロという数字ですが、かつて役立たずと嘲笑された無駄こそが、宿場町の危機を救っていました。",
   "scenes": [
     {
-      "narration": "あなたが涙ながらに書き殴っているその最期の遺書、9割の確率で無駄骨ですよ。99％当たる検査で陽性が出ても、絶望するのは早すぎます。",
+      "narration": "私、積載量ゼロキロという数字ですが、かつて役立たずと嘲笑された無駄こそが、宿場町の危機を救っていました。",
       "visual_search_queries": [
-        "crying person writing letter",
-        "medical test result anxiety"
+        "zero number abstract concept",
+        "japanese historical village landscape"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "遺書を書くのは早すぎる",
+      "subtitle_text": "無駄が宿場町を救った",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "その難病、1万人に1人しかかからないですよね。ここに直感を狂わせる数学の罠があります。",
+      "narration": "言葉の由来は江戸時代の輸送馬です。規定である三十六貫、約百三十五キロの荷物を満載して運ぶことこそが正義でした。",
       "visual_search_queries": [
-        "doctor lab microscope medical",
-        "crowd of people aerial view"
+        "ancient horse carrying heavy load vintage",
+        "scale weight measurement history"
       ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "1万人に1人の激レア難病",
+      "camera_motion": "static",
+      "subtitle_text": "荷物135キロが正義",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "仮に100万人検査すると、本物の患者100人は陽性ですが、健康な99万人からも1％のエラーで約1万人の偽陽性が出ます。",
+      "narration": "そのため、荷を背負わないゼロキロの馬は、利益を生まない無駄馬として、徹底的に価値がないと見なされたのです。",
       "visual_search_queries": [
-        "data visualization statistics",
-        "mathematics formula chalkboard"
+        "lonely horse empty field documentary",
+        "zero number glowing dark"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "偽陽性が1万人も出現",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "荷なし馬は無駄馬扱い",
       "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "つまり陽性者約1万人のうち、本物はたった1％。あなたが本当に病気である確率は、1割もないんです。",
-      "visual_search_queries": [
-        "shocked face man looking at paper",
-        "percentage calculation graphics"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "実際に病気の確率は1割",
-      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "安堵で涙ぐむのは結構ですが、遺書に家族への恥ずかしい本音を書きまくったあなた、今すぐ全力で燃やしてください。",
+      "narration": "ですが荷がゼロだからこそ、この馬は倒れた旅人を急遽乗せたり、災害時の緊急連絡を最速で届けることができました。",
       "visual_search_queries": [
-        "burning letter paper fire",
-        "panicked person shredding paper"
+        "horse running fast historic dirt road",
+        "person helping another road documentary"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "恥ずかしい遺書を燃やせ",
+      "subtitle_text": "ゼロだから急行できた",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "何も積んでいない余白があるからこそ、人は救われる。削られ続ける現代の無駄を、ゼロは静かに見守っています。",
+      "visual_search_queries": [
+        "foggy morning country road horse walking",
+        "minimalist empty space atmospheric"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "余白こそが人を救う",
       "subtitle_color": "white",
       "subtitle_position": "center",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "直感を裏切る数学―「思い込み」にだまされない数学的思考法（神永正博 著）",
-    "hook_comment": "直感と計算のギャップで一番ゾッとした確率の話、何かありますか？"
+    "book_title": "暮らしのことば 語源辞典（講談社学術文庫）",
+    "hook_comment": "タイパ重視の時代ですが、あなたが「どうしても手放せない愛おしい無駄」は何ですか？"
   },
   "uncertain_facts": []
 }
