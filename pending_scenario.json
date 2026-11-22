@@ -1,73 +1,73 @@
 {
-  "title": "無駄の語源を数字のゼロが語る意外な効用 #Shorts",
-  "theme": "言葉の由来（無駄）の変遷と無用の効用",
-  "angle": "無用の効用",
-  "opening_line": "私、積載量ゼロキロという数字ですが、かつて役立たずと嘲笑された無駄こそが、宿場町の危機を救っていました。",
+  "title": "吸血コウモリが命を分け合う詩的な理由 #Shorts",
+  "theme": "吸血コウモリの互恵的利他行動と分かち合いの生態",
+  "angle": "他者との信頼と助け合いが生み出す心理的報酬",
+  "opening_line": "飢えた仲間に血を吐き戻して分け与える吸血コウモリは、自らの余命を削り合うことで明日を繋いでいます。",
   "scenes": [
     {
-      "narration": "私、積載量ゼロキロという数字ですが、かつて役立たずと嘲笑された無駄こそが、宿場町の危機を救っていました。",
+      "narration": "飢えた仲間に血を吐き戻して分け与える吸血コウモリは、自らの余命を削り合うことで明日を繋いでいます。",
       "visual_search_queries": [
-        "zero number abstract concept",
-        "japanese historical village landscape"
+        "bats hanging in dark cave",
+        "vampire bat close up"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "無駄が宿場町を救った",
+      "subtitle_text": "余命を削り分けるコウモリ",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "言葉の由来は江戸時代の輸送馬です。規定である三十六貫、約百三十五キロの荷物を満載して運ぶことこそが正義でした。",
+      "narration": "体重の半分もの血をすする彼らは、わずか三夜獲物に恵まれないだけで、冷たく命を落とす儚い宿命にあります。",
       "visual_search_queries": [
-        "ancient horse carrying heavy load vintage",
-        "scale weight measurement history"
+        "dark cave twilight bats flying",
+        "wild animal night gloomy"
       ],
       "camera_motion": "static",
-      "subtitle_text": "荷物135キロが正義",
+      "subtitle_text": "三夜の絶食で訪れる死",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "そのため、荷を背負わないゼロキロの馬は、利益を生まない無駄馬として、徹底的に価値がないと見なされたのです。",
+      "narration": "だからこそ夜の静寂の中、かつて自分を救ってくれた友へ、命の雫である血を口移しで分け与えるのです。",
       "visual_search_queries": [
-        "lonely horse empty field documentary",
-        "zero number glowing dark"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "荷なし馬は無駄馬扱い",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "ですが荷がゼロだからこそ、この馬は倒れた旅人を急遽乗せたり、災害時の緊急連絡を最速で届けることができました。",
-      "visual_search_queries": [
-        "horse running fast historic dirt road",
-        "person helping another road documentary"
+        "two bats close together",
+        "bats roosting cave macro"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "ゼロだから急行できた",
-      "subtitle_color": "yellow",
+      "subtitle_text": "恩人へ託す命の雫",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "何も積んでいない余白があるからこそ、人は救われる。削られ続ける現代の無駄を、ゼロは静かに見守っています。",
+      "narration": "記憶と信頼だけで結ばれた利他の連鎖は、孤独な強者よりも、弱き者たちに確かな生の温もりをもたらします。",
       "visual_search_queries": [
-        "foggy morning country road horse walking",
-        "minimalist empty space atmospheric"
+        "colony of bats warm light",
+        "nature solidarity animals night"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "信頼がもたらす生の温もり",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "暗闇の洞窟で血を分かち合う彼らのように、あなたには魂を預け合える誰かがいるでしょうか。",
+      "visual_search_queries": [
+        "bats flying into night sky moon",
+        "mysterious dark forest night"
       ],
       "camera_motion": "static",
-      "subtitle_text": "余白こそが人を救う",
+      "subtitle_text": "魂を預け合える誰かはいるか",
       "subtitle_color": "white",
       "subtitle_position": "center",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "暮らしのことば 語源辞典（講談社学術文庫）",
-    "hook_comment": "タイパ重視の時代ですが、あなたが「どうしても手放せない愛おしい無駄」は何ですか？"
+    "book_title": "利己的な遺伝子（リチャード・ドーキンス）",
+    "hook_comment": "あなたが本当に困ったとき、真っ先に顔が浮かぶ人は誰ですか？"
   },
   "uncertain_facts": []
 }
