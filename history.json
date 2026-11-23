@@ -962,5 +962,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "消えゆく通りゃんせが街に遺した最後の祈り #Shorts",
+    "theme": "音響信号機のメロディ（通りゃんせ）が姿を消す理由とバリアフリーの歴史",
+    "angle": "最期のメッセージ",
+    "tone": "感動・余韻",
+    "opening_line": "もし夕暮れの交差点で、懐かしい「通りゃんせ」のメロディを聴いたなら、足を止めて耳を澄ませてください。",
+    "style": {
+      "語り口": "詩的",
+      "構成": "ifストーリー",
+      "視点": "視聴者本人",
+      "結末": "行動提案",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]

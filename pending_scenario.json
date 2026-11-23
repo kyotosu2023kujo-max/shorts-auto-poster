@@ -1,73 +1,73 @@
 {
-  "title": "吸血コウモリが命を分け合う詩的な理由 #Shorts",
-  "theme": "吸血コウモリの互恵的利他行動と分かち合いの生態",
-  "angle": "他者との信頼と助け合いが生み出す心理的報酬",
-  "opening_line": "飢えた仲間に血を吐き戻して分け与える吸血コウモリは、自らの余命を削り合うことで明日を繋いでいます。",
+  "title": "消えゆく通りゃんせが街に遺した最後の祈り #Shorts",
+  "theme": "音響信号機のメロディ（通りゃんせ）が姿を消す理由とバリアフリーの歴史",
+  "angle": "最期のメッセージ",
+  "opening_line": "もし夕暮れの交差点で、懐かしい「通りゃんせ」のメロディを聴いたなら、足を止めて耳を澄ませてください。",
   "scenes": [
     {
-      "narration": "飢えた仲間に血を吐き戻して分け与える吸血コウモリは、自らの余命を削り合うことで明日を繋いでいます。",
+      "narration": "もし夕暮れの交差点で、懐かしい「通りゃんせ」のメロディを聴いたなら、足を止めて耳を澄ませてください。",
       "visual_search_queries": [
-        "bats hanging in dark cave",
-        "vampire bat close up"
+        "crosswalk pedestrian signal twilight city",
+        "tokyo crosswalk sunset traffic"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "余命を削り分けるコウモリ",
+      "subtitle_text": "夕暮れに響くあの音",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "体重の半分もの血をすする彼らは、わずか三夜獲物に恵まれないだけで、冷たく命を落とす儚い宿命にあります。",
+      "narration": "かつて視覚障害者を安全へ導いたその音色は、いま擬音化に伴い、街から静かに姿を消そうとしています。",
       "visual_search_queries": [
-        "dark cave twilight bats flying",
-        "wild animal night gloomy"
+        "traffic light green signal close up",
+        "visually impaired walking cane city street"
       ],
       "camera_motion": "static",
-      "subtitle_text": "三夜の絶食で訪れる死",
+      "subtitle_text": "静かに消えゆく旋律",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "だからこそ夜の静寂の中、かつて自分を救ってくれた友へ、命の雫である血を口移しで分け与えるのです。",
+      "narration": "もしこの歌が完全に途絶えた世界なら、私たちは誰かの歩みを支える優しさに、気づけぬまま急ぎ歩くでしょう。",
       "visual_search_queries": [
-        "two bats close together",
-        "bats roosting cave macro"
+        "crowd walking city time lapse blur",
+        "people crossing street hurry evening"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "優しさを忘れた街で",
+      "subtitle_color": "cyan",
+      "subtitle_position": "center",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "あの哀愁ある旋律は、急速に移ろう都市の片隅で、見えない誰かの命を守り抜いた証としての遺言なのです。",
+      "visual_search_queries": [
+        "vintage pedestrian signal light evening",
+        "crosswalk pavement tactile paving yellow"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "恩人へ託す命の雫",
-      "subtitle_color": "cyan",
+      "subtitle_text": "命を守り抜いた遺言",
+      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "記憶と信頼だけで結ばれた利他の連鎖は、孤独な強者よりも、弱き者たちに確かな生の温もりをもたらします。",
+      "narration": "次に渡る交差点では、信号が奏でる音に耳を傾けてみてください。そこに込められた祈りに出会えるはずです。",
       "visual_search_queries": [
-        "colony of bats warm light",
-        "nature solidarity animals night"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "信頼がもたらす生の温もり",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "暗闇の洞窟で血を分かち合う彼らのように、あなたには魂を預け合える誰かがいるでしょうか。",
-      "visual_search_queries": [
-        "bats flying into night sky moon",
-        "mysterious dark forest night"
+        "pedestrian waiting crosswalk city night lights",
+        "person looking up city traffic light calm"
       ],
       "camera_motion": "static",
-      "subtitle_text": "魂を預け合える誰かはいるか",
+      "subtitle_text": "街の音に耳を澄ませて",
       "subtitle_color": "white",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "利己的な遺伝子（リチャード・ドーキンス）",
-    "hook_comment": "あなたが本当に困ったとき、真っ先に顔が浮かぶ人は誰ですか？"
+    "book_title": "音のユニバーサルデザイン（岩宮眞一郎 著）",
+    "hook_comment": "最近、街の信号から「通りゃんせ」を聞かなくなったと感じたことはありますか？"
   },
   "uncertain_facts": []
 }
