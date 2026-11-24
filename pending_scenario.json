@@ -1,73 +1,73 @@
 {
-  "title": "消えゆく通りゃんせが街に遺した最後の祈り #Shorts",
-  "theme": "音響信号機のメロディ（通りゃんせ）が姿を消す理由とバリアフリーの歴史",
-  "angle": "最期のメッセージ",
-  "opening_line": "もし夕暮れの交差点で、懐かしい「通りゃんせ」のメロディを聴いたなら、足を止めて耳を澄ませてください。",
+  "title": "徹夜ハイの正体が脳の自己捕食だった罠 #Shorts",
+  "theme": "睡眠不足時に起きる脳の自己貪食とドーパミン暴走",
+  "angle": "最悪のシミュレーション",
+  "opening_line": "徹夜明けなのに今朝は妙に集中できている、とお答えですね？残念ですが、それ生存本能による錯覚です。",
   "scenes": [
     {
-      "narration": "もし夕暮れの交差点で、懐かしい「通りゃんせ」のメロディを聴いたなら、足を止めて耳を澄ませてください。",
+      "narration": "徹夜明けなのに今朝は妙に集中できている、とお答えですね？残念ですが、それ生存本能による錯覚です。",
       "visual_search_queries": [
-        "crosswalk pedestrian signal twilight city",
-        "tokyo crosswalk sunset traffic"
+        "exhausted person interrogation dark room",
+        "tired man looking serious"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "夕暮れに響くあの音",
+      "subtitle_text": "徹夜ハイは生存本能の錯覚",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "かつて視覚障害者を安全へ導いたその音色は、いま擬音化に伴い、街から静かに姿を消そうとしています。",
+      "narration": "脳は24時間覚醒すると非常警報を鳴らし、快楽物質のドーパミンを大量にばら撒き始めます。",
       "visual_search_queries": [
-        "traffic light green signal close up",
-        "visually impaired walking cane city street"
+        "brain dopamine neurons firing blue light",
+        "abstract neural network glowing"
       ],
       "camera_motion": "static",
-      "subtitle_text": "静かに消えゆく旋律",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "もしこの歌が完全に途絶えた世界なら、私たちは誰かの歩みを支える優しさに、気づけぬまま急ぎ歩くでしょう。",
-      "visual_search_queries": [
-        "crowd walking city time lapse blur",
-        "people crossing street hurry evening"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "優しさを忘れた街で",
+      "subtitle_text": "非常事態で快楽物質が暴走",
       "subtitle_color": "cyan",
-      "subtitle_position": "center",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "あの哀愁ある旋律は、急速に移ろう都市の片隅で、見えない誰かの命を守り抜いた証としての遺言なのです。",
-      "visual_search_queries": [
-        "vintage pedestrian signal light evening",
-        "crosswalk pavement tactile paving yellow"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "命を守り抜いた遺言",
-      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "次に渡る交差点では、信号が奏でる音に耳を傾けてみてください。そこに込められた祈りに出会えるはずです。",
+      "narration": "さらに最悪の事態が進みます。掃除役のグリア細胞が暴走し、健康なシナプスを直接貪食し始めるのです。",
       "visual_search_queries": [
-        "pedestrian waiting crosswalk city night lights",
-        "person looking up city traffic light calm"
+        "microscopic cell destruction biological",
+        "microglia synapse engulfment 3d render"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "街の音に耳を澄ませて",
+      "camera_motion": "zoom_in",
+      "subtitle_text": "脳細胞が自分自身を捕食する",
       "subtitle_color": "white",
+      "subtitle_position": "center",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "あなたが感じた『全能感』の正体は、脳が自らを食い潰しながら燃やしていた最後の残り火でした。",
+      "visual_search_queries": [
+        "burning brain concept silhouette flame",
+        "distressed person holding head in dark"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "脳が自らを削る最後の残り火",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "今夜も根性で徹夜しようとするあなた、明日の朝、生き残っている記憶領域はどれくらいでしょうか？",
+      "visual_search_queries": [
+        "clock ticking midnight sleepless face",
+        "gloomy dark bedroom bedside lamp"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "明朝残る記憶はどれくらい？",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "音のユニバーサルデザイン（岩宮眞一郎 著）",
-    "hook_comment": "最近、街の信号から「通りゃんせ」を聞かなくなったと感じたことはありますか？"
+    "book_title": "睡眠こそ最強の解決策（マシュー・ウォーカー著）",
+    "hook_comment": "徹夜した翌朝に『なぜか冴えている』と感じた経験、あなたにもありませんか？"
   },
   "uncertain_facts": []
 }
