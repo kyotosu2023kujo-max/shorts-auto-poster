@@ -1,73 +1,61 @@
 {
-  "title": "徹夜ハイの正体が脳の自己捕食だった罠 #Shorts",
-  "theme": "睡眠不足時に起きる脳の自己貪食とドーパミン暴走",
-  "angle": "最悪のシミュレーション",
-  "opening_line": "徹夜明けなのに今朝は妙に集中できている、とお答えですね？残念ですが、それ生存本能による錯覚です。",
+  "title": "ロンドンの高級住宅街に潜むハリボテ豪邸の罠 #Shorts",
+  "theme": "世界の珍しい地理・風習（ロンドンのダミー住宅・レインスタインガーデンズ23/24番地）",
+  "angle": "無用の効用",
+  "opening_line": "もしロンドンの一等地に豪邸を買って、玄関開けたらただの壁だったら発狂しますよね。",
   "scenes": [
     {
-      "narration": "徹夜明けなのに今朝は妙に集中できている、とお答えですね？残念ですが、それ生存本能による錯覚です。",
+      "narration": "もしロンドンの一等地に豪邸を買って、玄関開けたらただの壁だったら発狂しますよね。",
       "visual_search_queries": [
-        "exhausted person interrogation dark room",
-        "tired man looking serious"
+        "London luxury townhouse exterior facade",
+        "confused person opening front door"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "徹夜ハイは生存本能の錯覚",
+      "subtitle_text": "豪邸を買ったのに中身がない？",
       "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "脳は24時間覚醒すると非常警報を鳴らし、快楽物質のドーパミンを大量にばら撒き始めます。",
+      "narration": "私が内見した高級住宅街の23番地、実は厚さ1.5メートルのハリボテで部屋がゼロなんです。",
       "visual_search_queries": [
-        "brain dopamine neurons firing blue light",
-        "abstract neural network glowing"
+        "thin wall facade building fake house",
+        "empty space behind wall architecture"
       ],
-      "camera_motion": "static",
-      "subtitle_text": "非常事態で快楽物質が暴走",
-      "subtitle_color": "cyan",
+      "camera_motion": "zoom_out",
+      "subtitle_text": "厚さ1.5mの完全なハリボテ",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "flash"
     },
     {
-      "narration": "さらに最悪の事態が進みます。掃除役のグリア細胞が暴走し、健康なシナプスを直接貪食し始めるのです。",
+      "narration": "住めないなんて究極の無駄物件と思いきや、実は地下鉄の蒸気を逃がす煙突を隠す天才的な偽装。",
       "visual_search_queries": [
-        "microscopic cell destruction biological",
-        "microglia synapse engulfment 3d render"
+        "London underground steam tube train historic",
+        "beautiful Victorian architecture London street"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "脳細胞が自分自身を捕食する",
-      "subtitle_color": "white",
-      "subtitle_position": "center",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "あなたが感じた『全能感』の正体は、脳が自らを食い潰しながら燃やしていた最後の残り火でした。",
-      "visual_search_queries": [
-        "burning brain concept silhouette flame",
-        "distressed person holding head in dark"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "脳が自らを削る最後の残り火",
-      "subtitle_color": "yellow",
+      "subtitle_text": "地下鉄の煙を隠す天才的無駄",
+      "subtitle_color": "cyan",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "今夜も根性で徹夜しようとするあなた、明日の朝、生き残っている記憶領域はどれくらいでしょうか？",
+      "narration": "街の景観を救う偉大な無駄ですが、郵便配達員が毎日不在票を突っ込んでいくのだけはやめてあげて。",
       "visual_search_queries": [
-        "clock ticking midnight sleepless face",
-        "gloomy dark bedroom bedside lamp"
+        "postman delivering letter to door mail slot",
+        "funny London street scene humor"
       ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "明朝残る記憶はどれくらい？",
-      "subtitle_color": "cyan",
+      "camera_motion": "static",
+      "subtitle_text": "配達員が毎日不在票を入れてく",
+      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "睡眠こそ最強の解決策（マシュー・ウォーカー著）",
-    "hook_comment": "徹夜した翌朝に『なぜか冴えている』と感じた経験、あなたにもありませんか？"
+    "book_title": "ロンドン路地裏散歩（光文社知恵の森文庫）",
+    "hook_comment": "もし住めない豪邸が近所にあったら、どんなイタズラに使いたいですか？"
   },
   "uncertain_facts": []
 }
