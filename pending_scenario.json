@@ -1,61 +1,49 @@
 {
-  "title": "ロンドンの高級住宅街に潜むハリボテ豪邸の罠 #Shorts",
-  "theme": "世界の珍しい地理・風習（ロンドンのダミー住宅・レインスタインガーデンズ23/24番地）",
-  "angle": "無用の効用",
-  "opening_line": "もしロンドンの一等地に豪邸を買って、玄関開けたらただの壁だったら発狂しますよね。",
+  "title": "光へ急ぐカタツムリを操る寄生虫の悪夢 #Shorts",
+  "theme": "ロイコクロリディウムによるカタツムリのマインドコントロール",
+  "angle": "禁忌の暴露",
+  "opening_line": "なぜそのカタツムリは、鳥たちの待つ陽だまりへと身を晒すのでしょうか。",
   "scenes": [
     {
-      "narration": "もしロンドンの一等地に豪邸を買って、玄関開けたらただの壁だったら発狂しますよね。",
+      "narration": "なぜそのカタツムリは、鳥たちの待つ陽だまりへと身を晒すのでしょうか。",
       "visual_search_queries": [
-        "London luxury townhouse exterior facade",
-        "confused person opening front door"
+        "snail crawling on bright green leaf macro",
+        "sunlight shining forest snail close up"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "豪邸を買ったのに中身がない？",
-      "subtitle_color": "yellow",
+      "subtitle_text": "なぜ光へ向かうのか",
+      "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "私が内見した高級住宅街の23番地、実は厚さ1.5メートルのハリボテで部屋がゼロなんです。",
+      "narration": "眼柄を脈動させ意識を乗っ取る寄生虫が、禁じられた光へ肉体を走らせているのです。",
       "visual_search_queries": [
-        "thin wall facade building fake house",
-        "empty space behind wall architecture"
+        "leucochloridium paradoxum snail tentacle macro",
+        "parasite pulsing in snail horror"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "厚さ1.5mの完全なハリボテ",
-      "subtitle_color": "white",
-      "subtitle_position": "bottom",
+      "subtitle_text": "禁忌の寄生虫の傀儡",
+      "subtitle_color": "yellow",
+      "subtitle_position": "center",
       "screen_effect": "flash"
     },
     {
-      "narration": "住めないなんて究極の無駄物件と思いきや、実は地下鉄の蒸気を逃がす煙突を隠す天才的な偽装。",
+      "narration": "宿主の自我を奪い鳥の胃袋へ誘う悪夢。いまあなたの意志は、本当にあなた自身のものですか？",
       "visual_search_queries": [
-        "London underground steam tube train historic",
-        "beautiful Victorian architecture London street"
+        "bird of prey watching dark forest shadow",
+        "silhouette human thinking question dark"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "地下鉄の煙を隠す天才的無駄",
+      "subtitle_text": "あなたの意志は本物か",
       "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "街の景観を救う偉大な無駄ですが、郵便配達員が毎日不在票を突っ込んでいくのだけはやめてあげて。",
-      "visual_search_queries": [
-        "postman delivering letter to door mail slot",
-        "funny London street scene humor"
-      ],
-      "camera_motion": "static",
-      "subtitle_text": "配達員が毎日不在票を入れてく",
-      "subtitle_color": "yellow",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "ロンドン路地裏散歩（光文社知恵の森文庫）",
-    "hook_comment": "もし住めない豪邸が近所にあったら、どんなイタズラに使いたいですか？"
+    "book_title": "パラサイト・レックス―生命の王、寄生虫の神秘から進化を探る（カール・ジンマー著）",
+    "hook_comment": "もし自分の思考や行動が何かに操られているとしたら、あなたはどうやって気付きますか？"
   },
   "uncertain_facts": []
 }
