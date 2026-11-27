@@ -1,49 +1,73 @@
 {
-  "title": "光へ急ぐカタツムリを操る寄生虫の悪夢 #Shorts",
-  "theme": "ロイコクロリディウムによるカタツムリのマインドコントロール",
-  "angle": "禁忌の暴露",
-  "opening_line": "なぜそのカタツムリは、鳥たちの待つ陽だまりへと身を晒すのでしょうか。",
+  "title": "信号の押しボタン対監視カメラの数字の罠 #Shorts",
+  "theme": "日常のなぜ（信号・押しボタン・監視カメラ）",
+  "angle": "監視の恐怖",
+  "opening_line": "交差点で君が連打するゼロ秒の僕と、頭上から君を見下ろす認識率百パーセントのあいつ、どっちが本物だと思う？",
   "scenes": [
     {
-      "narration": "なぜそのカタツムリは、鳥たちの待つ陽だまりへと身を晒すのでしょうか。",
+      "narration": "交差点で君が連打するゼロ秒の僕と、頭上から君を見下ろす認識率百パーセントのあいつ、どっちが本物だと思う？",
       "visual_search_queries": [
-        "snail crawling on bright green leaf macro",
-        "sunlight shining forest snail close up"
+        "crosswalk pedestrian button close up",
+        "surveillance security camera intersection"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "なぜ光へ向かうのか",
+      "subtitle_text": "ゼロ秒vs100％の監視",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "flash"
+    },
+    {
+      "narration": "実は世界中の押しボタンの9割は配線すら繋がってなくて、君を安心させるだけの偽物の数字なんだよね。",
+      "visual_search_queries": [
+        "person pressing crosswalk signal button",
+        "city crosswalk crowd waiting"
+      ],
+      "camera_motion": "static",
+      "subtitle_text": "ボタンの9割は偽物？",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "眼柄を脈動させ意識を乗っ取る寄生虫が、禁じられた光へ肉体を走らせているのです。",
+      "narration": "でも対決相手のあいつ、最新のAI信号機に潜む監視カメラの数字は、君の歩く速度や顔の向きまで丸裸にしてる。",
       "visual_search_queries": [
-        "leucochloridium paradoxum snail tentacle macro",
-        "parasite pulsing in snail horror"
-      ],
-      "camera_motion": "zoom_out",
-      "subtitle_text": "禁忌の寄生虫の傀儡",
-      "subtitle_color": "yellow",
-      "subtitle_position": "center",
-      "screen_effect": "flash"
-    },
-    {
-      "narration": "宿主の自我を奪い鳥の胃袋へ誘う悪夢。いまあなたの意志は、本当にあなた自身のものですか？",
-      "visual_search_queries": [
-        "bird of prey watching dark forest shadow",
-        "silhouette human thinking question dark"
+        "ai facial recognition surveillance screen",
+        "smart traffic light camera sensor"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "あなたの意志は本物か",
+      "subtitle_text": "頭上から歩行者を完全認識",
       "subtitle_color": "cyan",
       "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "信号を変える力はゼロなのに、君が交差点にいた証拠だけは百パーセント完全に記録され続けてるんだ。",
+      "visual_search_queries": [
+        "traffic control room monitoring screens",
+        "night pedestrian crossing cctv angle"
+      ],
+      "camera_motion": "zoom_out",
+      "subtitle_text": "あなたの行動は全て記録",
+      "subtitle_color": "yellow",
+      "subtitle_position": "bottom",
+      "screen_effect": "none"
+    },
+    {
+      "narration": "安心のためにボタンを押し続ける君と、君を静かに値踏みするレンズ、本当に街を動かしてるのはどっちかな？",
+      "visual_search_queries": [
+        "cyberpunk surveillance eye lens macro",
+        "pedestrians walking city crossing aerial"
+      ],
+      "camera_motion": "zoom_in",
+      "subtitle_text": "本当に街を動かすのは誰？",
+      "subtitle_color": "white",
+      "subtitle_position": "center",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "パラサイト・レックス―生命の王、寄生虫の神秘から進化を探る（カール・ジンマー著）",
-    "hook_comment": "もし自分の思考や行動が何かに操られているとしたら、あなたはどうやって気付きますか？"
+    "book_title": "監視資本主義：人類の未来を賭けた闘い",
+    "hook_comment": "あなたが毎日押している信号ボタン、本当に信号を変えていると思いますか？"
   },
   "uncertain_facts": []
 }

@@ -1046,5 +1046,26 @@
     "retention": null,
     "swipe_rate": null,
     "avg_view_duration": null
+  },
+  {
+    "title": "信号の押しボタン対監視カメラの数字の罠 #Shorts",
+    "theme": "日常のなぜ（信号・押しボタン・監視カメラ）",
+    "angle": "監視の恐怖",
+    "tone": "恐怖・警告",
+    "opening_line": "交差点で君が連打するゼロ秒の僕と、頭上から君を見下ろす認識率百パーセントのあいつ、どっちが本物だと思う？",
+    "style": {
+      "語り口": "友人に話す口調",
+      "構成": "比較対決",
+      "視点": "数字の視点",
+      "結末": "問いを残す",
+      "長さ": "45秒"
+    },
+    "mode": "explore",
+    "views": null,
+    "likes": null,
+    "comments": null,
+    "retention": null,
+    "swipe_rate": null,
+    "avg_view_duration": null
   }
 ]
