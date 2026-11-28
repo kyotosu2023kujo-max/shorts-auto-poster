@@ -1,73 +1,61 @@
 {
-  "title": "信号の押しボタン対監視カメラの数字の罠 #Shorts",
-  "theme": "日常のなぜ（信号・押しボタン・監視カメラ）",
-  "angle": "監視の恐怖",
-  "opening_line": "交差点で君が連打するゼロ秒の僕と、頭上から君を見下ろす認識率百パーセントのあいつ、どっちが本物だと思う？",
+  "title": "さようならという言葉が秘めた祈りの奇跡 #Shorts",
+  "theme": "「さようなら」の語源と変遷（接続詞「然様ならば」から別れの祈りへ）",
+  "angle": "探求者の異変",
+  "opening_line": "私、さようならは、愛を告げる接続詞としてこの世に生まれました。",
   "scenes": [
     {
-      "narration": "交差点で君が連打するゼロ秒の僕と、頭上から君を見下ろす認識率百パーセントのあいつ、どっちが本物だと思う？",
+      "narration": "私、さようならは、愛を告げる接続詞としてこの世に生まれました。",
       "visual_search_queries": [
-        "crosswalk pedestrian button close up",
-        "surveillance security camera intersection"
+        "old manuscript writing ink",
+        "close up calligraphy vintage japanese paper"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "ゼロ秒vs100％の監視",
+      "subtitle_text": "私はかつて接続詞でした",
       "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
-      "screen_effect": "flash"
+      "subtitle_position": "center",
+      "screen_effect": "none"
     },
     {
-      "narration": "実は世界中の押しボタンの9割は配線すら繋がってなくて、君を安心させるだけの偽物の数字なんだよね。",
+      "narration": "ある言葉の探求者が、私の正体である『然様ならば』の記録を紐解き、筆を止めました。",
       "visual_search_queries": [
-        "person pressing crosswalk signal button",
-        "city crosswalk crowd waiting"
+        "scholar reading old book vintage library candlelight",
+        "thoughtful man writing desk"
       ],
       "camera_motion": "static",
-      "subtitle_text": "ボタンの9割は偽物？",
+      "subtitle_text": "探求者が気づいた真実",
       "subtitle_color": "white",
       "subtitle_position": "bottom",
       "screen_effect": "none"
     },
     {
-      "narration": "でも対決相手のあいつ、最新のAI信号機に潜む監視カメラの数字は、君の歩く速度や顔の向きまで丸裸にしてる。",
+      "narration": "『そうであるなら、潔く受け入れよう』という、運命への静かな祈りが宿っていたからです。",
       "visual_search_queries": [
-        "ai facial recognition surveillance screen",
-        "smart traffic light camera sensor"
-      ],
-      "camera_motion": "zoom_in",
-      "subtitle_text": "頭上から歩行者を完全認識",
-      "subtitle_color": "cyan",
-      "subtitle_position": "bottom",
-      "screen_effect": "none"
-    },
-    {
-      "narration": "信号を変える力はゼロなのに、君が交差点にいた証拠だけは百パーセント完全に記録され続けてるんだ。",
-      "visual_search_queries": [
-        "traffic control room monitoring screens",
-        "night pedestrian crossing cctv angle"
+        "sunset river cherry blossom silhouette",
+        "melancholy emotional peaceful landscape"
       ],
       "camera_motion": "zoom_out",
-      "subtitle_text": "あなたの行動は全て記録",
-      "subtitle_color": "yellow",
-      "subtitle_position": "bottom",
+      "subtitle_text": "運命を受け入れる祈り",
+      "subtitle_color": "cyan",
+      "subtitle_position": "center",
       "screen_effect": "none"
     },
     {
-      "narration": "安心のためにボタンを押し続ける君と、君を静かに値踏みするレンズ、本当に街を動かしてるのはどっちかな？",
+      "narration": "今日去りゆく大切な背中へ、この受け止める優しさを、そっと手渡してみてください。",
       "visual_search_queries": [
-        "cyberpunk surveillance eye lens macro",
-        "pedestrians walking city crossing aerial"
+        "walking away sunset gentle light friends",
+        "parting farewell emotional path"
       ],
       "camera_motion": "zoom_in",
-      "subtitle_text": "本当に街を動かすのは誰？",
+      "subtitle_text": "大切な背中へ手渡して",
       "subtitle_color": "white",
-      "subtitle_position": "center",
+      "subtitle_position": "bottom",
       "screen_effect": "none"
     }
   ],
   "reference_book": {
-    "book_title": "監視資本主義：人類の未来を賭けた闘い",
-    "hook_comment": "あなたが毎日押している信号ボタン、本当に信号を変えていると思いますか？"
+    "book_title": "「さよなら」の日本語―日本人の心情と文化（竹内整一著・平凡社新書）",
+    "hook_comment": "あなたがこれまでで一番心に残っている「さようなら」は、どんな別れでしたか？"
   },
   "uncertain_facts": []
 }
